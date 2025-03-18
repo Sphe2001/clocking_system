@@ -10,6 +10,7 @@ export default function SignUpPage() {
   const [user, setUser] = useState({
     email: "",
     password: "",
+    role: "",
     username: "",
   });
   const [buttonDisabled, setButtonDisabled] = useState(true);
@@ -24,7 +25,7 @@ export default function SignUpPage() {
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/users/signup", user);
+      const response = await axios.post("/api/signup", user);
       console.log("Verification link in your email");
       console.log("Signup successful");
 
@@ -55,6 +56,7 @@ export default function SignUpPage() {
             onChange={(e) => setUser({ ...user, username: e.target.value })}
             required
           />
+
           <input
             type="email"
             className="p-2 mb-2 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
