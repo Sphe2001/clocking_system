@@ -29,7 +29,7 @@ export default function SignUpPage() {
       console.log("Verification link in your email");
       console.log("Signup successful");
 
-      router.push("/login");
+      router.push("/");
     } catch (error: any) {
       console.log(error.response?.data?.error || "Signup failed");
     } finally {
