@@ -1,46 +1,62 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 
-export default function Home() {
+export default function SignUpPage() {
   const router = useRouter();
-  const [user, setUser] = React.useState({
+  const [user, setUser] = useState({
     email: "",
     password: "",
+    role: "",
+    username: "",
   });
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setButtonDisabled(!(user.email && user.password));
+    setButtonDisabled(!(user.username && user.email && user.password));
   }, [user]);
 
-  const onLogin = async (event: React.FormEvent) => {
+  const onSignup = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/users/login", user);
-      console.log("Login successful");
-      router.push("/dashboard");
+      const response = await axios.post("/api/signup", user);
+      console.log("Verification link in your email");
+      console.log("Signup successful");
+
+      router.push("/");
     } catch (error: any) {
-      console.log(error.response?.data?.error || "Login failed");
+      console.log(error.response?.data?.error || "Signup failed");
     } finally {
       setLoading(false);
     }
   };
+
   return (
     <div>
       <div className="flex flex-col items-center justify-center min-h-screen bg-white">
         <form
-          onSubmit={onLogin}
+          onSubmit={onSignup}
           className="p-6 bg-gray-200 rounded-lg w-80 shadow-md"
         >
           <h2 className="text-2xl font-bold mb-4 text-black text-center">
-            Login
+            Sign Up
           </h2>
+
+          <input
+            type="text"
+            className="p-2 mb-2 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Student/Staff Number"
+            value={user.username}
+            onChange={(e) => setUser({ ...user, username: e.target.value })}
+            required
+          />
+
           <input
             type="email"
             className="p-2 mb-2 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -69,30 +85,19 @@ export default function Home() {
               disabled={buttonDisabled || loading}
             >
               {loading
-                ? "Loging in..."
+                ? "Signing Up..."
                 : buttonDisabled
                 ? "Fill in all fields"
-                : "Login"}
+                : "Sign Up"}
             </button>
-          </div>
-          <div className="mt-4 text-center">
-            <p className="text-black">
-              Forgot password?{" "}
-              <Link
-                href="/forgotpassword"
-                className="text-blue-600 hover:underline"
-              >
-                Reset here
-              </Link>
-            </p>
           </div>
         </form>
 
         <div className="mt-4 text-center">
           <p className="text-black">
-            Don't an account?{" "}
-            <Link href="/signup" className="text-blue-600 hover:underline">
-              Signup here
+            Already have an account?{" "}
+            <Link href="/" className="text-blue-600 hover:underline">
+              Login here
             </Link>
           </p>
         </div>
