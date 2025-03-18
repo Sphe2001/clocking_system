@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -12,6 +13,9 @@ export default function SignUpPage() {
     password: "",
     role: "",
     username: "",
+    surname: "",
+    initials: "",
+    contactNo: ""
   });
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -26,12 +30,11 @@ export default function SignUpPage() {
 
     try {
       const response = await axios.post("/api/signup", user);
-      console.log("Verification link in your email");
-      console.log("Signup successful");
+      toast.success("Signup successful");
 
       router.push("/");
     } catch (error: any) {
-      console.log(error.response?.data?.error || "Signup failed");
+      toast.error(error.response?.data?.error || "Signup failed");
     } finally {
       setLoading(false);
     }
@@ -48,6 +51,17 @@ export default function SignUpPage() {
             Sign Up
           </h2>
 
+          <select
+            className="p-2 mb-4 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={user.role}
+            onChange={(e) => setUser({ ...user, role: e.target.value })}
+            required
+          >
+            <option value="">Select Role</option>
+            <option value="student">Student</option>
+            <option value="supervisor">Supervisor</option>
+          </select>
+
           <input
             type="text"
             className="p-2 mb-2 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -63,6 +77,30 @@ export default function SignUpPage() {
             placeholder="Email"
             value={user.email}
             onChange={(e) => setUser({ ...user, email: e.target.value })}
+            required
+          />
+          <input
+            type="text"
+            className="p-2 mb-2 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Surname"
+            value={user.surname}
+            onChange={(e) => setUser({ ...user, surname: e.target.value })}
+            required
+          />
+          <input
+            type="text"
+            className="p-2 mb-2 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Initial(s)"
+            value={user.initials}
+            onChange={(e) => setUser({ ...user, initials: e.target.value })}
+            required
+          />
+          <input
+            type="text"
+            className="p-2 mb-2 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Contact Number"
+            value={user.contactNo}
+            onChange={(e) => setUser({ ...user, contactNo: e.target.value })}
             required
           />
           <input
@@ -101,6 +139,7 @@ export default function SignUpPage() {
             </Link>
           </p>
         </div>
+        <Toaster />
       </div>
     </div>
   );

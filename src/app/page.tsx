@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function Home() {
   const router = useRouter();
   const [user, setUser] = React.useState({
+    role: "",
     email: "",
     password: "",
   });
@@ -22,11 +24,16 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/users/login", user);
-      console.log("Login successful");
-      router.push("/dashboard");
+      const response = await axios.post("/api/login", user);
+      toast.success("Login successful");
+      if(user.role === "student"){
+        router.push("/dashboard");
+      }else if(user.role ==="supervisor"){
+        router.push("/dashboard/supervisor");
+      }
+      
     } catch (error: any) {
-      console.log(error.response?.data?.error || "Login failed");
+      toast.error(error.response?.data?.error || "Login failed");
     } finally {
       setLoading(false);
     }
@@ -41,6 +48,18 @@ export default function Home() {
           <h2 className="text-2xl font-bold mb-4 text-black text-center">
             Login
           </h2>
+
+          <select
+            className="p-2 mb-4 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={user.role}
+            onChange={(e) => setUser({ ...user, role: e.target.value })}
+            required
+          >
+            <option value="">Select Role</option>
+            <option value="student">Student</option>
+            <option value="supervisor">Supervisor</option>
+          </select>
+
           <input
             type="email"
             className="p-2 mb-2 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -96,6 +115,7 @@ export default function Home() {
             </Link>
           </p>
         </div>
+        <Toaster />
       </div>
     </div>
   );
