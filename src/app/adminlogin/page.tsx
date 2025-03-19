@@ -7,9 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function Home() {
   const router = useRouter();
-
   const [user, setUser] = React.useState({
-    role: "",
     email: "",
     password: "",
   });
@@ -25,12 +23,10 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/login", user);
-      toast.success("Login successful");
-      if (user.role === "student") {
-        router.push("/dashboard");
-      } else if (user.role === "supervisor") {
-        router.push("/dashboard/supervisor");
+      if (user.email === "Admin1@tut.ac.za" && user.password === "1234") {
+        toast.success("Login successful");
+
+        router.push("/dashboard/admin");
       }
     } catch (error: any) {
       toast.error(error.response?.data?.error || "Login failed");
@@ -42,42 +38,13 @@ export default function Home() {
   return (
     <div>
       <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-        <div>
-          <Link href={"/adminlogin"}>Admin</Link>
-        </div>
-
         <form
           onSubmit={onLogin}
           className="p-6 bg-gray-200 rounded-lg w-80 shadow-md"
         >
           <h2 className="text-2xl font-bold mb-4 text-black text-center">
-            Login
+            Admin Login
           </h2>
-
-          <div className="mb-4 text-black flex justify-center gap-4">
-            <label className="flex items-center gap-2 transition-transform hover:scale-105">
-              <input
-                type="radio"
-                name="role"
-                value="student"
-                checked={user.role === "student"}
-                onChange={(e) => setUser({ ...user, role: e.target.value })}
-                required
-              />
-              Student
-            </label>
-            <label className="flex items-center gap-2 transition-transform hover:scale-105">
-              <input
-                type="radio"
-                name="role"
-                value="supervisor"
-                checked={user.role === "supervisor"}
-                onChange={(e) => setUser({ ...user, role: e.target.value })}
-                required
-              />
-              Supervisor
-            </label>
-          </div>
 
           <input
             type="email"
@@ -126,14 +93,6 @@ export default function Home() {
           </div>
         </form>
 
-        <div className="mt-4 text-center">
-          <p className="text-black">
-            Don't an account?{" "}
-            <Link href="/signup" className="text-blue-600 hover:underline">
-              Signup here
-            </Link>
-          </p>
-        </div>
         <Toaster />
       </div>
     </div>
