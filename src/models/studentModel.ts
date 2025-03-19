@@ -13,39 +13,36 @@ const studentSchema = new mongoose.Schema(
       required: [true, "Please provide an email"],
       unique: true,
       trim: true,
-      lowercase: true, 
+      lowercase: true,
     },
     surname: {
-        type: String,
-        required: [true, "Please provide a surname"],
-        
+      type: String,
+      required: [true, "Please provide a surname"],
     },
     initials: {
-        type: String,
-        required: [true, "Please provide initial(s)"],
-        
+      type: String,
+      required: [true, "Please provide initial(s)"],
     },
     contactNo: {
-        type: String,
-        required: [true, "Please provide contact number"],
-        
+      type: String,
+      required: [true, "Please provide contact number"],
     },
     role: {
-        type: String,
-        required: [true, "Please select role"],
-        lowercase: true,
+      type: String,
+      required: [true, "Please select role"],
+      lowercase: true,
     },
     password: {
       type: String,
       required: [true, "Please provide a password"],
     },
     clock_in: {
-        type: Date,
-        default: null,
+      type: Date,
+      default: null,
     },
     clock_out: {
-        type: Date,
-        default: null,
+      type: Date,
+      default: null,
     },
     isVerified: {
       type: Boolean,
@@ -75,6 +72,7 @@ const studentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Student = mongoose.models.students || mongoose.model("student", studentSchema);
+const Student =
+  mongoose.models.student || mongoose.model("student", studentSchema);
 
 export default Student;

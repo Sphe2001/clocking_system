@@ -16,36 +16,33 @@ const supervisorSchema = new mongoose.Schema(
       lowercase: true,
     },
     surname: {
-        type: String,
-        required: [true, "Please provide a surname"],
-        
+      type: String,
+      required: [true, "Please provide a surname"],
     },
     initials: {
-        type: String,
-        required: [true, "Please provide initial(s)"],
-        
+      type: String,
+      required: [true, "Please provide initial(s)"],
     },
     contactNo: {
-        type: String,
-        required: [true, "Please provide contact number"],
-        
+      type: String,
+      required: [true, "Please provide contact number"],
     },
     role: {
-        type: String,
-        required: [true, "Please select role"],
-        lowercase: true,
+      type: String,
+      required: [true, "Please select role"],
+      lowercase: true,
     },
     password: {
       type: String,
       required: [true, "Please provide a password"],
     },
     clock_in: {
-        type: Date,
-        default: null,
+      type: Date,
+      default: null,
     },
     clock_out: {
-        type: Date,
-        default: null,
+      type: Date,
+      default: null,
     },
     isVerified: {
       type: Boolean,
@@ -75,6 +72,7 @@ const supervisorSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Supervisor = mongoose.models.supervisors || mongoose.model("supervisor", supervisorSchema);
+const Supervisor =
+  mongoose.models.supervisor || mongoose.model("supervisor", supervisorSchema);
 
 export default Supervisor;
