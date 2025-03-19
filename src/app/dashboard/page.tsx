@@ -27,35 +27,62 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-      <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
+    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+      {/* Admin Link */}
+      <div className="absolute top-4 right-4 z-10">
+        <button
+          onClick={handleLogout}
+          className="p-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-all"
+        >
+          Logout
+        </button>
+      </div>
 
-      <p className="mb-4 text-lg font-semibold">Click below to sign attendance</p>
+      {/* Hero Section */}
+      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative text-white p-4 sm:p-8 md:p-16">
+        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+        <div className="relative z-10 max-w-lg w-full space-y-8 text-center">
+          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
+            Welcome !
+          </h1>
+          <p className="text-lg sm:text-xl mb-8">
+            Click below to sign your attendance or end the session.
+          </p>
 
-      <button
-        onClick={handleSignAttendance}
-        className="mb-2 p-3 w-64 bg-blue-600 text-white rounded-lg hover:bg-blue-800"
-      >
-        Sign Attendance
-      </button>
+          {/* Attendance Button */}
+          <button
+            onClick={handleSignAttendance}
+            className="mb-4 p-3 w-64 bg-blue-600 text-white rounded-lg hover:bg-blue-800 transition-all"
+          >
+            Sign Attendance
+          </button>
 
-      <button
-        onClick={handleEndSession}
-        className="mb-2 p-3 w-64 bg-red-600 text-white rounded-lg hover:bg-red-800"
-      >
-        End Session
-      </button>
+          {/* End Session Button */}
+          <button
+            onClick={handleEndSession}
+            className="mb-4 p-3 w-64 bg-red-600 text-white rounded-lg hover:bg-red-800 transition-all"
+          >
+            End Session
+          </button>
 
-      <button
-        onClick={handleLogout}
-        className="p-3 w-64 bg-gray-600 text-white rounded-lg hover:bg-gray-800"
-      >
-        Logout
-      </button>
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="p-3 w-64 bg-gray-600 text-white rounded-lg hover:bg-gray-800 transition-all"
+          >
+            Logout
+          </button>
 
-      <div className="mt-4 text-center text-black">
-        {attendanceTime && <p>You signed in at: {attendanceTime}</p>}
-        {endSessionTime && <p>You signed out at: {endSessionTime}</p>}
+          {/* Attendance & End Time Display */}
+          <div className="mt-6 text-center text-black">
+            {attendanceTime && (
+              <p className="text-lg">You signed in at: {attendanceTime}</p>
+            )}
+            {endSessionTime && (
+              <p className="text-lg">You signed out at: {endSessionTime}</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
