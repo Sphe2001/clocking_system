@@ -38,16 +38,6 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
-      {/* Admin Link */}
-      <div className="absolute top-4 right-4 z-10">
-        <Link
-          href={"/adminlogin"}
-          className="p-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-all"
-        >
-          Admin Login
-        </Link>
-      </div>
-
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
@@ -95,12 +85,16 @@ export default function Home() {
                 }`}
                 disabled={buttonDisabled || loading}
               >
-                {loading ? "Logging in..." : buttonDisabled ? "Fill in all fields" : "Login"}
+                {loading
+                  ? "Logging in..."
+                  : buttonDisabled
+                  ? "Fill in all fields"
+                  : "Login"}
               </button>
             </div>
           </form>
 
-          {/* Forgot Password Link */}
+          {/* Forgot Password Link
           <div className="mt-4 text-center">
             <p className="text-gray-700">
               Forgot password?{" "}
@@ -108,7 +102,7 @@ export default function Home() {
                 Reset here
               </Link>
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
 

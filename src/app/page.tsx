@@ -58,9 +58,7 @@ export default function Home() {
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
             ClockIT
           </h1>
-          <p className="text-lg sm:text-xl mb-8">
-           On the move!
-          </p>
+          <p className="text-lg sm:text-xl mb-8">On the move!</p>
 
           {/* Login Form */}
           <form
@@ -130,7 +128,11 @@ export default function Home() {
                 }`}
                 disabled={buttonDisabled || loading}
               >
-                {loading ? "Logging in..." : buttonDisabled ? "Fill in all fields" : "Login"}
+                {loading
+                  ? "Logging in..."
+                  : buttonDisabled
+                  ? "Fill in all fields"
+                  : "Login"}
               </button>
             </div>
 
@@ -150,7 +152,7 @@ export default function Home() {
 
           {/* Signup Link */}
           <div className="mt-4 text-center">
-            <p className="text-gray-700">
+            <p className="text-white">
               Don't have an account?{" "}
               <Link href="/signup" className="text-indigo-600 hover:underline">
                 Sign up here
