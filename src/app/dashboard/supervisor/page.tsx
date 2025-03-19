@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -19,10 +20,7 @@ export default function DashboardPage() {
   };
 
   const handleLogout = () => {
-    // If using localStorage/sessionStorage for tokens
-    localStorage.removeItem("token"); // Adjust based on your auth mechanism
-
-    // Redirect to login page
+    const response = axios.get("/api/logout");
     router.push("/");
   };
 
