@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React from "react";
 
 export default function AdminDashboardPage() {
@@ -19,7 +20,10 @@ export default function AdminDashboardPage() {
             <a href="#" className="text-lg hover:text-gray-400">Reports</a>
           </li>
           <li className="mb-6">
-            <a href="#" className="text-lg hover:text-gray-400">Profile</a>
+            {/* Update the Link here */}
+            <Link href={"/Profile"} className="text-lg hover:text-gray-400">
+              Profile
+            </Link>
           </li>
         </ul>
       </div>
