@@ -17,7 +17,9 @@ export default function AdminDashboardPage() {
             <a href="#" className="text-lg hover:text-gray-400">Users</a>
           </li>
           <li className="mb-6">
-            <a href="#" className="text-lg hover:text-gray-400">Reports</a>
+          <Link href={"/Reports"} className="text-lg hover:text-gray-400">
+              Reports
+            </Link>
           </li>
           <li className="mb-6">
             {/* Update the Link here */}
