@@ -27,9 +27,9 @@ export default function VerifyResetLinkPage() {
       }
 
       try {
-        await axios.post("/api/verifyresetlink/student", { token });
+        await axios.post("/api/verifyresetlink/supervisor", { token });
         toast.success("Your link was successfully verified!");
-        router.push(`/resetpassword?token=${token}`);
+        router.push(`/resetpassword/supervisor?token=${token}`);
       } catch (error: any) {
         setError(true);
       } finally {

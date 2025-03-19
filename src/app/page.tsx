@@ -140,12 +140,19 @@ export default function Home() {
             <div className="mt-4 text-center">
               <p className="text-gray-700">
                 Forgot password?{" "}
-                <Link
-                  href="/forgotpassword"
-                  className="text-indigo-600 hover:underline"
+                <span
+                  onClick={(e) => {
+                    if (!user.role) {
+                      e.preventDefault();
+                      toast.error("Please select the user type");
+                    } else {
+                      router.push(`/forgotpassword/${user.role}`);
+                    }
+                  }}
+                  className="text-indigo-600 hover:underline cursor-pointer"
                 >
                   Reset here
-                </Link>
+                </span>
               </p>
             </div>
           </form>

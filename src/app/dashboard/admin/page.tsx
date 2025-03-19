@@ -1,20 +1,19 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 
 export default function AdminDashboardPage() {
+  const router = useRouter();
+  const handleLogout = () => {
+    const response = axios.get("/api/logout");
+    router.push("/adminlogin");
+  };
   return (
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
-      {/* Admin Link */}
-      <div className="absolute top-4 right-4 z-10">
-        <Link
-          href={"/adminlogin"}
-          className="p-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-all"
-        >
-          Admin Login
-        </Link>
-      </div>
+      
 
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
@@ -53,7 +52,7 @@ export default function AdminDashboardPage() {
               {/* Top Navigation Bar */}
               <div className="flex items-center justify-between mb-6">
                 <div className="text-xl font-semibold">Welcome to Admin Dashboard</div>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" onClick={handleLogout}>
                   Logout
                 </button>
               </div>

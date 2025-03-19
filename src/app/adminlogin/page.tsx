@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
@@ -88,17 +89,18 @@ export default function Home() {
                   : "Login"}
               </button>
             </div>
+            <div className="mt-4 text-center">
+              <p className="text-black">
+                Forgot password?{" "}
+                <Link href="/forgotpassword/admin" className="text-blue-600 hover:underline">
+                  Reset here
+                </Link>
+              </p>
+            </div>
           </form>
 
-          {/* Forgot Password Link
-          <div className="mt-4 text-center">
-            <p className="text-gray-700">
-              Forgot password?{" "}
-              <Link href="/forgotpassword" className="text-blue-600 hover:underline">
-                Reset here
-              </Link>
-            </p>
-          </div> */}
+          
+          
         </div>
       </div>
 
