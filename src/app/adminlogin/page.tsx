@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
@@ -23,12 +22,9 @@ export default function Home() {
     setLoading(true);
 
     try {
-      if (user.email === "Admin1@tut.ac.za" && user.password === "1234") {
-        toast.success("Login successful");
-        router.push("/dashboard/admin");
-      } else {
-        toast.error("Invalid login credentials");
-      }
+      const response = await axios.post("/api/login/admin", user);
+      toast.success("Login successful");
+      router.push("/dashboard/admin");
     } catch (error: any) {
       toast.error(error.response?.data?.error || "Login failed");
     } finally {
