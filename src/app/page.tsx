@@ -56,7 +56,7 @@ export default function Home() {
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
         <div className="relative z-10 max-w-lg w-full space-y-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
-            TaskTide
+            ClockIT
           </h1>
           <p className="text-lg sm:text-xl mb-8">
            On the move!
