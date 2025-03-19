@@ -1,15 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import Link from "next/link";
 
 export default function Home() {
   const router = useRouter();
-
   const [user, setUser] = React.useState({
-    role: "",
     email: "",
     password: "",
   });
@@ -25,13 +23,9 @@ export default function Home() {
     setLoading(true);
 
     try {
-      const response = await axios.post("/api/login", user);
+      const response = await axios.post("/api/login/admin", user);
       toast.success("Login successful");
-      if (user.role === "student") {
-        router.push("/dashboard");
-      } else if (user.role === "supervisor") {
-        router.push("/dashboard/supervisor");
-      }
+      router.push("/dashboard/admin");
     } catch (error: any) {
       toast.error(error.response?.data?.error || "Login failed");
     } finally {
@@ -41,62 +35,22 @@ export default function Home() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
-      {/* Admin Link */}
-      <div className="absolute top-4 right-4 z-10">
-        <Link
-          href={"/adminlogin"}
-          className="p-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-all"
-        >
-          Admin Login
-        </Link>
-      </div>
-
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
         <div className="relative z-10 max-w-lg w-full space-y-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
-            ClockIT
+            Admin Login
           </h1>
-          <p className="text-lg sm:text-xl mb-8">On the move!</p>
+          <p className="text-lg sm:text-xl mb-8">
+            Please enter your credentials to access the admin dashboard.
+          </p>
 
           {/* Login Form */}
           <form
             onSubmit={onLogin}
             className="p-6 bg-white rounded-lg shadow-xl space-y-6"
           >
-            <h2 className="text-3xl font-bold text-gray-800 text-center">
-              Login
-            </h2>
-
-            {/* Role Selection */}
-            <div className="mb-6 text-gray-700 flex justify-center gap-6">
-              <label className="flex items-center gap-2 transition-transform hover:scale-105">
-                <input
-                  type="radio"
-                  name="role"
-                  value="student"
-                  checked={user.role === "student"}
-                  onChange={(e) => setUser({ ...user, role: e.target.value })}
-                  required
-                  className="text-indigo-600 focus:ring-indigo-500"
-                />
-                Student
-              </label>
-              <label className="flex items-center gap-2 transition-transform hover:scale-105">
-                <input
-                  type="radio"
-                  name="role"
-                  value="supervisor"
-                  checked={user.role === "supervisor"}
-                  onChange={(e) => setUser({ ...user, role: e.target.value })}
-                  required
-                  className="text-indigo-600 focus:ring-indigo-500"
-                />
-                Supervisor
-              </label>
-            </div>
-
             {/* Email Input */}
             <input
               type="email"
@@ -135,37 +89,18 @@ export default function Home() {
                   : "Login"}
               </button>
             </div>
-
-            {/* Forgot Password Link */}
             <div className="mt-4 text-center">
-              <p className="text-gray-700">
+              <p className="text-black">
                 Forgot password?{" "}
-                <span
-                  onClick={(e) => {
-                    if (!user.role) {
-                      e.preventDefault();
-                      toast.error("Please select the user type");
-                    } else {
-                      router.push(`/forgotpassword/${user.role}`);
-                    }
-                  }}
-                  className="text-indigo-600 hover:underline cursor-pointer"
-                >
+                <Link href="/forgotpassword/admin" className="text-blue-600 hover:underline">
                   Reset here
-                </span>
+                </Link>
               </p>
             </div>
           </form>
 
-          {/* Signup Link */}
-          <div className="mt-4 text-center">
-            <p className="text-white">
-              Don't have an account?{" "}
-              <Link href="/signup" className="text-indigo-600 hover:underline">
-                Sign up here
-              </Link>
-            </p>
-          </div>
+          
+          
         </div>
       </div>
 
