@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Home() {
   const router = useRouter();
@@ -26,12 +26,11 @@ export default function Home() {
     try {
       const response = await axios.post("/api/login", user);
       toast.success("Login successful");
-      if(user.role === "student"){
+      if (user.role === "student") {
         router.push("/dashboard");
-      }else if(user.role ==="supervisor"){
+      } else if (user.role === "supervisor") {
         router.push("/dashboard/supervisor");
       }
-      
     } catch (error: any) {
       toast.error(error.response?.data?.error || "Login failed");
     } finally {
@@ -49,16 +48,30 @@ export default function Home() {
             Login
           </h2>
 
-          <select
-            className="p-2 mb-4 w-full border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={user.role}
-            onChange={(e) => setUser({ ...user, role: e.target.value })}
-            required
-          >
-            <option value="">Select Role</option>
-            <option value="student">Student</option>
-            <option value="supervisor">Supervisor</option>
-          </select>
+          <div className="mb-4 text-black flex justify-center gap-4">
+            <label className="flex items-center gap-2 transition-transform hover:scale-105">
+              <input
+                type="radio"
+                name="role"
+                value="student"
+                checked={user.role === "student"}
+                onChange={(e) => setUser({ ...user, role: e.target.value })}
+                required
+              />
+              Student
+            </label>
+            <label className="flex items-center gap-2 transition-transform hover:scale-105">
+              <input
+                type="radio"
+                name="role"
+                value="supervisor"
+                checked={user.role === "supervisor"}
+                onChange={(e) => setUser({ ...user, role: e.target.value })}
+                required
+              />
+              Supervisor
+            </label>
+          </div>
 
           <input
             type="email"
