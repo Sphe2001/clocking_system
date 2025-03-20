@@ -27,14 +27,7 @@ export default function DashboardPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
       {/* Admin Link */}
-      <div className="absolute top-4 right-4 z-10">
-        <button
-          onClick={handleLogout}
-          className="p-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-all"
-        >
-          Logout
-        </button>
-      </div>
+      
 
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative text-white p-4 sm:p-8 md:p-16">
