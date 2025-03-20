@@ -26,9 +26,7 @@ export default function DashboardPage() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
-      {/* Admin Link */}
       
-
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative text-white p-4 sm:p-8 md:p-16">
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>

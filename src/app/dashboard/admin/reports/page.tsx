@@ -26,23 +26,29 @@ const ReportsPage = () => {
               <thead className="bg-gray-200">
                 <tr>
                   <th className="p-3 text-left">Report ID</th>
-                  <th className="p-3 text-left">Report Title</th>
+                  <th className="p-3 text-left">Student/supervisor</th>
                   <th className="p-3 text-left">Date</th>
+                  <th className="p-3 text-left">Clocked In</th>
+                  <th className="p-3 text-left">Clocked Out</th>
                   <th className="p-3 text-left">Status</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td className="p-3">#101</td>
-                  <td className="p-3">Sales Report</td>
+                  <td className="p-3">Student</td>
                   <td className="p-3">2025-03-15</td>
+                  <td className="p-3">08:00</td>
+                  <td className="p-3">16:00</td>
                   <td className="p-3 text-green-600">Completed</td>
                 </tr>
                 <tr>
-                  <td className="p-3">#102</td>
-                  <td className="p-3">Marketing Analysis</td>
-                  <td className="p-3">2025-03-14</td>
-                  <td className="p-3 text-yellow-600">Pending</td>
+                <td className="p-3">#101</td>
+                  <td className="p-3">Student</td>
+                  <td className="p-3">2025-03-15</td>
+                  <td className="p-3">08:00</td>
+                  <td className="p-3">16:00</td>
+                  <td className="p-3 text-red-600">iompleted</td>
                 </tr>
                 {/* More rows can be added here */}
               </tbody>

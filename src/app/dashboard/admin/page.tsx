@@ -38,15 +38,15 @@ export default function AdminDashboardPage() {
               <h2 className="text-2xl font-bold mb-8">Admin Panel</h2>
               <ul className="flex flex-col items-center space-y-6 w-full">
                 <li className="w-full text-center">
-                  <a href="#" className="text-lg hover:text-gray-400">Users</a>
+                  <a href="/dashboard/admin/users" className="text-lg hover:text-gray-400">Users</a>
                 </li>
                 <li className="w-full text-center">
-                  <Link href="../../Reports" className="text-lg hover:text-gray-400">
+                  <Link href="/dashboard/admin/reports" className="text-lg hover:text-gray-400">
                     Reports
                   </Link>
                 </li>
                 <li className="w-full text-center">
-                  <Link href="../../Profile" className="text-lg hover:text-gray-400">
+                  <Link href="/profile/admin" className="text-lg hover:text-gray-400">
                     Profile
                   </Link>
                 </li>
