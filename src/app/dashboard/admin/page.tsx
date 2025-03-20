@@ -35,12 +35,12 @@ export default function AdminDashboardPage() {
                   <a href="#" className="text-lg hover:text-gray-400">Users</a>
                 </li>
                 <li className="mb-6">
-                  <Link href={"/Reports"} className="text-lg hover:text-gray-400">
+                  <Link href={"../../Reports"} className="text-lg hover:text-gray-400">
                     Reports
                   </Link>
                 </li>
                 <li className="mb-6">
-                  <Link href={"/Profile"} className="text-lg hover:text-gray-400">
+                  <Link href={"../../Profile"} className="text-lg hover:text-gray-400">
                     Profile
                   </Link>
                 </li>
