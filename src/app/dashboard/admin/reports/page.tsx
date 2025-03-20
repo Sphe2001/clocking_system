@@ -17,11 +17,12 @@ const ReportsPage = () => {
           </p>
 
           {/* Reports Content */}
-          <div className="bg-white p-6 rounded-lg shadow-xl space-y-6">
+          <div className="bg-white p-10 rounded-lg shadow-xl space-y-6">
             <h3 className="text-xl font-semibold text-gray-700">Report Overview</h3>
             <p className="text-lg text-gray-700 mb-4">This section contains the latest reports and insights.</p>
 
             {/* Add Report Table or Content */}
+            <div className="overflow-x-auto">
             <table className="w-full table-auto text-gray-700">
               <thead className="bg-gray-200">
                 <tr>
@@ -53,7 +54,7 @@ const ReportsPage = () => {
                 {/* More rows can be added here */}
               </tbody>
             </table>
-
+            </div>
             {/* Buttons for viewing more reports or creating a new report */}
             <div className="flex justify-center space-x-4">
               <button className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
