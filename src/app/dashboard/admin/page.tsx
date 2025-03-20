@@ -55,15 +55,7 @@ export default function AdminDashboardPage() {
 
             {/* Main Content */}
             <div className="flex-1 p-6 bg-white rounded-lg shadow-md overflow-auto min-h-screen">
-              {/* Top Navigation Bar */}
-              <div className="flex items-center justify-between mb-6">
-                <button
-                  className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
-                  onClick={handleLogout}
-                >
-                  Logout
-                </button>
-              </div>
+              
 
               {/* Dashboard Stats */}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
@@ -133,7 +125,15 @@ export default function AdminDashboardPage() {
                   </table>
                 </div>
               </div>
-
+               {/* Top Navigation Bar */}
+              <div className="flex items-center justify-center mb-6">
+                <button
+                  className="bg-blue-600 m-20 text-white p-10 px-5 py-2 rounded-lg hover:bg-blue-700"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           </div>
         </div>
