@@ -26,26 +26,26 @@ export default function AdminDashboardPage() {
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
-        <div className="relative z-10 max-w-6xl w-full space-y-8">
+        <div className="relative z-10 max-w-full w-full space-y-8">
           <h1 className="text-4xl sm:text-5xl font-bold leading-tight">ClockIT</h1>
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
             Admin Dashboard
           </h1>
 
           <div className="flex flex-grow">
-            {/* Sidebar */}
-            <div className="flex flex-col items-center justify-start w-64 bg-gray-800 text-white p-6 min-h-screen">
+            {/* Sidebar - Smaller and centered items */}
+            <div className="flex flex-col items-center justify-center w-48 bg-gray-800 text-white p-6 min-h-screen">
               <h2 className="text-2xl font-bold mb-8">Admin Panel</h2>
-              <ul className="flex flex-col items-center space-y-6">
-                <li>
+              <ul className="flex flex-col items-center space-y-6 w-full">
+                <li className="w-full text-center">
                   <a href="#" className="text-lg hover:text-gray-400">Users</a>
                 </li>
-                <li>
+                <li className="w-full text-center">
                   <Link href="../../Reports" className="text-lg hover:text-gray-400">
                     Reports
                   </Link>
                 </li>
-                <li>
+                <li className="w-full text-center">
                   <Link href="../../Profile" className="text-lg hover:text-gray-400">
                     Profile
                   </Link>
