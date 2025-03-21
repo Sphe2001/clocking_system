@@ -55,13 +55,18 @@ export default function DashboardPage() {
             Sign Attendance
           </button>
 
-          {/* End Session Button */}
-          <button
-            onClick={handleEndSession}
-            className="mb-4 p-3 w-64 bg-red-600 text-white rounded-lg hover:bg-red-800 transition-all"
-          >
-            End Session
-          </button>
+           {/* End Session Button */}
+           <button
+              onClick={handleEndSession}
+              className={`mb-4 p-3 w-64 text-white rounded-lg transition-all ${
+                attendanceTime
+                  ? "bg-red-600 hover:bg-red-800"
+                  : "bg-red-400 cursor-not-allowed opacity-50"
+              }`}
+              disabled={!attendanceTime} // Disable the button if attendanceTime is not set
+            >
+              End Session
+            </button>
 
           {/* Logout Button */}
           <button
