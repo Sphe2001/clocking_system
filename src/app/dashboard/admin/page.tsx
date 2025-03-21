@@ -90,20 +90,20 @@ export default function AdminDashboardPage() {
 
           {/* Main Content */}
           <div className="w-3/4 p-6">
-            <h3 className="text-2xl font-semibold mb-6 text-center">Clocking Daily Report</h3>
+            <h3 className="text-2xl font-semibold mb-6 text-center text-black">Clocking Daily Report</h3>
 
             {/* User Statistics */}
             <div className="grid grid-cols-3 gap-4 mb-6">
               <div className="bg-gray-100 p-4 rounded-lg text-center shadow">
-                <h4 className="text-lg font-semibold">Total Users</h4>
+                <h4 className="text-lg font-semibold text-black">Total Users</h4>
                 <p className="text-2xl font-bold text-black">{totalUsers}</p>
               </div>
               <div className="bg-green-100 p-4 rounded-lg text-center shadow">
-                <h4 className="text-lg font-semibold">Total Students</h4>
+                <h4 className="text-lg font-semibold text-black">Total Students</h4>
                 <p className="text-2xl font-bold text-black">{totalStudents}</p>
               </div>
               <div className="bg-blue-100 p-4 rounded-lg text-center shadow">
-                <h4 className="text-lg font-semibold">Total Supervisors</h4>
+                <h4 className="text-lg font-semibold text-black">Total Supervisors</h4>
                 <p className="text-2xl font-bold text-black">{totalSupervisors}</p>
               </div>
             </div>
