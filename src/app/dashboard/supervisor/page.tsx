@@ -38,7 +38,7 @@ export default function DashboardPage() {
             <Link href="/dashboard/supervisor/viewStudents" className="hover:text-gray-300">
               View Students
             </Link>
-            <Link href="//dashboard/supervisor/viewProfile" className="hover:text-gray-300">
+            <Link href="/dashboard/supervisor/viewProfile" className="hover:text-gray-300">
               View Profile
             </Link>
           </div>
