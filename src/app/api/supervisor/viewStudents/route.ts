@@ -1,9 +1,8 @@
-
 import { connect } from "@/dbConfig/dbConfig";
 import Student from "@/models/studentModel";
 import { NextResponse, NextRequest } from "next/server";
 import { getDataFromToken } from "@/helpers/getDataFromToken";
-import Admin from "@/models/adminModel";
+import Supervisor from "@/models/supervisorModel";
 
 connect();
 
@@ -12,7 +11,7 @@ connect();
 export async function GET(request: NextRequest) {
     try {
         const userId = await getDataFromToken(request);
-                    const user = await Admin.findOne({ _id: userId }).select("-password");
+                    const user = await Supervisor.findOne({ _id: userId }).select("-password");
                 if(!user){
                     return NextResponse.json({
                         message: "Access denied",

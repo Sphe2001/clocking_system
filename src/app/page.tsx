@@ -28,7 +28,7 @@ export default function Home() {
       const response = await axios.post("/api/login", user);
       toast.success("Login successful");
       if (user.role === "student") {
-        router.push("/dashboard");
+        router.push("/dashboard/student");
       } else if (user.role === "supervisor") {
         router.push("/dashboard/supervisor");
       }
