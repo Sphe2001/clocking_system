@@ -81,7 +81,7 @@ export default function AdminDashboardPage() {
                 </Link>
               </li>
               <li>
-                <Link href="/profile/admin" className="block text-lg hover:text-gray-400">
+                <Link href="/dashboad/admin/profile" className="block text-lg hover:text-gray-400">
                   Profile
                 </Link>
               </li>
