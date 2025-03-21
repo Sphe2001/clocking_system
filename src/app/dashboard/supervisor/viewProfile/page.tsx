@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -46,7 +47,7 @@ export default function ProfilePage() {
   // Save edited data
   const handleSave = async () => {
     try {
-      await axios.put("/api/supervisor/profile/edit", editedUser);
+      await axios.post("/api/supervisor/profile/edit", editedUser);
       setUser(editedUser);
       setIsEditing(false);
     } catch (error) {
@@ -64,8 +65,9 @@ export default function ProfilePage() {
   const handleDelete = async () => {
     if (confirm("Are you sure you want to delete your profile?")) {
       try {
-        await axios.delete("/api/profile");
-        alert("Profile deleted successfully!");
+        await axios.post("/api/supervisor/profile/delete");
+        toast.success("Profile deleted successfully!");
+        router.push("/");
       } catch (error) {
         console.error("Error deleting profile:", error);
       }
@@ -125,8 +127,8 @@ export default function ProfilePage() {
               name="username"
               value={editedUser.username}
               onChange={handleChange}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              disabled={true}
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
                 isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
               }`}
             />
@@ -141,7 +143,7 @@ export default function ProfilePage() {
               value={editedUser.email}
               onChange={handleChange}
               disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
                 isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
               }`}
             />
@@ -156,7 +158,7 @@ export default function ProfilePage() {
               value={editedUser.surname}
               onChange={handleChange}
               disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
                 isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
               }`}
             />
@@ -171,7 +173,7 @@ export default function ProfilePage() {
               value={editedUser.initials}
               onChange={handleChange}
               disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
                 isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
               }`}
             />
@@ -186,7 +188,7 @@ export default function ProfilePage() {
               value={editedUser.contactNo}
               onChange={handleChange}
               disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 ${
+              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
                 isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
               }`}
             />

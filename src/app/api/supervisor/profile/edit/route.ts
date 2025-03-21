@@ -22,15 +22,6 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
-        const checkEmail = await Supervisor.findOne({ email });
-        if (checkEmail) {
-            return NextResponse.json(
-            { error: "Email already exist" },
-            { status: 409 }
-            );}
-
-
-        if (email) user.email = email;
         if (surname) user.surname = surname;
         if (initials) user.initials = initials;
         if (contactNo) user.contactNo = contactNo;
