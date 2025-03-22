@@ -8,7 +8,7 @@ const AttendanceTable = () => {
   const recordsPerPage = 20;
 
   useEffect(() => {
-    fetch("/api/attendance")
+    fetch("/api/attendance/students")
       .then((res) => res.json())
       .then((data) => setAttendance(data));
   }, []);

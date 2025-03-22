@@ -1,38 +1,51 @@
 import { connect } from "@/dbConfig/dbConfig";
 import Student from "@/models/studentModel";
+import Supervisor from "@/models/supervisorModel";
 import { NextResponse, NextRequest } from "next/server";
-
+import { getDataFromToken } from "@/helpers/getDataFromToken";
+import Admin from "@/models/adminModel";
 
 connect();
 
 export async function GET(request: NextRequest) {
     try {
-        
+        // Authenticate admin
+        const userId = await getDataFromToken(request);
+        const user = await Admin.findOne({ _id: userId }).select("-password");
+        if (!user) {
+            return NextResponse.json({ message: "Access denied" }, { status: 403 });
+        }
 
         // Get today's date
         const today = new Date();
         const todayStr = today.toISOString().split("T")[0];
 
-        // Fetch all students
-        const students = await Student.find({}, "username email surname initials role clock_in clock_out").lean();
+        // Fetch students and supervisors who clocked in today
+        const students = await Student.find({ clock_in: { $gte: new Date(todayStr) } }, "username email surname initials role clock_in clock_out").lean();
+        const supervisors = await Supervisor.find({ clock_in: { $gte: new Date(todayStr) } }, "username email surname initials role clock_in clock_out").lean();
 
-        const currentTime = today.getHours() * 60 + today.getMinutes(); // Convert time to minutes
-        const lateThreshold = 8 * 60 + 10; // 8:10 AM in minutes
-        const absentThreshold = 16 * 60; // 4:00 PM in minutes
+        // Merge records
+        const users = [...students, ...supervisors];
 
-        const attendanceRecords = students.map(student => {
+        // Time thresholds
+        const currentTime = today.getHours() * 60 + today.getMinutes(); 
+        const lateThreshold = 8 * 60 + 10; // 8:10 AM
+        const absentThreshold = 16 * 60; // 4:00 PM
+
+        // Process attendance
+        const attendanceRecords = users.map(user => {
             let attendanceStatus = "Pending";
             let clockInTime = null;
             let clockOutTime = null;
 
-            if (student.clock_in) {
-                const clockInDate = new Date(student.clock_in);
+            if (user.clock_in) {
+                const clockInDate = new Date(user.clock_in);
                 const clockInStr = clockInDate.toISOString().split("T")[0];
 
                 if (clockInStr === todayStr) {
                     const clockInMinutes = clockInDate.getHours() * 60 + clockInDate.getMinutes();
-                    clockInTime = formatDateTime(student.clock_in);
-                    clockOutTime = student.clock_out ? formatDateTime(student.clock_out) : null;
+                    clockInTime = formatDateTime(user.clock_in);
+                    clockOutTime = user.clock_out ? formatDateTime(user.clock_out) : null;
 
                     if (clockInMinutes > lateThreshold) {
                         attendanceStatus = "Late";
@@ -47,10 +60,10 @@ export async function GET(request: NextRequest) {
             }
 
             return {
-                username: student.username,
-                surname: student.surname,
-                initials: student.initials,
-                role: student.role,
+                username: user.username,
+                surname: user.surname,
+                initials: user.initials,
+                role: user.role,
                 clock_in: clockInTime,
                 clock_out: clockOutTime,
                 status: attendanceStatus,

@@ -1,73 +1,114 @@
 'use client';
-
+import Link from 'next/link';
 import React from 'react';
+import { useEffect, useState } from "react";
 
 const ReportsPage = () => {
+  const [attendance, setAttendance] = useState<any>(null);
+      const [currentPage, setCurrentPage] = useState(1);
+      const recordsPerPage = 20;
+    
+      useEffect(() => {
+        fetch("/api/attendance/students")
+          .then((res) => res.json())
+          .then((data) => setAttendance(data));
+      }, []);
+    
+      const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    
+      if (!attendance) {
+        return <p className="text-center text-gray-600 mt-10">Loading attendance records...</p>;
+      }
+    
+      const users = Object.keys(attendance);
+      const totalPages = Math.ceil(users.length / recordsPerPage);
+      const startIndex = (currentPage - 1) * recordsPerPage;
+      const selectedUsers = users.slice(startIndex, startIndex + recordsPerPage);
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
-      {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
-        <div className="relative z-10 max-w-lg w-full space-y-8">
-          <h2 className="text-4xl sm:text-5xl font-extrabold leading-tight text-white">
-            Reports
-          </h2>
-          <p className="text-lg sm:text-xl mb-8 text-white">
-            Welcome to the report page! Here you can view and manage the reports.
-          </p>
-
-          {/* Reports Content */}
-          <div className="bg-white p-10 rounded-lg shadow-xl space-y-6">
-            <h3 className="text-xl font-semibold text-gray-700">Report Overview</h3>
-            <p className="text-lg text-gray-700 mb-4">This section contains the latest reports and insights.</p>
-
-            {/* Add Report Table or Content */}
-            <div className="overflow-x-auto">
-            <table className="w-full table-auto text-gray-700">
-              <thead className="bg-gray-200">
+    <div className="flex h-screen">
+            {/* Sidebar */}
+            <aside className="w-1/4 bg-blue-700 text-white p-5">
+              <h1 className="text-2xl font-bold mb-8">ADMIN PANEL</h1>
+              <nav className="space-y-4">
+                {["Dashboard", "users", "reports", "profile", "Logout"].map((item) => (
+                  <div key={item} className="p-2 cursor-pointer hover:bg-blue-500 rounded">
+                    <Link href={item}> {item} </Link>
+                  </div>
+                ))}
+              </nav>
+            </aside>
+            <div className="p-4 bg-white">
+          <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Attendance Records</h2>
+          <div className="overflow-x-auto max-h-[500px] border border-gray-300 rounded-lg shadow-md">
+            <table className="table-auto w-full border-collapse text-sm">
+              <thead className="bg-gray-200 sticky top-0">
                 <tr>
-                  <th className="p-3 text-left">Report ID</th>
-                  <th className="p-3 text-left">Student/supervisor</th>
-                  <th className="p-3 text-left">Date</th>
-                  <th className="p-3 text-left">Clocked In</th>
-                  <th className="p-3 text-left">Clocked Out</th>
-                  <th className="p-3 text-left">Status</th>
+                  <th className="border px-4 py-2 text-left text-black">Name</th>
+                  <th className="border px-4 py-2 text-left text-black">Role</th>
+                  {weekdays.map((day) => (
+                    <th key={day} className="border px-4 py-2 text-center text-black">{day}</th>
+                  ))}
                 </tr>
               </thead>
-              <tbody>
-                <tr>
-                  <td className="p-3">#101</td>
-                  <td className="p-3">Student</td>
-                  <td className="p-3">2025-03-15</td>
-                  <td className="p-3">08:00</td>
-                  <td className="p-3">16:00</td>
-                  <td className="p-3 text-green-600">Completed</td>
-                </tr>
-                <tr>
-                <td className="p-3">#101</td>
-                  <td className="p-3">Student</td>
-                  <td className="p-3">2025-03-15</td>
-                  <td className="p-3">08:00</td>
-                  <td className="p-3">16:00</td>
-                  <td className="p-3 text-red-600">iompleted</td>
-                </tr>
-                {/* More rows can be added here */}
+              <tbody className="bg-white divide-y">
+                {selectedUsers.map((email) => {
+                  const user = attendance[email];
+                  return (
+                    <tr key={email} className="hover:bg-gray-100">
+                      <td className="border px-4 py-2 text-black">{user.name}</td>
+                      <td className="border px-4 py-2 text-black">{user.role}</td>
+                      {weekdays.map((day) => (
+                        <td key={day} className="border px-4 py-2 text-center">
+                          <span className={
+                            user.attendance[day] === "Attended"
+                              ? "text-green-600 font-semibold"
+                              : user.attendance[day] === "Absent"
+                              ? "text-red-600 font-semibold"
+                              : "text-yellow-600 font-semibold"
+                          }>
+                            {user.attendance[day] || "Pending"}
+                          </span>
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
-            </div>
-            {/* Buttons for viewing more reports or creating a new report */}
-            <div className="flex justify-center space-x-4">
-              <button className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
-                View More Reports
-              </button>
-              <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                Create New Report
-              </button>
-            </div>
           </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-4 mt-4">
+              <button 
+                className={`px-4 py-2 border rounded-md ${
+                  currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
+                }`} 
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
+
+              <span className="text-gray-700">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              <button 
+                className={`px-4 py-2 border rounded-md ${
+                  currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
+                }`} 
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </div>
-      </div>
-    </div>
+      
+            
+          </div>
   );
 };
 

@@ -11,6 +11,7 @@ interface Student {
   initials: string;
   clock_in?: string;
   clock_out?: string;
+  status: string;
 }
 
 export default function ViewStudentPage() {
@@ -105,6 +106,7 @@ export default function ViewStudentPage() {
                 <th className="p-3 border border-gray-300">Initials</th>
                 <th className="p-3 border border-gray-300">Clock In</th>
                 <th className="p-3 border border-gray-300">Clock Out</th>
+                <th className="p-3 border border-gray-300">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -123,6 +125,7 @@ export default function ViewStudentPage() {
                   <td className="p-3 border border-gray-300 text-black">
                     {student.clock_out ? student.clock_out : "Not clocked out"}
                   </td>
+                  <td className="p-3 border border-gray-300 text-black">{student.status}</td>
                 </tr>
               ))}
             </tbody>
