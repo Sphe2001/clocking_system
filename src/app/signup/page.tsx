@@ -1,3 +1,4 @@
+
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
@@ -18,13 +19,72 @@ export default function SignUpPage() {
   });
   const [buttonDisabled, setButtonDisabled] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState({
+    username: "",
+    email: "",
+    surname: "",
+    initials: "",
+    contactNo: "",
+    password: "",
+  });
 
   useEffect(() => {
-    setButtonDisabled(!(user.username && user.email && user.password));
+    // Disable button if essential fields are not filled
+    setButtonDisabled(!(user.username && user.email && user.password && user.surname && user.initials && user.contactNo));
   }, [user]);
+
+  const validateInput = () => {
+    let valid = true;
+    let newErrors: any = {};
+  
+    // Role validation based on username (student number or staff number)
+    if (user.role === "student") {
+      if (!/^\d{9}$/.test(user.username)) {
+        newErrors.username = "Student number must be 9 digits.";
+        valid = false;
+      }
+    } else if (user.role === "supervisor") {
+      if (!/^\d{6}$/.test(user.username)) {
+        newErrors.username = "Staff number must be 6 digits.";
+        valid = false;
+      }
+    }
+  
+    // Surname validation (only letters, min 4 characters)
+    if (!/^[A-Za-z]{4,}$/.test(user.surname)) {
+      newErrors.surname = "Surname must have at least 4 Characters.";
+      valid = false;
+    }
+  
+    // Initials validation (only letters, between 1 to 6 characters)
+    if (!/^[A-Za-z]{1,6}$/.test(user.initials)) {
+      newErrors.initials = "Initials must be between 1 to 6 letters/Characters.";
+      valid = false;
+    }
+  
+    // Contact Number validation (exactly 10 digits)
+    if (!/^\d{10}$/.test(user.contactNo)) {
+      newErrors.contactNo = "Contact number must be 10 digits.";
+      valid = false;
+    }
+  
+    // Password validation (minimum 4 characters)
+    if (user.password.length < 4) {
+      newErrors.password = "Password must be at least 4 characters long.";
+      valid = false;
+    }
+  
+    setErrors(newErrors);
+    return valid;
+  };
+  
 
   const onSignup = async (event: React.FormEvent) => {
     event.preventDefault();
+    if (!validateInput()) {
+      return; // Don't submit if validation fails
+    }
+    
     setLoading(true);
 
     try {
@@ -55,9 +115,11 @@ export default function SignUpPage() {
         <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
         <div className="relative z-10 max-w-lg w-full space-y-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
-            Lets get you signed in!
+          ClockIT
           </h1>
-          
+          <p className="text-lg sm:text-xl mb-8">
+            Let`s get you Signed Up!
+          </p>
 
           {/* Signup Form */}
           <form
@@ -97,64 +159,94 @@ export default function SignUpPage() {
             </div>
 
             {/* Username Input */}
-            <input
-              type="text"
-              className="w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Student/Staff Number"
-              value={user.username}
-              onChange={(e) => setUser({ ...user, username: e.target.value })}
-              required
-            />
+            <div className="relative mb-4">
+              {errors.username && (
+                <p className="absolute text-red-500 text-sm top-0 left-0 -mt-6 mb-2">{errors.username}</p>
+              )}
+              <input
+                type="text"
+                className={`w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.username ? 'border-red-500' : ''}`}
+                placeholder="Student/Staff Number"
+                value={user.username}
+                onChange={(e) => setUser({ ...user, username: e.target.value })}
+                required
+              />
+            </div>
 
             {/* Email Input */}
-            <input
-              type="email"
-              className="w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Email"
-              value={user.email}
-              onChange={(e) => setUser({ ...user, email: e.target.value })}
-              required
-            />
+            <div className="relative mb-4">
+              {errors.email && (
+                <p className="absolute text-red-500 text-sm top-0 left-0 -mt-6 mb-2">{errors.email}</p>
+              )}
+              <input
+                type="email"
+                className={`w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.email ? 'border-red-500' : ''}`}
+                placeholder="Email"
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
+                required
+              />
+            </div>
 
             {/* Surname Input */}
-            <input
-              type="text"
-              className="w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Surname"
-              value={user.surname}
-              onChange={(e) => setUser({ ...user, surname: e.target.value })}
-              required
-            />
+            <div className="relative mb-4">
+              {errors.surname && (
+                <p className="absolute text-red-500 text-sm top-0 left-0 -mt-6 mb-2">{errors.surname}</p>
+              )}
+              <input
+                type="text"
+                className={`w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.surname ? 'border-red-500' : ''}`}
+                placeholder="Surname"
+                value={user.surname}
+                onChange={(e) => setUser({ ...user, surname: e.target.value })}
+                required
+              />
+            </div>
 
             {/* Initials Input */}
-            <input
-              type="text"
-              className="w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Initial(s)"
-              value={user.initials}
-              onChange={(e) => setUser({ ...user, initials: e.target.value })}
-              required
-            />
+            <div className="relative mb-4">
+              {errors.initials && (
+                <p className="absolute text-red-500 text-sm top-0 left-0 -mt-6 mb-2">{errors.initials}</p>
+              )}
+              <input
+                type="text"
+                className={`w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.initials ? 'border-red-500' : ''}`}
+                placeholder="Initial(s)"
+                value={user.initials}
+                onChange={(e) => setUser({ ...user, initials: e.target.value })}
+                required
+              />
+            </div>
 
             {/* Contact Number Input */}
-            <input
-              type="text"
-              className="w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Contact Number"
-              value={user.contactNo}
-              onChange={(e) => setUser({ ...user, contactNo: e.target.value })}
-              required
-            />
+            <div className="relative mb-4">
+              {errors.contactNo && (
+                <p className="absolute text-red-500 text-sm top-0 left-0 -mt-6 mb-2">{errors.contactNo}</p>
+              )}
+              <input
+                type="text"
+                className={`w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.contactNo ? 'border-red-500' : ''}`}
+                placeholder="Contact Number"
+                value={user.contactNo}
+                onChange={(e) => setUser({ ...user, contactNo: e.target.value })}
+                required
+              />
+            </div>
 
             {/* Password Input */}
-            <input
-              type="password"
-              className="w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              placeholder="Password"
-              value={user.password}
-              onChange={(e) => setUser({ ...user, password: e.target.value })}
-              required
-            />
+            <div className="relative mb-4">
+              {errors.password && (
+                <p className="absolute text-red-500 text-sm top-0 left-0 -mt-6 mb-2">{errors.password}</p>
+              )}
+              <input
+                type="password"
+                className={`w-full p-3 border rounded-lg text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 ${errors.password ? 'border-red-500' : ''}`}
+                placeholder="Password"
+                value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
+                required
+              />
+            </div>
 
             {/* Sign Up Button */}
             <div className="flex justify-center">
@@ -174,7 +266,7 @@ export default function SignUpPage() {
 
           {/* Login Link */}
           <div className="mt-4 text-center">
-            <p className="text-gray-700">
+            <p className="text-white">
               Already have an account?{" "}
               <Link href="/" className="text-indigo-600 hover:underline">
                 Login here

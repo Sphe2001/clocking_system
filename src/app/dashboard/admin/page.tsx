@@ -105,6 +105,15 @@ export default function AdminDashboardPage() {
                 </button>
               </li>
             </ul>
+            {/* Logout Button */}
+            <div className="flex justify-center mt-6">
+              <button
+                className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
+                onClick={handleLogout}
+              >
+                Logout
+              </button>
+            </div>
           </div>
 
           {/* Main Content */}
@@ -159,15 +168,7 @@ export default function AdminDashboardPage() {
               </table>
             </div>
 
-            {/* Logout Button */}
-            <div className="flex justify-center mt-6">
-              <button
-                className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700 transition"
-                onClick={handleLogout}
-              >
-                Logout
-              </button>
-            </div>
+            
 
           </div>
         </div>
