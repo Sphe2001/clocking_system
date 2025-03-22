@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
 
-const studentAttendanceSchema = new mongoose.Schema(
+const supervisorAttendanceSchema = new mongoose.Schema(
   {
-    studentNo: {
+    staffNo: {
       type: Number,
-      required: [true, "Please provide a student number"],
+      required: [true, "Please provide a staff number"],
       index: true,
     },
     email: {
@@ -35,12 +35,10 @@ const studentAttendanceSchema = new mongoose.Schema(
       required: [true, "Please provide clock out time"],
     },
    
-
   },
-  
 );
 
-const StudentAttendance =
-  mongoose.models.studentattendance || mongoose.model("studentattendance", studentAttendanceSchema);
+const SupervisorAttendance =
+  mongoose.models.supervisorattendance || mongoose.model("supervisorattendance", supervisorAttendanceSchema);
 
-export default StudentAttendance;
+export default SupervisorAttendance;
