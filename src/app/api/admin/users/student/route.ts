@@ -19,12 +19,14 @@ export async function GET(request: NextRequest) {
                       });
                 } 
 
-        const studentClockings = await Student.find({}, "username surname initials role clock_in clock_out").limit(20).lean();
+        const studentClockings = await Student.find({}, "username  email surname initials contactNo role clock_in clock_out").limit(20).lean();
 
         const combinedClockings = [...studentClockings].map(entry => ({
                     username: entry.username,
+                    email: entry.email,
                     surname: entry.surname,
                     initials: entry.initials,
+                    contactNo: entry.contactNo,
                     role: entry.role,
                     clock_in: entry.clock_in ? formatDateTime(entry.clock_in) : null,
                     clock_out: entry.clock_out ? formatDateTime(entry.clock_out) : null,

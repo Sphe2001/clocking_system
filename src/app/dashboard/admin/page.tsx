@@ -61,7 +61,7 @@ export default function AdminDashboardPage() {
   };
 
   const closeModal = () => {
-    setShowUsersModal(false);
+    //setShowUsersModal(false);
     setShowReportsModal(false);
     setShowProfileModal(false);
   };
@@ -82,7 +82,7 @@ export default function AdminDashboardPage() {
             <ul className="space-y-4 text-center">
               <li>
                 <button
-                  onClick={() => setShowUsersModal(true)}
+                  onClick={() => router.push("/dashboard/admin/users")}
                   className="block text-lg hover:text-gray-400"
                 >
                   Users
