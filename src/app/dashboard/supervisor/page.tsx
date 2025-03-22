@@ -10,14 +10,37 @@ export default function DashboardPage() {
   const [attendanceTime, setAttendanceTime] = useState<string | null>(null);
   const [endSessionTime, setEndSessionTime] = useState<string | null>(null);
 
-  const handleSignAttendance = () => {
-    const timestamp = new Date().toLocaleString();
-    setAttendanceTime(timestamp);
+ 
+  const handleSignAttendance = async () => {
+    console.log("Sign Attendance Button Clicked");  // Debugging log
+    try {
+      const response = await axios.post("/api/clocking/supervisor/clocking_in");
+      if (response.data.success) {
+        const timestamp = new Date().toLocaleString();
+        setAttendanceTime(timestamp);
+        console.log("Clock-in successful:", response.data);
+      } else {
+        console.error("Clock-in failed:", response.data.error);
+      }
+    } catch (error) {
+      console.error("Error while clocking in:", error);
+    }
   };
 
-  const handleEndSession = () => {
-    const timestamp = new Date().toLocaleString();
-    setEndSessionTime(timestamp);
+  const handleEndSession = async () => {
+    console.log("End Session Button Clicked");  // Debugging log
+    try {
+      const response = await axios.post("/api/clocking/supervisor/clocking_out");
+      if (response.data.success) {
+        const timestamp = new Date().toLocaleString();
+        setEndSessionTime(timestamp);
+        console.log("Clock-out successful:", response.data);
+      } else {
+        console.error("Clock-out failed:", response.data.error);
+      }
+    } catch (error) {
+      console.error("Error while clocking out:", error);
+    }
   };
 
   const handleLogout = async () => {

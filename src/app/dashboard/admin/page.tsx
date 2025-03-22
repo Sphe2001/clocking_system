@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 export default function AdminDashboardPage() {
@@ -20,6 +19,11 @@ export default function AdminDashboardPage() {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalStudents, setTotalStudents] = useState(0);
   const [totalSupervisors, setTotalSupervisors] = useState(0);
+
+  // State for managing popups
+  const [showUsersModal, setShowUsersModal] = useState(false);
+  const [showReportsModal, setShowReportsModal] = useState(false);
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   // Fetch clocking data & user counts
   useEffect(() => {
@@ -56,6 +60,12 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const closeModal = () => {
+    setShowUsersModal(false);
+    setShowReportsModal(false);
+    setShowProfileModal(false);
+  };
+
   return (
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center p-6">
       <div className="bg-white shadow-lg rounded-lg w-full max-w-6xl overflow-hidden">
@@ -71,19 +81,28 @@ export default function AdminDashboardPage() {
             <h2 className="text-2xl font-bold mb-6 text-center">Admin Panel</h2>
             <ul className="space-y-4 text-center">
               <li>
-                <Link href="/dashboard/admin/users" className="block text-lg hover:text-gray-400">
+                <button
+                  onClick={() => setShowUsersModal(true)}
+                  className="block text-lg hover:text-gray-400"
+                >
                   Users
-                </Link>
+                </button>
               </li>
               <li>
-                <Link href="/dashboard/admin/reports" className="block text-lg hover:text-gray-400">
+                <button
+                  onClick={() => setShowReportsModal(true)}
+                  className="block text-lg hover:text-gray-400"
+                >
                   Reports
-                </Link>
+                </button>
               </li>
               <li>
-                <Link href="/dashboad/admin/profile" className="block text-lg hover:text-gray-400">
+                <button
+                  onClick={() => setShowProfileModal(true)}
+                  className="block text-lg hover:text-gray-400"
+                >
                   Profile
-                </Link>
+                </button>
               </li>
             </ul>
           </div>
@@ -153,6 +172,83 @@ export default function AdminDashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      {showUsersModal && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-20">
+          <div className="bg-white p-8 rounded-lg shadow-lg max-w-6xl w-full">
+            <h3 className="text-2xl font-semibold mb-4">Users</h3>
+
+            {/* Students Table */}
+            <div className="mb-6">
+              <h4 className="text-xl font-semibold text-black mb-4">Students</h4>
+              <table className="w-full table-auto border-collapse shadow-md rounded-lg">
+                <thead className="bg-gray-700 text-white">
+                  <tr>
+                    <th className="p-4 text-center">Name</th>
+                    <th className="p-4 text-center">Student ID</th>
+                    <th className="p-4 text-center">Role</th>
+                    <th className="p-4 text-center">Clocked In</th>
+                    <th className="p-4 text-center">Clocked Out</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clockingData.filter(entry => entry.role === "Student").map((entry, index) => (
+                    <tr key={index} className="border-b text-center">
+                      <td className="p-4 text-black">{entry.name}</td>
+                      <td className="p-4 text-black">{entry.name}</td> {/* Assuming name is ID for now */}
+                      <td className="p-4 text-black">{entry.role}</td>
+                      <td className="p-4 text-black">{entry.clock_in ? new Date(entry.clock_in).toLocaleTimeString() : "N/A"}</td>
+                      <td className="p-4 text-black">{entry.clock_out ? new Date(entry.clock_out).toLocaleTimeString() : "N/A"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Supervisors Table */}
+            <div>
+              <h4 className="text-xl font-semibold text-black mb-4">Supervisors</h4>
+              <table className="w-full table-auto border-collapse shadow-md rounded-lg">
+                <thead className="bg-gray-700 text-white">
+                  <tr>
+                    <th className="p-4 text-center">Name</th>
+                    <th className="p-4 text-center">Staff ID</th>
+                    <th className="p-4 text-center">Role</th>
+                    <th className="p-4 text-center">Clocked In</th>
+                    <th className="p-4 text-center">Clocked Out</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clockingData.filter(entry => entry.role === "Supervisor").map((entry, index) => (
+                    <tr key={index} className="border-b text-center">
+                      <td className="p-4 text-black">{entry.name}</td>
+                      <td className="p-4 text-black">{entry.name}</td> {/* Assuming name is ID for now */}
+                      <td className="p-4 text-black">{entry.role}</td>
+                      <td className="p-4 text-black">{entry.clock_in ? new Date(entry.clock_in).toLocaleTimeString() : "N/A"}</td>
+                      <td className="p-4 text-black">{entry.clock_out ? new Date(entry.clock_out).toLocaleTimeString() : "N/A"}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            <button onClick={closeModal} className="mt-4 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700">Close</button>
+          </div>
+        </div>
+      )}
+
+      {showReportsModal && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-20">
+          {/* Reports Modal */}
+        </div>
+      )}
+
+      {showProfileModal && (
+        <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-20">
+          {/* Profile Modal */}
+        </div>
+      )}
     </div>
   );
 }
