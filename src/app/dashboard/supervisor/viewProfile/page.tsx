@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import toast, { Toaster } from "react-hot-toast";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function ProfilePage() {
   const router = useRouter();
   const [user, setUser] = useState({
-    username: "",
-    email: "",
-    surname: "",
-    initials: "",
-    contactNo: "",
+    username: '',
+    email: '',
+    surname: '',
+    initials: '',
+    contactNo: '',
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -23,11 +23,11 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("/api/supervisor/profile/view");
+        const response = await axios.get('/api/supervisor/profile/view');
         setUser(response.data);
         setEditedUser(response.data);
       } catch (error) {
-        console.error("Error fetching user profile:", error);
+        console.error('Error fetching user profile:', error);
       }
     };
 
@@ -47,11 +47,11 @@ export default function ProfilePage() {
   // Save edited data
   const handleSave = async () => {
     try {
-      await axios.post("/api/supervisor/profile/edit", editedUser);
+      await axios.post('/api/supervisor/profile/edit', editedUser);
       setUser(editedUser);
       setIsEditing(false);
     } catch (error) {
-      console.error("Error updating profile:", error);
+      console.error('Error updating profile:', error);
     }
   };
 
@@ -63,57 +63,56 @@ export default function ProfilePage() {
 
   // Delete profile
   const handleDelete = async () => {
-    if (confirm("Are you sure you want to delete your profile?")) {
+    if (confirm('Are you sure you want to delete your profile?')) {
       try {
-        await axios.post("/api/supervisor/profile/delete");
-        toast.success("Profile deleted successfully!");
-        router.push("/");
+        await axios.post('/api/supervisor/profile/delete');
+        toast.success('Profile deleted successfully!');
+        router.push('/');
       } catch (error) {
-        console.error("Error deleting profile:", error);
+        console.error('Error deleting profile:', error);
       }
     }
   };
+
   const handleLogout = async () => {
-    await axios.get("/api/logout");
-    router.push("/");
+    await axios.get('/api/logout');
+    router.push('/');
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-6">
-        {/* Navbar */}
-        <nav className="bg-gray-900 text-white p-4 shadow-md fixed w-full top-0 z-50">
-          <div className="container mx-auto flex justify-between items-center">
-            <Link href="/dashboard/supervisor">
-              <h1 className="text-xl font-bold hover:text-gray-300">Dashboard</h1>
+    <div className="flex justify-center items-center min-h-screen bg-indigo-900 p-6">
+      {/* Navbar */}
+      <nav className="bg-indigo-800 text-white p-4 shadow-md fixed w-full top-0 z-50">
+        <div className="container mx-auto flex justify-between items-center">
+          <Link href="/dashboard/supervisor">
+            <h1 className="text-xl font-bold hover:text-indigo-300">Dashboard</h1>
+          </Link>
+
+          <div className="flex-1"></div> {/* Empty space to push links to center */}
+
+          {/* Centered Links */}
+          <div className="flex-1 flex justify-center space-x-6 mr-20">
+            <Link href="/dashboard/supervisor/viewStudents" className="hover:text-indigo-300">
+              View Students
             </Link>
-            
-            <div className="flex-1"></div> {/* Empty space to push links to center */}
-
-            {/* Centered Links */}
-            <div className="flex-1 flex justify-center space-x-6 mr-20">
-              <Link href="/dashboard/supervisor/viewStudents" className="hover:text-gray-300">
-                View Students
-              </Link>
-              <Link href="/dashboard/supervisor/viewProfile" className="hover:text-gray-300">
-                View Profile
-              </Link>
-            </div>
-
-            {/* Logout Button (Right) */}
-            <div className="flex-1 flex justify-end">
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-800 transition-all"
-              >
-                Logout
-              </button>
-            </div>
+            <Link href="/dashboard/supervisor/viewProfile" className="hover:text-indigo-300">
+              View Profile
+            </Link>
           </div>
-        </nav>
-        
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        
 
+          {/* Logout Button (Right) */}
+          <div className="flex-1 flex justify-end">
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-800 transition-all"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md mt-24">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
           User Profile
         </h2>
@@ -129,7 +128,7 @@ export default function ProfilePage() {
               onChange={handleChange}
               disabled={true}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
-                isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
+                isEditing ? 'border-indigo-500 focus:ring-indigo-400' : 'border-gray-300 bg-gray-100'
               }`}
             />
           </div>
@@ -144,7 +143,7 @@ export default function ProfilePage() {
               onChange={handleChange}
               disabled={!isEditing}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
-                isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
+                isEditing ? 'border-indigo-500 focus:ring-indigo-400' : 'border-gray-300 bg-gray-100'
               }`}
             />
           </div>
@@ -159,7 +158,7 @@ export default function ProfilePage() {
               onChange={handleChange}
               disabled={!isEditing}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
-                isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
+                isEditing ? 'border-indigo-500 focus:ring-indigo-400' : 'border-gray-300 bg-gray-100'
               }`}
             />
           </div>
@@ -174,7 +173,7 @@ export default function ProfilePage() {
               onChange={handleChange}
               disabled={!isEditing}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
-                isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
+                isEditing ? 'border-indigo-500 focus:ring-indigo-400' : 'border-gray-300 bg-gray-100'
               }`}
             />
           </div>
@@ -189,7 +188,7 @@ export default function ProfilePage() {
               onChange={handleChange}
               disabled={!isEditing}
               className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
-                isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
+                isEditing ? 'border-indigo-500 focus:ring-indigo-400' : 'border-gray-300 bg-gray-100'
               }`}
             />
           </div>
@@ -200,7 +199,7 @@ export default function ProfilePage() {
           {!isEditing ? (
             <button
               onClick={handleEdit}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all"
+              className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition-all"
             >
               Edit Profile
             </button>

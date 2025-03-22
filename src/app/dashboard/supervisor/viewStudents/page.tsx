@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import axios from "axios";
 import Link from "next/link";
@@ -63,43 +63,44 @@ export default function ViewStudentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-        {/* Navbar */}
-        <nav className="bg-gray-900 text-white p-4 shadow-md fixed w-full top-0 z-50">
-          <div className="container mx-auto flex justify-between items-center">
-            <Link href="/dashboard/supervisor">
-              <h1 className="text-xl font-bold hover:text-gray-300">Dashboard</h1>
+    <div className="min-h-screen bg-indigo-900 flex flex-col items-center p-6">
+      {/* Navbar */}
+      <nav className="bg-indigo-800 text-white p-4 shadow-md fixed w-full top-0 z-50">
+        <div className="container mx-auto flex justify-between items-center">
+          <Link href="/dashboard/supervisor">
+            <h1 className="text-xl font-bold hover:text-indigo-300">Dashboard</h1>
+          </Link>
+
+          <div className="flex-1"></div> {/* Empty space to push links to center */}
+
+          {/* Centered Links */}
+          <div className="flex-1 flex justify-center space-x-6 mr-20">
+            <Link href="/dashboard/supervisor/viewStudents" className="hover:text-indigo-300">
+              View Students
             </Link>
-            
-            <div className="flex-1"></div> {/* Empty space to push links to center */}
-
-            {/* Centered Links */}
-            <div className="flex-1 flex justify-center space-x-6 mr-20">
-              <Link href="/dashboard/supervisor/viewStudents" className="hover:text-gray-300">
-                View Students
-              </Link>
-              <Link href="/dashboard/supervisor/viewProfile" className="hover:text-gray-300">
-                View Profile
-              </Link>
-            </div>
-
-            {/* Logout Button (Right) */}
-            <div className="flex-1 flex justify-end">
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-800 transition-all"
-              >
-                Logout
-              </button>
-            </div>
+            <Link href="/dashboard/supervisor/viewProfile" className="hover:text-indigo-300">
+              View Profile
+            </Link>
           </div>
-        </nav>
-      <h1 className="text-2xl font-bold mb-6 text-black">Student List</h1>
-      
+
+          {/* Logout Button (Right) */}
+          <div className="flex-1 flex justify-end">
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-800 transition-all"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <h1 className="text-2xl font-bold mb-6 text-white">Student List</h1>
+
       <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-4 overflow-hidden">
         <div className="overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-gray-300">
           <table className="w-full border-collapse border border-gray-200 text-left">
-            <thead className="bg-gray-800 text-white">
+            <thead className="bg-indigo-800 text-white">
               <tr>
                 <th className="p-3 border border-gray-300">Username</th>
                 <th className="p-3 border border-gray-300">Surname</th>
@@ -114,7 +115,7 @@ export default function ViewStudentPage() {
                 <tr
                   key={index}
                   ref={index === students.length - 1 ? lastStudentRef : null}
-                  className="border-b hover:bg-gray-100"
+                  className="border-b hover:bg-indigo-100"
                 >
                   <td className="p-3 border border-gray-300 text-black">{student.username}</td>
                   <td className="p-3 border border-gray-300 text-black">{student.surname}</td>
