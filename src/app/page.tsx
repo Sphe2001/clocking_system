@@ -43,7 +43,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-white p-6"
         style={{ 
-          backgroundImage: `url('/images/15.png')`,
+          backgroundImage: `url('/images/2.jpg')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
