@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-
+//import loginBackground from '/images/backgroundTemplate.png';  // Import the image
 export default function Home() {
   const router = useRouter();
 
@@ -52,12 +52,14 @@ export default function Home() {
       {/* Admin Link */}
       <div className="absolute top-4 right-4">
         <Link
+
           href="/adminlogin"
           className="p-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-all"
         >
           Admin Login
         </Link>
       </div>
+
 
       {/* Logo Centered */}
       <img
@@ -79,6 +81,7 @@ export default function Home() {
         {/* Role Selection */}
         <div className="mt-4 flex justify-center space-x-6">
           <label className="flex items-center gap-2 text-black">
+
             <input
               type="radio"
               name="role"
@@ -103,6 +106,7 @@ export default function Home() {
             Supervisor
           </label>
         </div>
+
 
         {/* Email Input */}
         <input
@@ -155,6 +159,7 @@ export default function Home() {
               Reset here
             </span>
           </p>
+
         </div>
       </form>
 
@@ -172,3 +177,4 @@ export default function Home() {
     </div>
   );
 }
+

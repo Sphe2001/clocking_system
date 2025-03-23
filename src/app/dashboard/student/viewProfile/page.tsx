@@ -80,6 +80,7 @@ export default function ProfilePage() {
   };
 
   return (
+
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600"
       style={{
         backgroundImage: `url('/images/15.png')`,
@@ -92,6 +93,7 @@ export default function ProfilePage() {
       <Navbar />
           <div className="flex justify-center items-center min-h-screen  p-6">
             <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md mt-5">
+
               <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
                 Student Profile
               </h2>

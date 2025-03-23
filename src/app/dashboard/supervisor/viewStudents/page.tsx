@@ -58,6 +58,7 @@ export default function ViewStudentPage() {
   }, [loading]);
 
   return (
+
     <div className="relative min-h-screen bg-gradient-to-br from-indigo-500 to-purple-700"
       style={{
         backgroundImage: `url('/images/15.png')`,
@@ -67,6 +68,7 @@ export default function ViewStudentPage() {
       }}
     >
       <SupervisorNavbar />
+
 
       <div className="flex flex-col items-center p-6">
         <h1 className="text-3xl font-bold text-white mb-6">Student List</h1>

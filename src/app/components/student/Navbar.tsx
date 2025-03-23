@@ -15,7 +15,7 @@ export default function Navbar() {
       };
   return (
     <div>
-        <nav className="bg-gray-900 text-white p-4 shadow-md fixed w-full top-0 z-50">
+        <nav className="bg-indigo-800  text-white p-4 shadow-md fixed w-full top-0 z-50">
             <div className="container mx-auto flex justify-between items-center">
             <h1 className="text-xl font-bold">
                 <Link href="/dashboard/student" className="hover:text-gray-300">Dashboard</Link>

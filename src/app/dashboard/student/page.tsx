@@ -45,6 +45,7 @@ export default function DashboardPage() {
 
   return (
     <div
+
       className="relative min-h-screen bg-center "
       style={{
         backgroundImage: `url('/images/15.png')`,
@@ -61,6 +62,7 @@ export default function DashboardPage() {
         <div className="relative z-10 max-w-lg w-full text-center space-y-6 p-8 bg-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-black">Welcome, Student!</h1>
           <p className="text-lg sm:text-xl text-black">Click below to sign your attendance or end the session.</p>
+
 
           <button
             onClick={handleSignAttendance}
@@ -81,10 +83,12 @@ export default function DashboardPage() {
             End Session
           </button>
 
+
   
           <div className="mt-4 text-white">
             {attendanceTime && <p className="text-lg">You signed in at: {attendanceTime}</p>}
             {endSessionTime && <p className="text-lg">You signed out at: {endSessionTime}</p>}
+
           </div>
         </div>
       </div>

@@ -34,6 +34,7 @@ export default function Home() {
   };
 
   return (
+
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600"
       style={{
         backgroundImage: `url('/images/2.jpg')`,
@@ -97,9 +98,9 @@ export default function Home() {
               </button>
             </div>
             <div className="mt-4 text-center">
-              <p className="text-black">
+              <p className="text-blue-800">
                 Forgot password?{" "}
-                <Link href="/forgotpassword/admin" className="text-blue-600 hover:underline">
+                <Link href="/forgotpassword/admin" className="text-red-600 hover:underline">
                   Reset here
                 </Link>
               </p>
