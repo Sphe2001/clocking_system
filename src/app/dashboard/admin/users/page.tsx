@@ -4,7 +4,7 @@ import React from 'react';
 import { useEffect, useState } from "react";
 
 
-const usersPage = () => {
+const UsersPage = () => {
     const [attendance, setAttendance] = useState<any>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const recordsPerPage = 20;
@@ -114,4 +114,4 @@ const usersPage = () => {
 
 }
 
-export default usersPage;
+export default UsersPage;
