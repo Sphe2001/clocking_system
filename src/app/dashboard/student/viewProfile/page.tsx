@@ -5,6 +5,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import Navbar from "@/app/components/student/Navbar";
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -23,7 +24,7 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get("/api/supervisor/profile/view");
+        const response = await axios.get("/api/student/profile/view");
         setUser(response.data);
         setEditedUser(response.data);
       } catch (error) {
@@ -79,151 +80,130 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100 p-6">
-        {/* Navbar */}
-        <nav className="bg-gray-900 text-white p-4 shadow-md fixed w-full top-0 z-50">
-          <div className="container mx-auto flex justify-between items-center">
-            <Link href="/dashboard/student">
-              <h1 className="text-xl font-bold hover:text-gray-300">Home Dashboard</h1>
-            </Link>
-            
-            <div className="flex-1"></div> {/* Empty space to push links to center */}
+    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+      <Navbar />
+          <div className="flex justify-center items-center min-h-screen bg-gray-100 p-6">
+            <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+              <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
+                Student Profile
+              </h2>
 
-          
+              <div className="space-y-4">
+                {/* Username */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">Username</label>
+                  <input
+                    type="text"
+                    name="username"
+                    value={editedUser.username}
+                    onChange={handleChange}
+                    disabled={true}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
+                      isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
+                    }`}
+                  />
+                </div>
 
-            {/* Logout Button (Right) */}
-            <div className="flex-1 flex justify-end">
-              <button
-                onClick={handleLogout}
-                className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-800 transition-all"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </nav>
-        
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        
+                {/* Email */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={editedUser.email}
+                    onChange={handleChange}
+                    disabled={true}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
+                      isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
+                    }`}
+                  />
+                </div>
 
-        <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          Student Profile
-        </h2>
+                {/* Surname */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">Surname</label>
+                  <input
+                    type="text"
+                    name="surname"
+                    value={editedUser.surname}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
+                      isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
+                    }`}
+                  />
+                </div>
 
-        <div className="space-y-4">
-          {/* Username */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700">Username</label>
-            <input
-              type="text"
-              name="username"
-              value={editedUser.username}
-              onChange={handleChange}
-              disabled={true}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
-                isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
-              }`}
-            />
-          </div>
+                {/* Initials */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">Initials</label>
+                  <input
+                    type="text"
+                    name="initials"
+                    value={editedUser.initials}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
+                      isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
+                    }`}
+                  />
+                </div>
 
-          {/* Email */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700">Email</label>
-            <input
-              type="email"
-              name="email"
-              value={editedUser.email}
-              onChange={handleChange}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
-                isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
-              }`}
-            />
-          </div>
+                {/* Contact Number */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700">Contact Number</label>
+                  <input
+                    type="text"
+                    name="contactNo"
+                    value={editedUser.contactNo}
+                    onChange={handleChange}
+                    disabled={!isEditing}
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
+                      isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
+                    }`}
+                  />
+                </div>
+              </div>
 
-          {/* Surname */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700">Surname</label>
-            <input
-              type="text"
-              name="surname"
-              value={editedUser.surname}
-              onChange={handleChange}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
-                isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
-              }`}
-            />
-          </div>
+              {/* Buttons */}
+              <div className="mt-6 flex justify-between">
+                {!isEditing ? (
+                  <button
+                    onClick={handleEdit}
+                    className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all"
+                  >
+                    Edit Profile
+                  </button>
+                ) : (
+                  <div className="flex space-x-2 w-full">
+                    <button
+                      onClick={handleSave}
+                      className="w-1/2 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-all"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={handleCancel}
+                      className="w-1/2 bg-gray-400 text-white py-2 rounded-lg hover:bg-gray-500 transition-all"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                )}
+              </div>
 
-          {/* Initials */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700">Initials</label>
-            <input
-              type="text"
-              name="initials"
-              value={editedUser.initials}
-              onChange={handleChange}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
-                isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
-              }`}
-            />
-          </div>
-
-          {/* Contact Number */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700">Contact Number</label>
-            <input
-              type="text"
-              name="contactNo"
-              value={editedUser.contactNo}
-              onChange={handleChange}
-              disabled={!isEditing}
-              className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 text-black ${
-                isEditing ? "border-blue-500 focus:ring-blue-400" : "border-gray-300 bg-gray-100"
-              }`}
-            />
+              {/* Delete Button */}
+              <div className="mt-4">
+                <button
+                  onClick={handleDelete}
+                  className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-all"
+                >
+                  Delete Profile
+                </button>
+              </div>
           </div>
         </div>
-
-        {/* Buttons */}
-        <div className="mt-6 flex justify-between">
-          {!isEditing ? (
-            <button
-              onClick={handleEdit}
-              className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition-all"
-            >
-              Edit Profile
-            </button>
-          ) : (
-            <div className="flex space-x-2 w-full">
-              <button
-                onClick={handleSave}
-                className="w-1/2 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-all"
-              >
-                Save
-              </button>
-              <button
-                onClick={handleCancel}
-                className="w-1/2 bg-gray-400 text-white py-2 rounded-lg hover:bg-gray-500 transition-all"
-              >
-                Cancel
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Delete Button */}
-        <div className="mt-4">
-          <button
-            onClick={handleDelete}
-            className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition-all"
-          >
-            Delete Profile
-          </button>
-        </div>
-      </div>
     </div>
+    
   );
 }

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import Link from "next/link";
+import SupervisorNavbar from "@/app/components/supervisor/Navbar";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -51,32 +52,7 @@ export default function DashboardPage() {
   return (
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
       {/* Navbar */}
-      <nav className="bg-gray-900 text-white p-4 shadow-md fixed w-full top-0 z-50">
-        <div className="container mx-auto flex justify-between items-center">
-          <h1 className="text-xl font-bold">Dashboard</h1>
-          <div className="flex-1"></div> {/* Empty space to push links to center */}
-
-          {/* Centered Links */}
-          <div className="flex-1 flex justify-center space-x-6 mr-20">
-            <Link href="/dashboard/supervisor/viewStudents" className="hover:text-gray-300">
-              View Students
-            </Link>
-            <Link href="/dashboard/supervisor/viewProfile" className="hover:text-gray-300">
-              View Profile
-            </Link>
-          </div>
-
-          {/* Logout Button (Right) */}
-          <div className="flex-1 flex justify-end">
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-800 transition-all"
-            >
-              Logout
-            </button>
-          </div>
-        </div>
-      </nav>
+      <SupervisorNavbar />
 
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative text-white p-4 sm:p-8 md:p-16 pt-20">
