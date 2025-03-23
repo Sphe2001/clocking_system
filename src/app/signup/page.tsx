@@ -102,7 +102,7 @@ export default function SignUpPage() {
 
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600"
       style={{
-        backgroundImage: `url('/images/15.png')`,
+        backgroundImage: `url('/images/2.jpg')`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
