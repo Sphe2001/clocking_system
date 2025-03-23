@@ -34,10 +34,13 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
+<div
+      className="relative min-h-screen bg-cover bg-center p-6"
+      style={{ backgroundImage: `url('/images/home page template4background.png')` }} // Add your background image here
+    >
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-30"></div>
         <div className="relative z-10 max-w-lg w-full space-y-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
             Admin Login
@@ -90,9 +93,9 @@ export default function Home() {
               </button>
             </div>
             <div className="mt-4 text-center">
-              <p className="text-black">
+              <p className="text-blue-800">
                 Forgot password?{" "}
-                <Link href="/forgotpassword/admin" className="text-blue-600 hover:underline">
+                <Link href="/forgotpassword/admin" className="text-red-600 hover:underline">
                   Reset here
                 </Link>
               </p>

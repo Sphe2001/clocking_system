@@ -64,9 +64,12 @@ export default function ViewStudentPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
+    <div
+    className="relative min-h-screen bg-cover bg-center p-6"
+    style={{ backgroundImage: `url('/images/15.png')` }} // Add your background image here
+  >
       <SupervisorNavbar />
-        <div className="min-h-screen bg-indigo-900 flex flex-col items-center p-6">
+        <div className="min-h-screen  flex flex-col items-center p-6">
           
 
           <h1 className="text-2xl font-bold mb-6 text-white">Student List</h1>

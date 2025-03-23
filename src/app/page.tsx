@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-
+//import loginBackground from '/images/backgroundTemplate.png';  // Import the image
 export default function Home() {
   const router = useRouter();
 
@@ -45,33 +45,36 @@ export default function Home() {
       <div className="absolute top-4 right-4 z-10">
         <Link
           href={"/adminlogin"}
-          className="p-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-all"
+          className="p-2 bg-gray-300 text-red-600 rounded-full hover:bg-gray-900 transition-all"
         >
           Admin Login
         </Link>
       </div>
 
       {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+      <div
+        className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60"
+        style={{ backgroundImage: 'url("/images/backgroundTemplate.png")' }}  // Direct reference to image in public folder
+      >
+         {/*  <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>*/}
         <div className="relative z-10 max-w-lg w-full space-y-8">
-          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
+         {/*} <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
             ClockIT
           </h1>
-          <p className="text-lg sm:text-xl mb-8">On the move!</p>
+          <p className="text-lg sm:text-xl mb-8">On the move!</p> */}
 
           {/* Login Form */}
           <form
             onSubmit={onLogin}
             className="p-6 bg-white rounded-lg shadow-xl space-y-6"
           >
-            <h2 className="text-3xl font-bold text-gray-800 text-center">
+            <h2 className="text-3xl font-bold text-red-600 text-center">
               Login
             </h2>
 
             {/* Role Selection */}
             <div className="mb-6 text-gray-700 flex justify-center gap-6">
-              <label className="flex items-center gap-2 transition-transform hover:scale-105">
+              <label className=" text-red-600 flex items-center gap-2 transition-transform hover:scale-105">
                 <input
                   type="radio"
                   name="role"
@@ -83,7 +86,7 @@ export default function Home() {
                 />
                 Student
               </label>
-              <label className="flex items-center gap-2 transition-transform hover:scale-105">
+              <label className=" text-red-600 flex items-center gap-2 transition-transform hover:scale-105">
                 <input
                   type="radio"
                   name="role"
@@ -91,7 +94,7 @@ export default function Home() {
                   checked={user.role === "supervisor"}
                   onChange={(e) => setUser({ ...user, role: e.target.value })}
                   required
-                  className="text-indigo-600 focus:ring-indigo-500"
+                  className="text-blue-600 focus:ring-indigo-500"
                 />
                 Supervisor
               </label>
@@ -138,7 +141,7 @@ export default function Home() {
 
             {/* Forgot Password Link */}
             <div className="mt-4 text-center">
-              <p className="text-gray-700">
+              <p className="text-blue-700">
                 Forgot password?{" "}
                 <span
                   onClick={(e) => {
@@ -149,7 +152,7 @@ export default function Home() {
                       router.push(`/forgotpassword/${user.role}`);
                     }
                   }}
-                  className="text-indigo-600 hover:underline cursor-pointer"
+                  className="text-red-600 hover:underline cursor-pointer"
                 >
                   Reset here
                 </span>
@@ -159,9 +162,9 @@ export default function Home() {
 
           {/* Signup Link */}
           <div className="mt-4 text-center">
-            <p className="text-white">
+            <p className="text-blue-600">
               Don't have an account?{" "}
-              <Link href="/signup" className="text-indigo-600 hover:underline">
+              <Link href="/signup" className="text-red-600 hover:underline">
                 Sign up here
               </Link>
             </p>
@@ -173,3 +176,4 @@ export default function Home() {
     </div>
   );
 }
+

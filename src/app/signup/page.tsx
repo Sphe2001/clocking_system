@@ -99,7 +99,10 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
+    <div
+    className="relative min-h-screen bg-cover bg-center p-6"
+    style={{ backgroundImage: `url('/images/15.png')` }} // Add your background image here
+  >
       {/* Admin Link */}
       <div className="absolute top-4 right-4 z-10">
         <Link
@@ -112,12 +115,12 @@ export default function SignUpPage() {
 
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+        <div className="absolute top-0 left-0 w-full h-full"></div>
         <div className="relative z-10 max-w-lg w-full space-y-8">
-          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
+          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-indigo-600">
           ClockIT
           </h1>
-          <p className="text-lg sm:text-xl mb-8">
+          <p className="text-lg sm:text-xl mb-8 text-indigo-600">
             Let`s get you Signed Up!
           </p>
 
@@ -126,13 +129,13 @@ export default function SignUpPage() {
             onSubmit={onSignup}
             className="p-6 bg-white rounded-lg shadow-xl space-y-6"
           >
-            <h2 className="text-3xl font-bold text-gray-800 text-center">
+            <h2 className="text-3xl font-bold text-indigo-600 text-center">
               Sign Up
             </h2>
 
             {/* Role Selection */}
             <div className="mb-6 text-gray-700 flex justify-center gap-6">
-              <label className="flex items-center gap-2 transition-transform hover:scale-105">
+              <label className="flex items-center gap-2 transition-transform hover:scale-105 text-red-500">
                 <input
                   type="radio"
                   name="role"
@@ -144,7 +147,7 @@ export default function SignUpPage() {
                 />
                 Student
               </label>
-              <label className="flex items-center gap-2 transition-transform hover:scale-105">
+              <label className="flex items-center gap-2 transition-transform hover:scale-105 text-red-500">
                 <input
                   type="radio"
                   name="role"
@@ -266,9 +269,9 @@ export default function SignUpPage() {
 
           {/* Login Link */}
           <div className="mt-4 text-center">
-            <p className="text-white">
+            <p className="text-indigo-600">
               Already have an account?{" "}
-              <Link href="/" className="text-indigo-600 hover:underline">
+              <Link href="/" className="text-red-500 hover:underline">
                 Login here
               </Link>
             </p>
