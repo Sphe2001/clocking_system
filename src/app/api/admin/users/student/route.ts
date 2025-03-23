@@ -54,6 +54,8 @@ export async function GET(request: NextRequest) {
 
             return {
                 username: student.username,
+                name: student.surname + " " + student.initials,
+                email: student.email,
                 surname: student.surname,
                 initials: student.initials,
                 role: student.role,

@@ -41,60 +41,33 @@ const ProfilePage = () => {
       };
 
   return (
-    <div className="flex h-screen">
-        {/* Sidebar */}
-        <aside className="w-1/4 bg-blue-700 text-white p-5">
-                <h1 className="text-2xl font-bold mb-8">ADMIN PANEL</h1>
-                <nav className="space-y-4">
-                  <div
-                    className="p-2 cursor-pointer hover:bg-blue-500 rounded"
-                    onClick={() => handleNavigation("/dashboard/admin")}
-                  >
-                    Dashboard
-                  </div>
-                  <div
-                    className="p-2 cursor-pointer hover:bg-blue-500 rounded"
-                    onClick={() => handleNavigation("/dashboard/admin/users")}
-                  >
-                    Users
-                  </div>
-                  <div
-                    className="p-2 cursor-pointer hover:bg-blue-500 rounded"
-                    onClick={() => handleNavigation("/dashboard/admin/reports")}
-                  >
-                    Reports
-                  </div>
-                  <div
-                    className="p-2 cursor-pointer hover:bg-blue-500 rounded"
-                    onClick={() => handleNavigation("/dashboard/admin/profile")}
-                  >
-                    Profile
-                  </div>
-                  <div
-                    className="p-2 cursor-pointer hover:bg-red-500 rounded"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </div>
-                </nav>
-              </aside>
+    <div className="flex h-screen bg-gray-100">
+      {/* Sidebar */}
+      <aside className="w-1/4 bg-blue-700 text-white p-5">
+        <h1 className="text-2xl font-bold mb-8">ADMIN PANEL</h1>
+        <nav className="space-y-4">
+          <div className="p-2 cursor-pointer hover:bg-blue-500 rounded" onClick={() => handleNavigation("/dashboard/admin")}>Dashboard</div>
+          <div className="p-2 cursor-pointer hover:bg-blue-500 rounded" onClick={() => handleNavigation("/dashboard/admin/users")}>Users</div>
+          <div className="p-2 cursor-pointer hover:bg-blue-500 rounded" onClick={() => handleNavigation("/dashboard/admin/reports")}>Reports</div>
+          <div className="p-2 cursor-pointer hover:bg-blue-500 rounded" onClick={() => handleNavigation("/dashboard/admin/profile")}>Profile</div>
+          <div className="p-2 cursor-pointer hover:bg-red-500 rounded" onClick={handleLogout}>Logout</div>
+        </nav>
+      </aside>
 
-              {/* Profile Content */}
-            <main className="w-3/4 p-10">
-                <h2 className="text-3xl font-semibold mb-6">Admin Profile</h2>
-                {admin ? (
-                    <div className="bg-white shadow-md rounded-lg p-6">
-                        <p className="text-xl mb-2 text-black"><strong>Staff Number: </strong> {admin.username}</p>
-                        <p className="text-xl mb-4 text-black"><strong>Email: </strong> {admin.email}</p>
-                        <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" onClick={handleDeleteAccount}>Delete Account</button>
-                    </div>
-                ) : (
-                    <p>Loading profile...</p>
-                )}
-            </main>
-  
-        
-      </div>
+      {/* Profile Content */}
+      <main className="w-3/4 p-10 bg-white shadow-md rounded-lg mx-auto my-10 max-w-2xl">
+        <h2 className="text-3xl font-semibold text-gray-800 mb-6">Admin Profile</h2>
+        {admin ? (
+          <div className="bg-white p-6 border border-gray-300 rounded-lg shadow-sm">
+            <p className="text-xl mb-2 text-gray-700"><strong>Staff Number: </strong> {admin.username}</p>
+            <p className="text-xl mb-4 text-gray-700"><strong>Email: </strong> {admin.email}</p>
+            <button className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition duration-200" onClick={handleDeleteAccount}>Delete Account</button>
+          </div>
+        ) : (
+          <p className="text-gray-500">Loading profile...</p>
+        )}
+      </main>
+    </div>
   );
 };
 
