@@ -5,6 +5,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
+
 interface AttendanceRecord {
   username: string;
   surname: string;
@@ -17,6 +18,7 @@ interface AttendanceRecord {
 }
 
 export default function AdminDashboardPage() {
+    const router = useRouter();
 
   const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
       const [filteredRecords, setFilteredRecords] = useState<AttendanceRecord[]>([]);
@@ -63,22 +65,55 @@ export default function AdminDashboardPage() {
     { date: "March 19, 2025", role: "STUDENT", details: "xxx", clockIn: "06:00 am", clockOut: "16:00 pm" },
   ];
 
+  const handleNavigation = (path: string) => {
+    router.push(path);
+  };
+
+  const handleLogout = async () => {
+    await axios.get("/api/logout");
+    router.push("/adminlogin");
+  };
+
  
 
   return (
     <div className="flex h-screen">
-      {/* Sidebar */}
+      {/* Sidebar */} 
       <aside className="w-1/4 bg-blue-700 text-white p-5">
-        <h1 className="text-2xl font-bold mb-8">ADMIN PANEL</h1>
-        <nav className="space-y-4">
-            {["Dashboard", "users", "reports", "profile", "Logout"].map((item) => (
-              <div key={item} className="p-2 cursor-pointer hover:bg-blue-500 rounded">
-                <Link href={item}> {item} </Link>
-
-              </div>
-            ))}
-          </nav>
-      </aside>
+                  <h1 className="text-2xl font-bold mb-8">ADMIN PANEL</h1>
+                  <nav className="space-y-4">
+                    <div
+                      className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+                      onClick={() => handleNavigation("/dashboard/admin")}
+                    >
+                      Dashboard
+                    </div>
+                    <div
+                      className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+                      onClick={() => handleNavigation("/dashboard/admin/users")}
+                    >
+                      Users
+                    </div>
+                    <div
+                      className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+                      onClick={() => handleNavigation("/dashboard/admin/reports")}
+                    >
+                      Reports
+                    </div>
+                    <div
+                      className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+                      onClick={() => handleNavigation("/dashboard/admin/profile")}
+                    >
+                      Profile
+                    </div>
+                    <div
+                      className="p-2 cursor-pointer hover:bg-red-500 rounded"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </div>
+                  </nav>
+                </aside>
 
       {/* Main Content */}
       <main className="flex-1 bg-black text-white p-6">
