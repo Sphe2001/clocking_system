@@ -1,173 +1,117 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import axios from "axios";
-import { useRouter } from "next/router";
+import Link from 'next/link';
+import React from 'react';
+import { useEffect, useState } from "react";
 
-interface User {
-  _id: string;
-  surname: string;
-  initials: string;
-  email: string;
-  contactNo: string;
-}
 
 const UsersPage = () => {
-  const [students, setStudents] = useState<User[]>([]);
-  const [supervisors, setSupervisors] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [searchTerm, setSearchTerm] = useState<string>("");
-
-  const [filteredStudents, setFilteredStudents] = useState<User[]>(students);
-  const [filteredSupervisors, setFilteredSupervisors] = useState<User[]>(supervisors);
-
-  // Fetch users on component mount
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const studentResponse = await fetch("/api/admin/users/student");
-        if (!studentResponse.ok) {
-          throw new Error("Failed to fetch students");
-        }
-        const studentData = await studentResponse.json();
-        setStudents(studentData);
-
-        const supervisorResponse = await fetch("/api/admin/users/supervisor");
-        if (!supervisorResponse.ok) {
-          throw new Error("Failed to fetch supervisors");
-        }
-        const supervisorData = await supervisorResponse.json();
-        setSupervisors(supervisorData);
-      } catch (error: unknown) {
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError("An unknown error occurred.");
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUsers();
-  }, []);
-
-  // Filter users based on search term
-  useEffect(() => {
-    setFilteredStudents(
-      students.filter(
-        (student) =>
-          student.surname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          student.email.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-    setFilteredSupervisors(
-      supervisors.filter(
-        (supervisor) =>
-          supervisor.surname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          supervisor.email.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  }, [searchTerm, students, supervisors]);
-
-  if (loading) return <p>Loading users...</p>;
-  if (error) return <p>{error}</p>;
-
-  return (
-    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600 flex items-center justify-center p-6">
-      <div className="bg-white shadow-lg rounded-lg w-full max-w-6xl overflow-hidden flex">
-        {/* Sidebar */}
-        <div className="w-1/4 bg-gray-800 text-white p-6 flex flex-col min-h-full">
-          <h2 className="text-2xl font-bold mb-6 text-center">Admin Panel</h2>
-          <ul className="space-y-4 text-center">
-            <li>
-              <Link href="/dashboard/admin" className="block text-lg hover:text-gray-400">Home</Link>
-            </li>
-            <li>
-              <Link href="/dashboard/admin/reports" className="block text-lg hover:text-gray-400">Reports</Link>
-            </li>
-            <li>
-              <Link href="/dashboard/admin/profile" className="block text-lg hover:text-gray-400">Profile</Link>
-            </li>
-          </ul>
-        </div>
-
-        {/* Main Content */}
-        <div className="w-3/4 p-6">
-          <h1 className="text-2xl font-bold text-center text-black mb-6">All User Records</h1>
-          
-          {/* Search Bar */}
-          <div className="mb-6 text-center">
-            <input
-              type="text"
-              placeholder="Search by username or email"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="p-2 border rounded-lg w-1/2"
-            />
+    const [attendance, setAttendance] = useState<any>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const recordsPerPage = 20;
+  
+    useEffect(() => {
+      fetch("/api/attendance/students")
+        .then((res) => res.json())
+        .then((data) => setAttendance(data));
+    }, []);
+  
+    const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  
+    if (!attendance) {
+      return <p className="text-center text-gray-600 mt-10">Loading attendance records...</p>;
+    }
+  
+    const users = Object.keys(attendance);
+    const totalPages = Math.ceil(users.length / recordsPerPage);
+    const startIndex = (currentPage - 1) * recordsPerPage;
+    const selectedUsers = users.slice(startIndex, startIndex + recordsPerPage);
+    return (
+            <div className="flex h-screen">
+            {/* Sidebar */}
+            <aside className="w-1/4 bg-blue-700 text-white p-5">
+              <h1 className="text-2xl font-bold mb-8">ADMIN PANEL</h1>
+              <nav className="space-y-4">
+                {["Dashboard", "users", "reports", "profile", "Logout"].map((item) => (
+                  <div key={item} className="p-2 cursor-pointer hover:bg-blue-500 rounded">
+                    <Link href={item}> {item} </Link>
+                  </div>
+                ))}
+              </nav>
+            </aside>
+            <div className="p-4 bg-white">
+          <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Attendance Records</h2>
+          <div className="overflow-x-auto max-h-[500px] border border-gray-300 rounded-lg shadow-md">
+            <table className="table-auto w-full border-collapse text-sm">
+              <thead className="bg-gray-200 sticky top-0">
+                <tr>
+                  <th className="border px-4 py-2 text-left text-black">Name</th>
+                  <th className="border px-4 py-2 text-left text-black">Role</th>
+                  {weekdays.map((day) => (
+                    <th key={day} className="border px-4 py-2 text-center text-black">{day}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y">
+                {selectedUsers.map((email) => {
+                  const user = attendance[email];
+                  return (
+                    <tr key={email} className="hover:bg-gray-100">
+                      <td className="border px-4 py-2 text-black">{user.name}</td>
+                      <td className="border px-4 py-2 text-black">{user.role}</td>
+                      {weekdays.map((day) => (
+                        <td key={day} className="border px-4 py-2 text-center">
+                          <span className={
+                            user.attendance[day] === "Attended"
+                              ? "text-green-600 font-semibold"
+                              : user.attendance[day] === "Absent"
+                              ? "text-red-600 font-semibold"
+                              : "text-yellow-600 font-semibold"
+                          }>
+                            {user.attendance[day] || "Pending"}
+                          </span>
+                        </td>
+                      ))}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
 
-          {/* Student Records */}
-          <h2 className="text-xl font-semibold text-black mb-4">All Students</h2>
-          {filteredStudents.length > 0 ? (
-            <table className="w-full border-collapse shadow-md rounded-lg overflow-hidden">
-              <thead className="bg-gray-700 text-white">
-                <tr>
-                  <th className="p-4 text-left">Surname</th>
-                  <th>Initials</th>
-                  <th>Email</th>
-                  <th>Contact N0:</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredStudents.map((student) => (
-                  <tr key={student._id} className="border-b text-center">
-                    <td className="p-4 text-black">{student.surname}</td>
-                    <td>{student.initials}</td>
-                    <td>{student.email}</td>
-                    <td>{student.contactNo}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p className="text-gray-500">No students found.</p>
-          )}
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex justify-center items-center gap-4 mt-4">
+              <button 
+                className={`px-4 py-2 border rounded-md ${
+                  currentPage === 1 ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
+                }`} 
+                onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </button>
 
-          {/* Supervisor Records */}
-          <h2 className="text-xl font-semibold text-black mt-6 mb-4">All Supervisors</h2>
-          {filteredSupervisors.length > 0 ? (
-            <table className="w-full border-collapse shadow-md rounded-lg overflow-hidden">
-              <thead className="bg-gray-700 text-white">
-                <tr>
-                  <th className="p-4 text-left">Surname</th>
-                  <th>Initials</th>
-                  <th>Email</th>
-                  <th>Contact No:</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredSupervisors.map((supervisor) => (
-                  <tr key={supervisor._id} className="border-b text-center">
-                    <td className="p-4 text-black">{supervisor.surname}</td>
-                    <td>{supervisor.initials}</td>
-                    <td>{supervisor.email}</td>
-                    <td>{supervisor.contactNo}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p className="text-gray-500">No supervisors found.</p>
+              <span className="text-gray-700">
+                Page {currentPage} of {totalPages}
+              </span>
+
+              <button 
+                className={`px-4 py-2 border rounded-md ${
+                  currentPage === totalPages ? "bg-gray-300 cursor-not-allowed" : "bg-blue-500 text-white hover:bg-blue-600"
+                }`} 
+                onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                disabled={currentPage === totalPages}
+              >
+                Next
+              </button>
+            </div>
           )}
         </div>
-      </div>
-    </div>
-  );
-};
+      
+            
+          </div>
+      );
 
 export default UsersPage;
-
 
