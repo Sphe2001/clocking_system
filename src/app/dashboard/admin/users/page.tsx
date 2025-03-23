@@ -112,6 +112,7 @@ const UsersPage = () => {
             
           </div>
       );
+}
 
 export default UsersPage;
 
