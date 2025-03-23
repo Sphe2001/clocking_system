@@ -4,6 +4,7 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import SupervisorNavbar from "@/app/components/supervisor/Navbar";
 
 interface Student {
   username: string;
@@ -63,78 +64,53 @@ export default function ViewStudentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-indigo-900 flex flex-col items-center p-6">
-      {/* Navbar */}
-      <nav className="bg-indigo-800 text-white p-4 shadow-md fixed w-full top-0 z-50">
-        <div className="container mx-auto flex justify-between items-center">
-          <Link href="/dashboard/supervisor">
-            <h1 className="text-xl font-bold hover:text-indigo-300">Dashboard</h1>
-          </Link>
+    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
+      <SupervisorNavbar />
+        <div className="min-h-screen bg-indigo-900 flex flex-col items-center p-6">
+          
 
-          <div className="flex-1"></div> {/* Empty space to push links to center */}
+          <h1 className="text-2xl font-bold mb-6 text-white">Student List</h1>
 
-          {/* Centered Links */}
-          <div className="flex-1 flex justify-center space-x-6 mr-20">
-            <Link href="/dashboard/supervisor/viewStudents" className="hover:text-indigo-300">
-              View Students
-            </Link>
-            <Link href="/dashboard/supervisor/viewProfile" className="hover:text-indigo-300">
-              View Profile
-            </Link>
+          <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-4 overflow-hidden">
+            <div className="overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-gray-300">
+              <table className="w-full border-collapse border border-gray-200 text-left">
+                <thead className="bg-indigo-800 text-white">
+                  <tr>
+                    <th className="p-3 border border-gray-300">Username</th>
+                    <th className="p-3 border border-gray-300">Surname</th>
+                    <th className="p-3 border border-gray-300">Initials</th>
+                    <th className="p-3 border border-gray-300">Clock In</th>
+                    <th className="p-3 border border-gray-300">Clock Out</th>
+                    <th className="p-3 border border-gray-300">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {students.map((student, index) => (
+                    <tr
+                      key={index}
+                      ref={index === students.length - 1 ? lastStudentRef : null}
+                      className="border-b hover:bg-indigo-100"
+                    >
+                      <td className="p-3 border border-gray-300 text-black">{student.username}</td>
+                      <td className="p-3 border border-gray-300 text-black">{student.surname}</td>
+                      <td className="p-3 border border-gray-300 text-black">{student.initials}</td>
+                      <td className="p-3 border border-gray-300 text-black">
+                        {student.clock_in ? student.clock_in : "Not clocked in"}
+                      </td>
+                      <td className="p-3 border border-gray-300 text-black">
+                        {student.clock_out ? student.clock_out : "Not clocked out"}
+                      </td>
+                      <td className="p-3 border border-gray-300 text-black">{student.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
-          {/* Logout Button (Right) */}
-          <div className="flex-1 flex justify-end">
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 px-4 py-2 rounded-lg hover:bg-red-800 transition-all"
-            >
-              Logout
-            </button>
-          </div>
+          {loading && <p className="mt-4 text-gray-600">Loading more students...</p>}
         </div>
-      </nav>
-
-      <h1 className="text-2xl font-bold mb-6 text-white">Student List</h1>
-
-      <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-4 overflow-hidden">
-        <div className="overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-gray-300">
-          <table className="w-full border-collapse border border-gray-200 text-left">
-            <thead className="bg-indigo-800 text-white">
-              <tr>
-                <th className="p-3 border border-gray-300">Username</th>
-                <th className="p-3 border border-gray-300">Surname</th>
-                <th className="p-3 border border-gray-300">Initials</th>
-                <th className="p-3 border border-gray-300">Clock In</th>
-                <th className="p-3 border border-gray-300">Clock Out</th>
-                <th className="p-3 border border-gray-300">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student, index) => (
-                <tr
-                  key={index}
-                  ref={index === students.length - 1 ? lastStudentRef : null}
-                  className="border-b hover:bg-indigo-100"
-                >
-                  <td className="p-3 border border-gray-300 text-black">{student.username}</td>
-                  <td className="p-3 border border-gray-300 text-black">{student.surname}</td>
-                  <td className="p-3 border border-gray-300 text-black">{student.initials}</td>
-                  <td className="p-3 border border-gray-300 text-black">
-                    {student.clock_in ? student.clock_in : "Not clocked in"}
-                  </td>
-                  <td className="p-3 border border-gray-300 text-black">
-                    {student.clock_out ? student.clock_out : "Not clocked out"}
-                  </td>
-                  <td className="p-3 border border-gray-300 text-black">{student.status}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {loading && <p className="mt-4 text-gray-600">Loading more students...</p>}
     </div>
+    
   );
 }
