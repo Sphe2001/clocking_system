@@ -54,6 +54,8 @@ export async function GET(request: NextRequest) {
 
             return {
                 username: supervisor.username,
+                name: supervisor.surname + " " + supervisor.initials,
+                email: supervisor.email,
                 surname: supervisor.surname,
                 initials: supervisor.initials,
                 role: supervisor.role,

@@ -99,30 +99,19 @@ export default function SignUpPage() {
   };
 
   return (
-    <div
-    className="relative min-h-screen bg-cover bg-center p-6"
-    style={{ backgroundImage: `url('/images/15.png')` }} // Add your background image here
-  >
-      {/* Admin Link */}
-      <div className="absolute top-4 right-4 z-10">
-        <Link
-          href={"/adminlogin"}
-          className="p-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-all"
-        >
-          Admin Login
-        </Link>
-      </div>
 
+    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600"
+      style={{
+        backgroundImage: `url('/images/15.png')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      
       {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
-        <div className="absolute top-0 left-0 w-full h-full"></div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white">
         <div className="relative z-10 max-w-lg w-full space-y-8">
-          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-indigo-600">
-          ClockIT
-          </h1>
-          <p className="text-lg sm:text-xl mb-8 text-indigo-600">
-            Let`s get you Signed Up!
-          </p>
 
           {/* Signup Form */}
           <form
@@ -269,7 +258,9 @@ export default function SignUpPage() {
 
           {/* Login Link */}
           <div className="mt-4 text-center">
-            <p className="text-indigo-600">
+
+            <p className="text-black">
+
               Already have an account?{" "}
               <Link href="/" className="text-red-500 hover:underline">
                 Login here

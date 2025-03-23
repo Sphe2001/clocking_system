@@ -16,7 +16,7 @@ export default function SupervisorNavbar() {
   return (
     <div>
         {/* Navbar */}
-      <nav className="bg-indigo-800 text-white p-4 shadow-md fixed w-full top-0 z-50">
+      <nav className="bg-gray-900 text-white p-4 shadow-md fixed w-full top-0 z-50">
         <div className="container mx-auto flex justify-between items-center">
           <Link href="/dashboard/supervisor">
             <h1 className="text-xl font-bold hover:text-indigo-300">Dashboard</h1>

@@ -73,6 +73,6 @@ const supervisorSchema = new mongoose.Schema(
 );
 
 const Supervisor =
-  mongoose.models.supervisor || mongoose.model("supervisor", supervisorSchema);
+  mongoose.models?.supervisor || mongoose.model("supervisor", supervisorSchema);
 
 export default Supervisor;
