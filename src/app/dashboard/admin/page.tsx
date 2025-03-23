@@ -17,6 +17,7 @@ interface AttendanceRecord {
 }
 
 export default function AdminDashboardPage() {
+
   const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
       const [filteredRecords, setFilteredRecords] = useState<AttendanceRecord[]>([]);
       const [roleFilter, setRoleFilter] = useState("All");
@@ -73,6 +74,7 @@ export default function AdminDashboardPage() {
             {["Dashboard", "users", "reports", "profile", "Logout"].map((item) => (
               <div key={item} className="p-2 cursor-pointer hover:bg-blue-500 rounded">
                 <Link href={item}> {item} </Link>
+
               </div>
             ))}
           </nav>
