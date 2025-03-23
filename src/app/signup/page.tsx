@@ -99,6 +99,7 @@ export default function SignUpPage() {
   };
 
   return (
+
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600"
       style={{
         backgroundImage: `url('/images/15.png')`,
@@ -111,18 +112,19 @@ export default function SignUpPage() {
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white">
         <div className="relative z-10 max-w-lg w-full space-y-8">
+
           {/* Signup Form */}
           <form
             onSubmit={onSignup}
             className="p-6 bg-white rounded-lg shadow-xl space-y-6"
           >
-            <h2 className="text-3xl font-bold text-gray-800 text-center">
+            <h2 className="text-3xl font-bold text-indigo-600 text-center">
               Sign Up
             </h2>
 
             {/* Role Selection */}
             <div className="mb-6 text-gray-700 flex justify-center gap-6">
-              <label className="flex items-center gap-2 transition-transform hover:scale-105">
+              <label className="flex items-center gap-2 transition-transform hover:scale-105 text-red-500">
                 <input
                   type="radio"
                   name="role"
@@ -134,7 +136,7 @@ export default function SignUpPage() {
                 />
                 Student
               </label>
-              <label className="flex items-center gap-2 transition-transform hover:scale-105">
+              <label className="flex items-center gap-2 transition-transform hover:scale-105 text-red-500">
                 <input
                   type="radio"
                   name="role"
@@ -256,9 +258,11 @@ export default function SignUpPage() {
 
           {/* Login Link */}
           <div className="mt-4 text-center">
+
             <p className="text-black">
+
               Already have an account?{" "}
-              <Link href="/" className="text-indigo-600 hover:underline">
+              <Link href="/" className="text-red-500 hover:underline">
                 Login here
               </Link>
             </p>
