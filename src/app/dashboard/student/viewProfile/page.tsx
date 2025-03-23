@@ -80,9 +80,12 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600 p-6">
+    <div
+    className="relative min-h-screen bg-cover bg-center p-6"
+    style={{ backgroundImage: `url('/images/1.png')` }} // Add your background image here
+  >
       <Navbar />
-          <div className="flex justify-center items-center min-h-screen bg-gray-100 p-6">
+          <div className="flex justify-center items-center min-h-screen p-6">
             <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
               <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
                 Student Profile

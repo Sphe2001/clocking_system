@@ -50,13 +50,16 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
+    <div
+      className="relative min-h-screen bg-cover bg-center p-6"
+      style={{ backgroundImage: `url('/images/backgroundTemplate.png')` }} // Add your background image here
+    >
       {/* Navbar */}
       <SupervisorNavbar />
 
       {/* Hero Section */}
       <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative text-white p-4 sm:p-8 md:p-16 pt-20">
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-30"></div>
         <div className="relative z-10 max-w-lg w-full space-y-8 text-center">
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
             Welcome!
@@ -89,10 +92,10 @@ export default function DashboardPage() {
           {/* Attendance & End Time Display */}
           <div className="mt-6 text-center text-black">
             {attendanceTime && (
-              <p className="text-lg">You signed in at: {attendanceTime}</p>
+              <p className="text-white text-lg">You signed in at: {attendanceTime}</p>
             )}
             {endSessionTime && (
-              <p className="text-lg">You signed out at: {endSessionTime}</p>
+              <p className="text-white text-lg">You signed out at: {endSessionTime}</p>
             )}
           </div>
         </div>
