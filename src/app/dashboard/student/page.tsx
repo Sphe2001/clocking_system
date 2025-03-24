@@ -1,15 +1,45 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "@/app/components/student/Navbar";
 import toast, { Toaster } from 'react-hot-toast';
+import { useRouter } from "next/navigation";
+
 
 export default function DashboardPage() {
-
+  const router = useRouter();
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   const [attendanceTime, setAttendanceTime] = useState<string | null>(null);
   const [endSessionTime, setEndSessionTime] = useState<string | null>(null);
 
+  useEffect(() => {
+    // Check if the user is authorized
+    const checkAuthorization = async () => {
+      try {
+        const response = await axios.get("/api/auth/student");
+        if (response.data) {
+          setIsAuthorized(true);
+        } else {
+          setIsAuthorized(false);
+          router.push("/"); // Redirect to login if unauthorized
+        }
+      } catch (error) {
+        setIsAuthorized(false);
+        router.push("/"); // Redirect to login on error
+      }
+    };
+
+    checkAuthorization();
+  }, [router]);
+  if (isAuthorized === null) {
+    return <p className="text-center text-gray-600 mt-10">Checking authorization...</p>;
+  }
+
+  if (!isAuthorized) {
+    return null; // Prevents rendering if unauthorized
+  }
+  
   const handleSignAttendance = async () => {
      
     try {
