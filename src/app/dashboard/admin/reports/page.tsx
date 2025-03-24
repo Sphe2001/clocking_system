@@ -1,44 +1,67 @@
-'use client';
-import Link from 'next/link';
+"use client";
+
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import axios from "axios";
 
 const ReportsPage = () => {
   const router = useRouter();
+  const [attendance, setAttendance] = useState<any>(null);
+  const [supervisors, setSupervisors] = useState<any>(null);
+  const [currentStudentPage, setCurrentStudentPage] = useState(1);
+  const [currentSupervisorPage, setCurrentSupervisorPage] = useState(1);
+  const recordsPerPage = 20;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [studentsRes, supervisorsRes] = await Promise.all([
+          axios.get("/api/attendance/students"),
+          axios.get("/api/attendance/supervisors"),
+        ]);
+        setAttendance(studentsRes.data);
+        console.log(studentsRes.data);
+        setSupervisors(supervisorsRes.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleLogout = async () => {
     await axios.get("/api/logout");
     router.push("/adminlogin");
   };
 
-  const [attendance, setAttendance] = useState<any>(null);
-  const [supervisors, setSupervisors] = useState<any>(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const recordsPerPage = 20;
-
-  useEffect(() => {
-    fetch("/api/attendance/students")
-      .then((res) => res.json())
-      .then((data) => setAttendance(data));
-    fetch("/api/attendance/supervisors")
-      .then((res) => res.json())
-      .then((data) => setSupervisors(data));
-  }, []);
-
   const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
   if (!attendance || !supervisors) {
-    return <p className="text-center text-gray-600 mt-10">Loading reports...</p>;
+    return (
+      <p className="text-center text-gray-600 mt-10">Loading reports...</p>
+    );
   }
 
   const users = Object.keys(attendance);
   const supervisorUsers = Object.keys(supervisors);
-  const totalPages = Math.ceil(users.length / recordsPerPage);
-  const totalSupervisorPages = Math.ceil(supervisorUsers.length / recordsPerPage);
-  const startIndex = (currentPage - 1) * recordsPerPage;
-  const selectedUsers = users.slice(startIndex, startIndex + recordsPerPage);
-  const selectedSupervisors = supervisorUsers.slice(startIndex, startIndex + recordsPerPage);
+  const totalStudentPages = Math.ceil(users.length / recordsPerPage);
+  const totalSupervisorPages = Math.ceil(
+    supervisorUsers.length / recordsPerPage
+  );
+
+  const studentStartIndex = (currentStudentPage - 1) * recordsPerPage;
+  const selectedUsers = users.slice(
+    studentStartIndex,
+    studentStartIndex + recordsPerPage
+  );
+
+  const supervisorStartIndex = (currentSupervisorPage - 1) * recordsPerPage;
+  const selectedSupervisors = supervisorUsers.slice(
+    supervisorStartIndex,
+    supervisorStartIndex + recordsPerPage
+  );
 
   const handleNavigation = (path: string) => {
     router.push(path);
@@ -50,17 +73,44 @@ const ReportsPage = () => {
       <aside className="w-1/4 bg-blue-700 text-white p-5">
         <h1 className="text-2xl font-bold mb-8">ADMIN PANEL</h1>
         <nav className="space-y-4">
-          <div className="p-2 cursor-pointer hover:bg-blue-500 rounded" onClick={() => handleNavigation("/dashboard/admin")}>Dashboard</div>
-          <div className="p-2 cursor-pointer hover:bg-blue-500 rounded" onClick={() => handleNavigation("/dashboard/admin/users")}>Users</div>
-          <div className="p-2 cursor-pointer hover:bg-blue-500 rounded" onClick={() => handleNavigation("/dashboard/admin/reports")}>Reports</div>
-          <div className="p-2 cursor-pointer hover:bg-blue-500 rounded" onClick={() => handleNavigation("/dashboard/admin/profile")}>Profile</div>
-          <div className="p-2 cursor-pointer hover:bg-red-500 rounded" onClick={handleLogout}>Logout</div>
+          <div
+            className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+            onClick={() => handleNavigation("/dashboard/admin")}
+          >
+            Dashboard
+          </div>
+          <div
+            className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+            onClick={() => handleNavigation("/dashboard/admin/users")}
+          >
+            Users
+          </div>
+          <div
+            className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+            onClick={() => handleNavigation("/dashboard/admin/reports")}
+          >
+            Reports
+          </div>
+          <div
+            className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+            onClick={() => handleNavigation("/dashboard/admin/profile")}
+          >
+            Profile
+          </div>
+          <div
+            className="p-2 cursor-pointer hover:bg-red-500 rounded"
+            onClick={handleLogout}
+          >
+            Logout
+          </div>
         </nav>
       </aside>
 
       {/* Main Content */}
       <div className="flex-grow p-6 bg-gray-100 overflow-y-auto">
-        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Week Attendance Records</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">
+          Week Attendance Records
+        </h2>
 
         {/* Students Table */}
         <div className="overflow-y-auto max-h-[70vh] border border-gray-300 rounded-lg shadow-md mb-6">
@@ -70,7 +120,12 @@ const ReportsPage = () => {
                 <th className="border px-4 py-2 text-left text-black">Name</th>
                 <th className="border px-4 py-2 text-left text-black">Role</th>
                 {weekdays.map((day) => (
-                  <th key={day} className="border px-4 py-2 text-center text-black">{day}</th>
+                  <th
+                    key={day}
+                    className="border px-4 py-2 text-center text-black"
+                  >
+                    {day}
+                  </th>
                 ))}
               </tr>
             </thead>
@@ -83,11 +138,15 @@ const ReportsPage = () => {
                     <td className="border px-4 py-2 text-black">{user.role}</td>
                     {weekdays.map((day) => (
                       <td key={day} className="border px-4 py-2 text-center">
-                        <span className={
-                          user.attendance[day] === "Attended" ? "text-green-600 font-semibold" :
-                          user.attendance[day] === "Absent" ? "text-red-600 font-semibold" :
-                          "text-yellow-600 font-semibold"
-                        }>
+                        <span
+                          className={
+                            user?.attendance[day] === "Attended"
+                              ? "text-green-600 font-semibold"
+                              : user.attendance[day] === "Absent"
+                              ? "text-red-600 font-semibold"
+                              : "text-yellow-600 font-semibold"
+                          }
+                        >
                           {user.attendance[day] || "Pending"}
                         </span>
                       </td>
@@ -107,7 +166,12 @@ const ReportsPage = () => {
                 <th className="border px-4 py-2 text-left text-black">Name</th>
                 <th className="border px-4 py-2 text-left text-black">Role</th>
                 {weekdays.map((day) => (
-                  <th key={day} className="border px-4 py-2 text-center text-black">{day}</th>
+                  <th
+                    key={day}
+                    className="border px-4 py-2 text-center text-black"
+                  >
+                    {day}
+                  </th>
                 ))}
               </tr>
             </thead>
@@ -116,15 +180,23 @@ const ReportsPage = () => {
                 const supervisor = supervisors[email];
                 return (
                   <tr key={email} className="hover:bg-gray-100">
-                    <td className="border px-4 py-2 text-black">{supervisor.name}</td>
-                    <td className="border px-4 py-2 text-black">{supervisor.role}</td>
+                    <td className="border px-4 py-2 text-black">
+                      {supervisor.name}
+                    </td>
+                    <td className="border px-4 py-2 text-black">
+                      {supervisor.role}
+                    </td>
                     {weekdays.map((day) => (
                       <td key={day} className="border px-4 py-2 text-center">
-                        <span className={
-                          supervisor.attendance[day] === "Attended" ? "text-green-600 font-semibold" :
-                          supervisor.attendance[day] === "Absent" ? "text-red-600 font-semibold" :
-                          "text-yellow-600 font-semibold"
-                        }>
+                        <span
+                          className={
+                            supervisor.attendance[day] === "Attended"
+                              ? "text-green-600 font-semibold"
+                              : supervisor.attendance[day] === "Absent"
+                              ? "text-red-600 font-semibold"
+                              : "text-yellow-600 font-semibold"
+                          }
+                        >
                           {supervisor.attendance[day] || "Pending"}
                         </span>
                       </td>
