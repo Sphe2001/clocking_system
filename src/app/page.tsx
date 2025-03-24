@@ -54,7 +54,7 @@ export default function Home() {
         <Link
 
           href="/adminlogin"
-          className="p-2 bg-gray-800 text-white rounded-full hover:bg-gray-900 transition-all"
+          className="p-2 bg-black text-white rounded-full hover:bg-red-900 transition-all"
         >
           Admin Login
         </Link>
@@ -65,7 +65,7 @@ export default function Home() {
       <img
         alt="TUT Logo"
         src="https://www.accord.org.za/wp-content/uploads/2016/09/TUT-Logo1.jpg"
-        className="h-24 w-24 mb-4"
+        className="h-20 w-20 mb-10  rounded-full"
       />
 
       {/* Header */}
@@ -74,9 +74,9 @@ export default function Home() {
       {/* Login Form */}
       <form
         onSubmit={onLogin}
-        className="mt-6 w-full max-w-md p-6 bg-white border border-gray-300 rounded-lg shadow-lg"
+        className="mt-6 w-full max-w-md p-6 bg-gradient-to-b from-blue-100 to-indigo-500  border border-gray-300 rounded-lg shadow-lg"
       >
-        <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
+        <h2 className="text-2xl  font-bold text-center text-gray-800">Login</h2>
 
         {/* Role Selection */}
         <div className="mt-4 flex justify-center space-x-6">
@@ -111,7 +111,7 @@ export default function Home() {
         {/* Email Input */}
         <input
           type="email"
-          className="mt-4 w-full p-3 border rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-500"
+          className="mt-4 w-full p-3 bg-white border rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-500"
           placeholder="Email"
           value={user.email}
           onChange={(e) => setUser({ ...user, email: e.target.value })}
@@ -121,7 +121,7 @@ export default function Home() {
         {/* Password Input */}
         <input
           type="password"
-          className="mt-4 w-full p-3 border rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-500"
+          className="mt-4 w-full p-3 border white rounded-lg text-gray-700 focus:ring-2 focus:ring-indigo-500"
           placeholder="Password"
           value={user.password}
           onChange={(e) => setUser({ ...user, password: e.target.value })}
