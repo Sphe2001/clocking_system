@@ -237,7 +237,7 @@ const ReportsPage = () => {
                     <td className="border px-4 py-2 text-black">
                       {supervisor.role}
                     </td>
-                    {Object.values(supervisor.attendance).map(
+                    {Object.values(supervisor.attendance ?? {}).map(
                       (record: any, index) => (
                         <td
                           key={index}
