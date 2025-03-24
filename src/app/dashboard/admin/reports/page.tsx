@@ -136,21 +136,32 @@ const ReportsPage = () => {
                   <tr key={email} className="hover:bg-gray-100">
                     <td className="border px-4 py-2 text-black">{user.name}</td>
                     <td className="border px-4 py-2 text-black">{user.role}</td>
-                    {weekdays.map((day) => (
-                      <td key={day} className="border px-4 py-2 text-center">
-                        <span
-                          className={
-                            user?.attendance[day] === "Attended"
-                              ? "text-green-600 font-semibold"
-                              : user.attendance[day] === "Absent"
-                              ? "text-red-600 font-semibold"
-                              : "text-yellow-600 font-semibold"
-                          }
+                    {Object.values(user.attendance).map(
+                      (record: any, index) => (
+                        <td
+                          key={index}
+                          className="border px-4 py-2 text-center"
                         >
-                          {user.attendance[day] || "Pending"}
-                        </span>
-                      </td>
-                    ))}
+                          <span className="text-gray-800">{record.date}</span> -
+                          <span className="text-blue-600 font-semibold">
+                            {" "}
+                            {record.dayOfWeek}
+                          </span>{" "}
+                          -
+                          <span
+                            className={
+                              record.status === "Attended"
+                                ? "text-green-600 font-semibold"
+                                : record.status === "Absent"
+                                ? "text-red-600 font-semibold"
+                                : "text-yellow-600 font-semibold"
+                            }
+                          >
+                            {record.status}
+                          </span>
+                        </td>
+                      )
+                    )}
                   </tr>
                 );
               })}
@@ -186,21 +197,32 @@ const ReportsPage = () => {
                     <td className="border px-4 py-2 text-black">
                       {supervisor.role}
                     </td>
-                    {weekdays.map((day) => (
-                      <td key={day} className="border px-4 py-2 text-center">
-                        <span
-                          className={
-                            supervisor.attendance[day] === "Attended"
-                              ? "text-green-600 font-semibold"
-                              : supervisor.attendance[day] === "Absent"
-                              ? "text-red-600 font-semibold"
-                              : "text-yellow-600 font-semibold"
-                          }
+                    {Object.values(supervisor.attendance).map(
+                      (record: any, index) => (
+                        <td
+                          key={index}
+                          className="border px-4 py-2 text-center"
                         >
-                          {supervisor.attendance[day] || "Pending"}
-                        </span>
-                      </td>
-                    ))}
+                          <span className="text-gray-800">{record.date}</span> -
+                          <span className="text-blue-600 font-semibold">
+                            {" "}
+                            {record.dayOfWeek}
+                          </span>{" "}
+                          -
+                          <span
+                            className={
+                              record.status === "Attended"
+                                ? "text-green-600 font-semibold"
+                                : record.status === "Absent"
+                                ? "text-red-600 font-semibold"
+                                : "text-yellow-600 font-semibold"
+                            }
+                          >
+                            {record.status}
+                          </span>
+                        </td>
+                      )
+                    )}
                   </tr>
                 );
               })}
