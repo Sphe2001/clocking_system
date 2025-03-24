@@ -5,6 +5,20 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { UsersIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
+//Importing Charts
+import {
+  PieChart,
+  Pie,
+  Cell,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 
 interface AttendanceRecord {
   username: string;
@@ -19,6 +33,7 @@ interface AttendanceRecord {
 
 export default function AdminDashboardPage() {
   const router = useRouter();
+  const COLORS = ["#8884d8", "#82ca9d", "#ffc658", "#ff8042"];
 
   const [attendanceRecords, setAttendanceRecords] = useState<AttendanceRecord[]>([]);
   const [filteredRecords, setFilteredRecords] = useState<AttendanceRecord[]>([]);
@@ -84,6 +99,14 @@ export default function AdminDashboardPage() {
       console.error("Error fetching summary data:", error);
     }
   };
+  const totalData = [
+    { name: "Students", value: summaryData[0].value },
+    { name: "Supervisors", value: summaryData[1].value },
+  ];
+  const attendanceData = [
+    { name: "Students Attended", value: summaryData[2].value },
+    { name: "Supervisors Attended", value: summaryData[3].value },
+  ];
 
   const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedRole = event.target.value;
@@ -152,16 +175,58 @@ export default function AdminDashboardPage() {
         <h2 className="text-3xl font-semibold text-gray-800 mb-8">Admin Dashboard</h2>
 
         {/* Summary Cards */}
-        <div className="grid grid-cols-2 gap-6 mb-8">
-          {summaryData.map(({ title, value }) => (
-            <div
-              key={title}
-              className="bg-gradient-to-b from-red-400 to-blue-800 text-white p-6 rounded-xl shadow-lg text-center"
-            >
-              <h3 className="text-xl font-semibold">{title}</h3>
-              <p className="text-4xl font-bold">{value}</p>
-            </div>
-          ))}
+
+        {/* Pie Charts Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+          {/* Total Numbers Pie Chart */}
+          <div className="bg-gray-100 p-4 rounded-lg shadow-md border border-gray-300">
+            <h3 className="text-lg font-semibold text-center mb-4">
+              Total Students vs Supervisors
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie
+                  data={totalData}
+                  cx="50%"
+                  cy="50%"
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                  label
+                >
+                  {totalData.map((entry, index) => (
+                    <Cell
+                      key={`cell-total-${index}`}
+                      fill={COLORS[index % COLORS.length]}
+                    />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
+
+          {/* Attendance Bar Chart */}
+          <div className="bg-gray-100 p-4 rounded-lg shadow-md border border-gray-300">
+            <h3 className="text-lg font-semibold text-center mb-4">
+              Attendance: Students vs Supervisors
+            </h3>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart
+                data={attendanceData}
+                margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="name" />
+                <YAxis allowDecimals={false} />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="value" fill="#82ca9d" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
         </div>
 
         {/* Filter Dropdown */}
