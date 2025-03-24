@@ -9,6 +9,7 @@ import Navbar from "@/app/components/student/Navbar";
 
 export default function ProfilePage() {
   const router = useRouter();
+    const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   const [user, setUser] = useState({
     username: "",
     email: "",
@@ -31,9 +32,33 @@ export default function ProfilePage() {
         console.error("Error fetching user profile:", error);
       }
     };
+    // Check if the user is authorized
+    const checkAuthorization = async () => {
+      try {
+        const response = await axios.get("/api/auth/student");
+        if (response.data) {
+          setIsAuthorized(true);
+        } else {
+          setIsAuthorized(false);
+          router.push("/"); // Redirect to login if unauthorized
+        }
+      } catch (error) {
+        setIsAuthorized(false);
+        router.push("/"); // Redirect to login on error
+      }
+    };
+
+    checkAuthorization();
 
     fetchUser();
-  }, []);
+  }, [router]);
+  if (isAuthorized === null) {
+    return <p className="text-center text-gray-600 mt-10">Checking authorization...</p>;
+  }
+
+  if (!isAuthorized) {
+    return null; // Prevents rendering if unauthorized
+  }
 
   // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

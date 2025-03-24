@@ -16,11 +16,42 @@ interface Student {
 
 export default function ViewStudentPage() {
   const router = useRouter();
+  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   const [students, setStudents] = useState<Student[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const observer = useRef<IntersectionObserver | null>(null);
   const lastStudentRef = useRef<HTMLTableRowElement | null>(null);
+  useEffect(() => {
+    // Check if the user is authorized
+    const checkAuthorization = async () => {
+      try {
+        const response = await axios.get("/api/auth/student");
+        if (response.data) {
+          setIsAuthorized(true);
+        } else {
+          setIsAuthorized(false);
+          router.push("/"); // Redirect to login if unauthorized
+        }
+      } catch (error) {
+        setIsAuthorized(false);
+        router.push("/"); // Redirect to login on error
+      }
+    };
+
+    checkAuthorization();
+  }, [router]);
+  if (isAuthorized === null) {
+    return (
+      <p className="text-center text-gray-600 mt-10">
+        Checking authorization...
+      </p>
+    );
+  }
+
+  if (!isAuthorized) {
+    return null; // Prevents rendering if unauthorized
+  }
 
   useEffect(() => {
     fetchStudents(page);
@@ -29,7 +60,9 @@ export default function ViewStudentPage() {
   const fetchStudents = async (page: number) => {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/supervisor/viewStudents?page=${page}`);
+      const response = await axios.get(
+        `/api/supervisor/viewStudents?page=${page}`
+      );
       const data = await response.data;
       setStudents((prev) => [...prev, ...data]); // Append new students
     } catch (error) {
@@ -58,8 +91,8 @@ export default function ViewStudentPage() {
   }, [loading]);
 
   return (
-
-    <div className="relative min-h-screen bg-gradient-to-br from-indigo-500 to-purple-700"
+    <div
+      className="relative min-h-screen bg-gradient-to-br from-indigo-500 to-purple-700"
       style={{
         backgroundImage: `url('/images/15.png')`,
         backgroundSize: "cover",
@@ -68,7 +101,6 @@ export default function ViewStudentPage() {
       }}
     >
       <SupervisorNavbar />
-
 
       <div className="flex flex-col items-center p-6">
         <h1 className="text-3xl font-bold text-white mb-6">Student List</h1>
@@ -96,16 +128,26 @@ export default function ViewStudentPage() {
                   <tr
                     key={index}
                     ref={index === students.length - 1 ? lastStudentRef : null}
-                    className={`border-b ${index % 2 === 0 ? "bg-gray-100" : "bg-gray-50"} hover:bg-indigo-100 transition`}
+                    className={`border-b ${
+                      index % 2 === 0 ? "bg-gray-100" : "bg-gray-50"
+                    } hover:bg-indigo-100 transition`}
                   >
-                    <td className="p-3 border border-gray-300 text-gray-900">{student.username}</td>
-                    <td className="p-3 border border-gray-300 text-gray-900">{student.surname}</td>
-                    <td className="p-3 border border-gray-300 text-gray-900">{student.initials}</td>
+                    <td className="p-3 border border-gray-300 text-gray-900">
+                      {student.username}
+                    </td>
+                    <td className="p-3 border border-gray-300 text-gray-900">
+                      {student.surname}
+                    </td>
+                    <td className="p-3 border border-gray-300 text-gray-900">
+                      {student.initials}
+                    </td>
                     <td className="p-3 border border-gray-300 text-gray-900">
                       {student.clock_in ? student.clock_in : "Not clocked in"}
                     </td>
                     <td className="p-3 border border-gray-300 text-gray-900">
-                      {student.clock_out ? student.clock_out : "Not clocked out"}
+                      {student.clock_out
+                        ? student.clock_out
+                        : "Not clocked out"}
                     </td>
                     <td
                       className={`p-3 border border-gray-300 font-semibold ${
@@ -128,8 +170,15 @@ export default function ViewStudentPage() {
         </div>
 
         {/* Loading Indicator */}
-        {loading && <p className="mt-4 text-white text-lg font-semibold animate-pulse">Loading more students...</p>}
+        {loading && (
+          <p className="mt-4 text-white text-lg font-semibold animate-pulse">
+            Loading more students...
+          </p>
+        )}
       </div>
     </div>
   );
+}
+function setIsAuthorized(arg0: boolean) {
+  throw new Error("Function not implemented.");
 }
