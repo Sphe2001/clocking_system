@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { UsersIcon } from "@heroicons/react/16/solid";
+import { UserIcon, UsersIcon,TableCellsIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 //Importing Charts
 import {
@@ -141,23 +141,32 @@ export default function AdminDashboardPage() {
             Dashboard
           </div>
           <div
-            className="p-3 cursor-pointer hover:bg-blue-500 rounded-xl transition-all duration-300"
+            className="flex p-3 cursor-pointer hover:bg-blue-500 rounded-xl transition-all duration-300"
             onClick={() => handleNavigation("/dashboard/admin/users")}
           >
+            <div className="flex justify-left pr-5">
+            <UsersIcon className="size-6 text-red-500" />
+            </div>
             Users
           </div>
           <div
             
-            className="p-3 cursor-pointer hover:bg-blue-500 rounded-xl transition-all duration-300"
+            className="flex p-3 cursor-pointer hover:bg-blue-500 justify-right rounded-xl transition-all duration-300"
             onClick={() => handleNavigation("/dashboard/admin/reports")}
           >
-          
+          <div className="flex justify-left pr-5">
+          <TableCellsIcon className="size-6 text-red-500" />
+          </div>
             Reports
           </div>
+          
           <div
-            className="p-3 cursor-pointer hover:bg-blue-500 rounded-xl transition-all duration-300"
+            className=" flex p-3 cursor-pointer hover:bg-blue-500 rounded-xl transition-all duration-300"
             onClick={() => handleNavigation("/dashboard/admin/profile")}
           >
+            <div className="flex justify-left pr-5">
+            <UserIcon className="size-6 text-red-500" />
+            </div>
             Profile
           </div>
           <div
