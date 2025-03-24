@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import Link from "next/link";
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [token, setToken] = useState<string | null>(null);
@@ -35,11 +35,7 @@ export default function ResetPasswordPage() {
     setLoading(true);
 
     try {
-      await axios.post("/api/resetpassword/supervisor", {
-        password,
-        token,
-      });
-
+      await axios.post("/api/resetpassword/supervisor", { password, token });
       toast.success("Password successfully updated!");
       router.push("/");
     } catch (error: any) {
@@ -58,11 +54,9 @@ export default function ResetPasswordPage() {
         backgroundRepeat: "no-repeat",
       }}
     >
-      <div className="flex flex-col items-center justify-center min-h-screen  p-4">
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <div className="bg-white shadow-lg rounded-lg p-6 max-w-md w-full text-center">
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">
-            Reset Password
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-800 mb-4">Reset Password</h1>
 
           {token ? (
             <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
@@ -99,8 +93,7 @@ export default function ResetPasswordPage() {
           ) : (
             <div>
               <p className="text-red-600">
-                ❌ Invalid link. Please use the link from your email to reset
-                your password.
+                ❌ Invalid link. Please use the link from your email to reset your password.
               </p>
               <Link
                 href="/login"
@@ -114,5 +107,14 @@ export default function ResetPasswordPage() {
         <Toaster />
       </div>
     </div>
+  );
+}
+
+// Wrap ResetPasswordForm in Suspense to fix Next.js issue
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }

@@ -5,8 +5,10 @@ import { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
-  const isPublicPath = path === '/' || path === '/signup' || path ==='/adminlogin' || path ==='/forgotpassword'
-        || path ==='/resetpassword' || path ==='/verifyresetlink'
+  const isPublicPath = path === '/' || path === '/signup' || path ==='/adminlogin' || path ==='/forgotpassword/admin'
+        || path ==='/forgotpassword/supervisor' || path ==='/forgotpassword/student' || path ==='/verifyresetlink' 
+        || path ==='/resetpassword/student' || path ==='/resetpassword/supervisor' || path ==='/resetpassword/admin' 
+
 
   const token = request.cookies.get('token')?.value || ''
 
@@ -33,7 +35,9 @@ export const config = {
     '/forgotpassword/admin',
     '/forgotpassword/student',
     '/forgotpassword/supervisor',
-    '/resetpassword',
+    '/resetpassword/admin',
+    '/resetpassword/student',
+    '/resetpassword/supervisor',
     '/verifyresetlink',
     
   ],
