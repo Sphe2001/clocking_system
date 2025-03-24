@@ -26,7 +26,7 @@ const ProfilePage = () => {
         const response = await axios.get("/api/auth/admin");
         if (response.data) {
           setIsAuthorized(true);
-          fetchUsers();
+
         } else {
           toast.error("Access Denied");
           router.push("/adminlogin");
@@ -40,18 +40,7 @@ const ProfilePage = () => {
           fetchAdmin();
       }, []);
 
-      //fetch users and call them to the authentication method
-  const fetchUsers = () => {
-    axios
-      .get("/api/admin/users/student")
-      .then((response) => setStudents(response.data))
-      .catch((error) => console.error("Error fetching students:", error));
 
-    axios
-      .get("/api/admin/users/supervisor")
-      .then((response) => setSupervisors(response.data))
-      .catch((error) => console.error("Error fetching supervisors:", error));
-  };
 
   if (!isAuthorized) {
     return (
@@ -112,10 +101,5 @@ const ProfilePage = () => {
 
 export default ProfilePage;
 
-function setSupervisors(data: any): any {
-  throw new Error('Function not implemented.');
-}
-function setStudents(data: any): any {
-  throw new Error('Function not implemented.');
-}
+
 

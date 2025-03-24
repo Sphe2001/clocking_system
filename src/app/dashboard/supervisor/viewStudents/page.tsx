@@ -1,7 +1,7 @@
 "use client";
 
 import axios from "axios";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import SupervisorNavbar from "@/app/components/supervisor/Navbar";
 
@@ -22,73 +22,84 @@ export default function ViewStudentPage() {
   const [loading, setLoading] = useState(false);
   const observer = useRef<IntersectionObserver | null>(null);
   const lastStudentRef = useRef<HTMLTableRowElement | null>(null);
+
+  // Run only once on component mount
   useEffect(() => {
-    // Check if the user is authorized
+    let isMounted = true; // Prevent setting state on unmounted component
+
     const checkAuthorization = async () => {
       try {
-        const response = await axios.get("/api/auth/student");
-        if (response.data) {
-          setIsAuthorized(true);
-        } else {
-          setIsAuthorized(false);
-          router.push("/"); // Redirect to login if unauthorized
+        const response = await axios.get("/api/auth/supervisor");
+        if (isMounted) {
+          setIsAuthorized(response.data ? true : false);
+        }
+        if (!response.data) {
+          router.push("/");
         }
       } catch (error) {
-        setIsAuthorized(false);
-        router.push("/"); // Redirect to login on error
+        if (isMounted) setIsAuthorized(false);
+        router.push("/");
       }
     };
 
     checkAuthorization();
+    return () => {
+      isMounted = false; // Cleanup on unmount
+    };
   }, [router]);
-  if (isAuthorized === null) {
-    return (
-      <p className="text-center text-gray-600 mt-10">
-        Checking authorization...
-      </p>
-    );
-  }
 
-  if (!isAuthorized) {
-    return null; // Prevents rendering if unauthorized
-  }
+  // Fetch students (Memoized)
+  const fetchStudents = useCallback(
+    async (page: number) => {
+      if (loading) return; // Prevent duplicate calls
+      setLoading(true);
+      try {
+        const response = await axios.get(`/api/supervisor/viewStudents?page=${page}`);
+        const data: Student[] = response.data;
 
+        setStudents((prev) => {
+          // Avoid duplicates
+          const existingUsernames = new Set(prev.map((s) => s.username));
+          const newStudents = data.filter((s) => !existingUsernames.has(s.username));
+          return [...prev, ...newStudents];
+        });
+      } catch (error) {
+        console.error("Error fetching students:", error);
+      }
+      setLoading(false);
+    },
+    [loading]
+  );
+
+  // Fetch students when page changes
   useEffect(() => {
     fetchStudents(page);
-  }, [page]);
+  }, []);
 
-  const fetchStudents = async (page: number) => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `/api/supervisor/viewStudents?page=${page}`
-      );
-      const data = await response.data;
-      setStudents((prev) => [...prev, ...data]); // Append new students
-    } catch (error) {
-      console.error("Error fetching students:", error);
-    }
-    setLoading(false);
-  };
+  // Infinite scrolling observer
+  const lastStudentObserver = useCallback(
+    (node: HTMLTableRowElement | null) => {
+      if (loading) return;
+      if (observer.current) observer.current.disconnect();
 
-  useEffect(() => {
-    if (loading) return;
-
-    observer.current = new IntersectionObserver(
-      (entries) => {
+      observer.current = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
           setPage((prev) => prev + 1); // Load next page when scrolling reaches the bottom
         }
-      },
-      { threshold: 1 }
-    );
+      });
 
-    if (lastStudentRef.current) {
-      observer.current.observe(lastStudentRef.current);
-    }
+      if (node) observer.current.observe(node);
+    },
+    [loading]
+  );
 
-    return () => observer.current?.disconnect();
-  }, [loading]);
+  if (isAuthorized === null) {
+    return <p className="text-center text-gray-600 mt-10">Checking authorization...</p>;
+  }
+
+  if (!isAuthorized) {
+    return null;
+  }
 
   return (
     <div
@@ -126,29 +137,15 @@ export default function ViewStudentPage() {
               <tbody>
                 {students.map((student, index) => (
                   <tr
-                    key={index}
-                    ref={index === students.length - 1 ? lastStudentRef : null}
-                    className={`border-b ${
-                      index % 2 === 0 ? "bg-gray-100" : "bg-gray-50"
-                    } hover:bg-indigo-100 transition`}
+                    key={student.username} // Use username as key
+                    ref={index === students.length - 1 ? lastStudentObserver : null}
+                    className={`border-b ${index % 2 === 0 ? "bg-gray-100" : "bg-gray-50"} hover:bg-indigo-100 transition`}
                   >
-                    <td className="p-3 border border-gray-300 text-gray-900">
-                      {student.username}
-                    </td>
-                    <td className="p-3 border border-gray-300 text-gray-900">
-                      {student.surname}
-                    </td>
-                    <td className="p-3 border border-gray-300 text-gray-900">
-                      {student.initials}
-                    </td>
-                    <td className="p-3 border border-gray-300 text-gray-900">
-                      {student.clock_in ? student.clock_in : "Not clocked in"}
-                    </td>
-                    <td className="p-3 border border-gray-300 text-gray-900">
-                      {student.clock_out
-                        ? student.clock_out
-                        : "Not clocked out"}
-                    </td>
+                    <td className="p-3 border border-gray-300 text-gray-900">{student.username}</td>
+                    <td className="p-3 border border-gray-300 text-gray-900">{student.surname}</td>
+                    <td className="p-3 border border-gray-300 text-gray-900">{student.initials}</td>
+                    <td className="p-3 border border-gray-300 text-gray-900">{student.clock_in || "Not clocked in"}</td>
+                    <td className="p-3 border border-gray-300 text-gray-900">{student.clock_out || "Not clocked out"}</td>
                     <td
                       className={`p-3 border border-gray-300 font-semibold ${
                         student.status === "Late"
@@ -170,15 +167,8 @@ export default function ViewStudentPage() {
         </div>
 
         {/* Loading Indicator */}
-        {loading && (
-          <p className="mt-4 text-white text-lg font-semibold animate-pulse">
-            Loading more students...
-          </p>
-        )}
+        {loading && <p className="mt-4 text-white text-lg font-semibold animate-pulse">Loading more students...</p>}
       </div>
     </div>
   );
-}
-function setIsAuthorized(arg0: boolean) {
-  throw new Error("Function not implemented.");
 }
