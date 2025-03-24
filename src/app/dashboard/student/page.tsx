@@ -1,45 +1,21 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import Navbar from "@/app/components/student/Navbar";
 import toast, { Toaster } from 'react-hot-toast';
-import { useRouter } from "next/navigation";
+import SupervisorNavbar from "@/app/components/supervisor/Navbar";
+
 
 
 export default function DashboardPage() {
-  const router = useRouter();
-  const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+
   const [attendanceTime, setAttendanceTime] = useState<string | null>(null);
   const [endSessionTime, setEndSessionTime] = useState<string | null>(null);
+  const [showTodoList, setShowTodoList] = useState(false);
+  const [todoList, setTodoList] = useState<string[]>([]);
 
-  useEffect(() => {
-    // Check if the user is authorized
-    const checkAuthorization = async () => {
-      try {
-        const response = await axios.get("/api/auth/student");
-        if (response.data) {
-          setIsAuthorized(true);
-        } else {
-          setIsAuthorized(false);
-          router.push("/"); // Redirect to login if unauthorized
-        }
-      } catch (error) {
-        setIsAuthorized(false);
-        router.push("/"); // Redirect to login on error
-      }
-    };
 
-    checkAuthorization();
-  }, [router]);
-  if (isAuthorized === null) {
-    return <p className="text-center text-gray-600 mt-10">Checking authorization...</p>;
-  }
-
-  if (!isAuthorized) {
-    return null; // Prevents rendering if unauthorized
-  }
-  
   const handleSignAttendance = async () => {
      
     try {
@@ -71,6 +47,52 @@ export default function DashboardPage() {
       toast.error("Error while clocking out");
     }
   };
+
+  const handleFetchTodoList = async () => {
+    try {
+      const response = await axios.get("/api/todo");
+      setTodoList(response.data.todos || []);
+      setShowTodoList(!showTodoList);
+    } catch (error) {
+      toast.error("Error fetching to-do list");
+    }
+  };
+
+
+  /*const handleFetchAssignedTasks = async () => {
+    try {
+      const response = await axios.get(`/api/tasks?assignedTo=${studentUsername}`);
+      setTaskList(response.data);
+    } catch (error:any) {
+      toast.error("Error fetching tasks");
+    }
+  };
+  
+  const handleMarkTaskAsDone = async (taskId: string) => {
+    try {
+      const response = await axios.post("/api/tasks/status", { taskId, status: "Completed" });
+      if (response.data.success) {
+        toast.success("Task marked as completed");
+        handleFetchAssignedTasks(); // Refresh tasks
+      }
+    } catch (error:any) {
+      toast.error("Error marking task as completed");
+    }
+  };
+  
+  {taskList.map((task: { status: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | Promise<React.AwaitedReactNode> | null | undefined; _id: string; task: string | number | bigint | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<React.AwaitedReactNode> | null | undefined; }, index: React.Key | null | undefined) => (
+    <li key={index} className="flex items-center space-x-2">
+      <input
+        type="checkbox"
+        checked={task.status === "Completed"}
+        onChange={() => handleMarkTaskAsDone(task._id)}
+      />
+      <span>{task.task}</span>
+      <span>{task.status}</span>
+    </li>
+  ))}*/
+  
+
 
 
   return (
@@ -113,6 +135,23 @@ export default function DashboardPage() {
             End Session
           </button>
 
+          <button
+            onClick={handleFetchTodoList}
+            className="w-full max-w-xs p-3 bg-green-600 text-white text-lg font-semibold rounded-lg hover:bg-green-800 transition-all"
+          >
+            {showTodoList ? "Hide To-Do List" : "Show To-Do List"}
+          </button>
+
+          {showTodoList && (
+            <ul className="mt-4 text-black bg-white bg-opacity-20 p-4 rounded-lg">
+              {todoList.length > 0 ? (
+                todoList.map((todo, index) => <li key={index} className="text-lg">• {todo}</li>)
+              ) : (
+                <p className="text-lg">No tasks available</p>
+              )}
+            </ul>
+          )}
+
 
   
           <div className="mt-4 text-white">
@@ -126,3 +165,7 @@ export default function DashboardPage() {
     </div>
   );
 }
+function setTaskList(data: any) {
+  throw new Error("Function not implemented.");
+}
+

@@ -11,9 +11,7 @@ export default function DashboardPage() {
   const [task, setTask] = useState("");
   const [taskList, setTaskList] = useState<string[]>([]);
 
- 
   const handleSignAttendance = async () => {
-     
     try {
       const response = await axios.post("/api/clocking/supervisor/clocking_in");
       if (response.data.success) {
@@ -29,7 +27,6 @@ export default function DashboardPage() {
   };
 
   const handleEndSession = async () => {
-   
     try {
       const response = await axios.post("/api/clocking/supervisor/clocking_out");
       if (response.data.success) {
@@ -61,39 +58,7 @@ export default function DashboardPage() {
     }
   };
 
-   
-  const handleAssignTask = async () => {
-    if (!task.trim()) {
-      toast.error("Please provide a task description.");
-      return;
-    }
-    
-    const studentUsername = "exampleStudent"; // Replace this with the selected student
-    try {
-      const response = await axios.post("/api/tasks/assign", { task, studentUsername });
-      if (response.data.success) {
-        setTaskList([...taskList, task]);
-        setTask(""); // Reset the task input
-        toast.success("Task assigned successfully!");
-      }
-    } catch (error:any) {
-      toast.error("Error assigning task");
-    }
-  };
-  
-  const handleFetchTasks = async (status: string) => {
-    try {
-      const response = await axios.get(`/api/tasks?status=${status}`);
-      setTaskList(response.data);
-    } catch (error) {
-      toast.error("Error fetching tasks");
-    }
-  };
-  
-
-
   return (
-
     <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600"
       style={{
         backgroundImage: `url('/images/15.png')`,
@@ -101,45 +66,40 @@ export default function DashboardPage() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
       }}
-    
-
     >
-      {/* Navbar */}
       <SupervisorNavbar />
-
-
       <div className="flex flex-col items-center justify-center min-h-screen relative text-white px-6 sm:px-8 md:px-12">
-        
-        {/* Content */}
         <div className="relative z-10 max-w-lg w-full text-center space-y-6 p-8 bg-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg">
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-black">Welcome, Supervisor!</h1>
-          <p className="text-lg sm:text-xl text-black">Click below to sign your attendance or end the session.</p>
+          <p className="text-lg sm:text-xl text-black">Manage student tasks.</p>
+         
 
+          <div className="mt-4">
+            <input
+              type="text"
+              value={task}
+              onChange={(e) => setTask(e.target.value)}
+              className="p-2 rounded text-black w-full"
+              placeholder="Enter a task"
+            />
+            <button
+              onClick={handleAddTask}
+              className="mt-2 w-full p-3 bg-green-600 text-white text-lg font-semibold rounded-lg hover:bg-green-800 transition-all"
+            >
+              Add Task
+            </button>
+          </div>
 
-          <button
-            onClick={handleSignAttendance}
-            className="w-full max-w-xs p-3 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-800 transition-all"
-          >
-            Sign Attendance
-          </button>
+          {taskList.length > 0 && (
+            <ul className="mt-4 text-black bg-white bg-opacity-20 p-4 rounded-lg">
+              {taskList.map((t, index) => (
+                <li key={index} className="text-lg">• {t}</li>
+              ))}
+            </ul>
+          )}
 
-          <button
-            onClick={handleEndSession}
-            className={`w-full max-w-xs p-3 text-lg font-semibold text-white rounded-lg transition-all ${
-              attendanceTime
-                ? "bg-red-600 hover:bg-red-800"
-                : "bg-red-400 cursor-not-allowed opacity-50"
-            }`}
-            disabled={!attendanceTime}
-          >
-            End Session
-          </button>
-
-          {/* Attendance Time Display */}
           <div className="mt-4 text-white">
             {attendanceTime && <p className="text-lg">You signed in at: {attendanceTime}</p>}
             {endSessionTime && <p className="text-lg">You signed out at: {endSessionTime}</p>}
-
           </div>
         </div>
       </div>
