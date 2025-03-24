@@ -4,12 +4,13 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from "axios";
+import toast from 'react-hot-toast';
 
 
 const ProfilePage = () => {
       const router = useRouter();
       const [admin, setAdmin] = useState<{ username: string; email: string } | null>(null);
-
+      const [isAuthorized, setIsAuthorized] = useState(false);
       useEffect(() => {
           const fetchAdmin = async () => {
               try {
@@ -19,8 +20,46 @@ const ProfilePage = () => {
                   console.error("Error fetching admin details", error);
               }
           };
+          //Check authentication status before feching data
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get("/api/auth/admin");
+        if (response.data) {
+          setIsAuthorized(true);
+          fetchUsers();
+        } else {
+          toast.error("Access Denied");
+          router.push("/adminlogin");
+        }
+      } catch (error) {
+        console.error("Authentication check failed:", error);
+        router.push("/adminlogin");
+      }
+    };
+    checkAuth();
           fetchAdmin();
       }, []);
+
+      //fetch users and call them to the authentication method
+  const fetchUsers = () => {
+    axios
+      .get("/api/admin/users/student")
+      .then((response) => setStudents(response.data))
+      .catch((error) => console.error("Error fetching students:", error));
+
+    axios
+      .get("/api/admin/users/supervisor")
+      .then((response) => setSupervisors(response.data))
+      .catch((error) => console.error("Error fetching supervisors:", error));
+  };
+
+  if (!isAuthorized) {
+    return (
+      <div className="text-center text-gray-700 p-5">
+        Checking Authorization...
+      </div>
+    );
+  }
 
       const handleNavigation = (path: string) => {
           router.push(path);
@@ -72,3 +111,11 @@ const ProfilePage = () => {
 };
 
 export default ProfilePage;
+
+function setSupervisors(data: any): any {
+  throw new Error('Function not implemented.');
+}
+function setStudents(data: any): any {
+  throw new Error('Function not implemented.');
+}
+

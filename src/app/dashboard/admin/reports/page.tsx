@@ -4,9 +4,11 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 const ReportsPage = () => {
   const router = useRouter();
+  const [isAuthorized, setIsAuthorized] = useState(false);
   const [attendance, setAttendance] = useState<any>(null);
   const [supervisors, setSupervisors] = useState<any>(null);
   const [currentStudentPage, setCurrentStudentPage] = useState(1);
@@ -27,9 +29,47 @@ const ReportsPage = () => {
         console.error("Error fetching data:", error);
       }
     };
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get("/api/auth/admin");
+        if (response.data) {
+          setIsAuthorized(true);
+          fetchUsers();
+          fetchData();
+        } else {
+          toast.error("Access Denied");
+          router.push("/adminlogin");
+        }
+      } catch (error) {
+        console.error("Authentication check failed:", error);
+        router.push("/adminlogin");
+      }
+    };
+
+    checkAuth();
 
     fetchData();
   }, []);
+  // Fetch user data after authentication
+  const fetchUsers = () => {
+    axios
+      .get("/api/admin/users/student")
+      .then((response) => setStudents(response.data))
+      .catch((error) => console.error("Error fetching students:", error));
+
+    axios
+      .get("/api/admin/users/supervisor")
+      .then((response) => setSupervisors(response.data))
+      .catch((error) => console.error("Error fetching supervisors:", error));
+  };
+
+  if (!isAuthorized) {
+    return (
+      <div className="text-center text-gray-700 p-5">
+        Checking Authorization...
+      </div>
+    );
+  }
 
   const handleLogout = async () => {
     await axios.get("/api/logout");
@@ -235,3 +275,7 @@ const ReportsPage = () => {
 };
 
 export default ReportsPage;
+function setStudents(data: any): any {
+  throw new Error("Function not implemented.");
+}
+
