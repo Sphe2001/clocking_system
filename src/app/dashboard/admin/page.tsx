@@ -129,67 +129,59 @@ export default function AdminDashboardPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen  bg-gray-50">
       {/* Sidebar */}
-      <aside className="w-1/4 bg-gradient-to-b from-blue-800 to-indigo-800 text-white p-6">
-        <h1 className="text-3xl  mb-10 text-black font-extrabold">Admin Panel</h1>
-        <nav className="space-y-5">
-          <div
-            className="p-3 cursor-pointer hover:bg-blue-500 rounded-xl transition-all duration-300"
-            onClick={() => handleNavigation("/dashboard/admin")}
-          >
-            Dashboard
-          </div>
-          <div
-            className="flex p-3 cursor-pointer hover:bg-blue-500 rounded-xl transition-all duration-300"
-            onClick={() => handleNavigation("/dashboard/admin/users")}
-          >
-            <div className="flex justify-left pr-5">
-            <UsersIcon className="size-6 text-red-500" />
-            </div>
-            Users
-          </div>
-          <div
-            
-            className="flex p-3 cursor-pointer hover:bg-blue-500 justify-right rounded-xl transition-all duration-300"
-            onClick={() => handleNavigation("/dashboard/admin/reports")}
-          >
-          <div className="flex justify-left pr-5">
-          <TableCellsIcon className="size-6 text-red-500" />
-          </div>
-            Reports
-          </div>
-          
-          <div
-            className=" flex p-3 cursor-pointer hover:bg-blue-500 rounded-xl transition-all duration-300"
-            onClick={() => handleNavigation("/dashboard/admin/profile")}
-          >
-            <div className="flex justify-left pr-5">
-            <UserIcon className="size-6 text-red-500" />
-            </div>
-            Profile
-          </div>
-          <div
-            className="p-3 cursor-pointer hover:bg-red-500 rounded-xl transition-all duration-300"
-            onClick={handleLogout}
-          >
-            Logout
-          </div>
-        </nav>
-      </aside>
+      <aside className="w-50  bg-gradient-to-b from-blue-800 to-indigo-800 text-white p-2 flex flex-col items-center">
+  <h1 className="text-3xl mb-10 text-black font-extrabold text-center">Admin Panel</h1>
+  <nav className="space-y-20 w-absolute">
+    <div
+      className="p-3 cursor-pointer hover:bg-blue-500 rounded-xl transition-all duration-300 text-center"
+      onClick={() => handleNavigation("/dashboard/admin")}
+    >
+      Dashboard
+    </div>
+    <div
+      className="flex p-3 cursor-pointer hover:bg-blue-500 rounded-xl justify-center transition-all duration-300 text-center"
+      onClick={() => handleNavigation("/dashboard/admin/users")}
+    >
+      <UsersIcon className="size-6 text-red-500 mr-3" />
+      Users
+    </div>
+    <div
+      className="flex p-3 cursor-pointer hover:bg-blue-500 justify-center rounded-xl transition-all duration-300 text-center"
+      onClick={() => handleNavigation("/dashboard/admin/reports")}
+    >
+      <TableCellsIcon className="size-6 text-red-500 mr-3" />
+      Reports
+    </div>
+    <div
+      className="flex p-3 cursor-pointer hover:bg-blue-500 justify-center rounded-xl transition-all duration-300 text-center"
+      onClick={() => handleNavigation("/dashboard/admin/profile")}
+    >
+      <UserIcon className="size-6 text-red-500 mr-3" />
+      Profile
+    </div>
+    <div
+      className="p-3 cursor-pointer hover:bg-red-500 rounded-xl transition-all duration-300 text-center"
+      onClick={handleLogout}
+    >
+      Logout
+    </div>
+  </nav>
+</aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-8 bg-white rounded-l-3xl shadow-xl">
-        <h2 className="text-4xl font-extrabold text-gray-800">ClockIt</h2>
+      <main className="flex-1 p-10 bg-blue-200  shadow-xl">
+        <h2 className="text-4xl  font-extrabold text-gray-800">ClockIt</h2>
         <h2 className="text-3xl font-semibold text-gray-800 mb-8">Admin Dashboard</h2>
 
         {/* Summary Cards */}
 
         {/* Pie Charts Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-2">
           {/* Total Numbers Pie Chart */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-md border border-gray-300">
-            <h3 className="text-lg font-semibold text-center mb-4">
+          <div className="bg-yellow-100 p-4 rounded-lg shadow-md border border-gray-300">
+            <h3 className="text-lg font-semibold text-center mb-2">
               Total Students vs Supervisors
             </h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -217,8 +209,8 @@ export default function AdminDashboardPage() {
           </div>
 
           {/* Attendance Bar Chart */}
-          <div className="bg-gray-100 p-4 rounded-lg shadow-md border border-gray-300">
-            <h3 className="text-lg font-semibold text-center mb-4">
+          <div className="bg-blue-100 p-4 rounded-lg shadow-md border border-gray-300">
+            <h3 className="text-lg font-semibold text-center mb-2">
               Attendance: Students vs Supervisors
             </h3>
             <ResponsiveContainer width="100%" height={300}>
@@ -239,7 +231,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Filter Dropdown */}
-        <div className="mb-6 flex items-center">
+        <div className="mb-6 flex items-center ">
           <label className="mr-4 font-medium text-gray-600">Filter by Role:</label>
           <select
             className="border border-gray-300 p-3 rounded-lg bg-white shadow-md text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -254,9 +246,9 @@ export default function AdminDashboardPage() {
 
         {/* Attendance Table */}
         <div className="overflow-x-auto shadow-lg rounded-xl bg-white">
-          <table className="w-full table-auto border-collapse border border-gray-300">
+          <table className="w-full table-auto border-collapse  border border-gray-300">
             <thead className="bg-blue-100">
-              <tr className="text-sm text-gray-700">
+              <tr className="text-sm text-gray-700 ">
                 <th className="p-4 border-b">Username</th>
                 <th className="p-4 border-b">Surname</th>
                 <th className="p-4 border-b">Initials</th>
@@ -270,7 +262,7 @@ export default function AdminDashboardPage() {
             <tbody>
               {filteredRecords.length > 0 ? (
                 filteredRecords.map((record, index) => (
-                  <tr key={index} className="hover:bg-gray-50 text-center">
+                  <tr key={index} className="hover:bg-gray-50 text-center bg-yellow-100">
                     <td className="p-4 border-b">{record.username}</td>
                     <td className="p-4 border-b">{record.surname}</td>
                     <td className="p-4 border-b">{record.initials}</td>
