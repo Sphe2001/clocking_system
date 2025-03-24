@@ -28,6 +28,12 @@ export default function Navbar() {
                     View Profile
                     </Link>
                 </div>
+                <div className="flex-1 flex justify-center space-x-6 mr-20">
+                
+                <Link href="/dashboard/student/viewAttendanceHistory" className="hover:text-gray-300">
+                View My Clocking History
+                </Link>
+            </div>
                 <div className="flex-1 flex justify-end">
                     <button
                     onClick={handleLogout}
