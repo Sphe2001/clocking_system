@@ -36,6 +36,19 @@ export default function SignUpPage() {
   const validateInput = () => {
     let valid = true;
     let newErrors: any = {};
+
+    // Email validation based on role
+    if (user.role === "student") {
+      if (!user.email.endsWith("@tut4life.ac.za")) {
+        newErrors.email = "Students must use an @tut4life.ac.za email.";
+        valid = false;
+      }
+    } else if (user.role === "supervisor") {
+      if (!user.email.endsWith("@tut.ac.za")) {
+        newErrors.email = "Supervisors must use an @tut.ac.za email.";
+        valid = false;
+      }
+    }
   
     // Role validation based on username (student number or staff number)
     if (user.role === "student") {

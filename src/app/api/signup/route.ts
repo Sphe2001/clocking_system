@@ -17,6 +17,15 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'All fields are required' }, { status: 400 });
         }
 
+        // Email validation based on role
+        if (role === "student" && !email.endsWith("@tut4life.ac.za")) {
+             return NextResponse.json({ error: "Students must use an @tut4life.ac.za email." }, { status: 400 });
+            } 
+        if (role === "supervisor" && !email.endsWith("@tut.ac.za")) {
+             return NextResponse.json({ error: "Supervisors must use an @tut.ac.za email." }, { status: 400 });
+          }
+  
+
         if(role === "student"){
             const existingUsername = await Student.findOne({ username });
             if (existingUsername) {
