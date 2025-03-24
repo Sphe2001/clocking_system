@@ -53,14 +53,13 @@ const ReportsPage = () => {
   // Fetch user data after authentication
   const fetchUsers = () => {
     axios
-      .get("/api/admin/users/student")
-      .then((response) => setStudents(response.data))
-      .catch((error) => console.error("Error fetching students:", error));
-
-    axios
       .get("/api/admin/users/supervisor")
       .then((response) => setSupervisors(response.data))
       .catch((error) => console.error("Error fetching supervisors:", error));
+    axios
+      .get("/api/admin/users/student")
+      .then((response) => setStudents(response.data))
+      .catch((error) => console.error("Error fetching students:", error));
   };
 
   if (!isAuthorized) {
