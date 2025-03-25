@@ -4,6 +4,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { UserIcon, UsersIcon,TableCellsIcon, BriefcaseIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 
 export default function Navbar() {
@@ -24,12 +25,14 @@ export default function Navbar() {
 
                 <div className="flex-1 flex justify-center space-x-6 mr-20">
                 
+                    <UserIcon className="size-10 text-green-500 mr-3" />
                     <Link href="/dashboard/student/viewProfile" className="hover:text-gray-300">
                     View Profile
                     </Link>
                 </div>
                 <div className="flex-1 flex justify-center space-x-6 mr-20">
                 
+                <TableCellsIcon className="size-15 text-green-500  mr-3" />
                 <Link href="/dashboard/student/viewAttendanceHistory" className="hover:text-gray-300">
                 View My Clocking History
                 </Link>

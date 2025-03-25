@@ -44,7 +44,7 @@ export default function Home() {
       }}
     >
       {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
+      <div className="flex flex-col  bg-gradient-to-b from-blue-300 items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
         
         <div className="relative z-10 max-w-lg w-full space-y-8">
           <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-black">
@@ -57,7 +57,7 @@ export default function Home() {
           {/* Login Form */}
           <form
             onSubmit={onLogin}
-            className="p-6 bg-white rounded-lg shadow-xl space-y-6"
+            className="p-6 bg-gradient-to-b from-blue-300 to-white rounded-lg shadow-xl space-y-6"
           >
             {/* Email Input */}
             <input
@@ -86,7 +86,7 @@ export default function Home() {
                 className={`w-full py-3 rounded-lg text-white font-semibold ${
                   buttonDisabled || loading
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-indigo-600 hover:bg-indigo-700"
+                    : "bg-blue-600 hover:bg-indigo-700"
                 }`}
                 disabled={buttonDisabled || loading}
               >
