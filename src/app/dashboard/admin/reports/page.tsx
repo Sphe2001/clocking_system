@@ -209,7 +209,7 @@ const ReportsPage = () => {
         </div>
 
         {/* Supervisors Table */}
-        <div className="overflow-y-auto max-h-[70vh] border border-gray-300 rounded-lg shadow-md">
+        {/* <div className="overflow-y-auto max-h-[70vh] border border-gray-300 rounded-lg shadow-md">
           <table className="table-auto w-full border-collapse text-sm">
             <thead className="bg-gray-200 sticky top-0">
               <tr>
@@ -267,7 +267,7 @@ const ReportsPage = () => {
               })}
             </tbody>
           </table>
-        </div>
+        </div> */}
       </div>
     </div>
   );
