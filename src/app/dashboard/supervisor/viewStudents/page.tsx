@@ -22,48 +22,13 @@ export default function ViewStudentPage() {
   const [loading, setLoading] = useState(false);
   const observer = useRef<IntersectionObserver | null>(null);
   const lastStudentRef = useRef<HTMLTableRowElement | null>(null);
-  useEffect(() => {
-    // Check if the user is authorized
-    const checkAuthorization = async () => {
-      try {
-        const response = await axios.get("/api/auth/supervisor");
-        if (response.data) {
-          setIsAuthorized(true);
-        } else {
-          setIsAuthorized(false);
-          router.push("/"); // Redirect to login if unauthorized
-        }
-      } catch (error) {
-        setIsAuthorized(false);
-        router.push("/"); // Redirect to login on error
-      }
-    };
 
-    checkAuthorization();
-  }, [router]);
-  if (isAuthorized === null) {
-    return (
-      <p className="text-center text-gray-600 mt-10">
-        Checking authorization...
-      </p>
-    );
-  }
-
-  if (!isAuthorized) {
-    return null; // Prevents rendering if unauthorized
-  }
-
-  useEffect(() => {
-    fetchStudents(page);
-  }, [page]);
-
+  // Fetch students
   const fetchStudents = async (page: number) => {
     setLoading(true);
     try {
-      const response = await axios.get(
-        `/api/supervisor/viewStudents?page=${page}`
-      );
-      const data = await response.data;
+      const response = await axios.get(`/api/supervisor/viewStudents?page=${page}`);
+      const data = response.data;
       setStudents((prev) => [...prev, ...data]); // Append new students
     } catch (error) {
       console.error("Error fetching students:", error);
@@ -71,46 +36,62 @@ export default function ViewStudentPage() {
     setLoading(false);
   };
 
+  // Check authorization
   useEffect(() => {
-    if (loading) return;
+    const checkAuthorization = async () => {
+      try {
+        const response = await axios.get("/api/auth/supervisor");
+        if (response.data) {
+          setIsAuthorized(true);
+        } else {
+          setIsAuthorized(false);
+          router.push("/"); // Redirect if unauthorized
+        }
+      } catch (error) {
+        setIsAuthorized(false);
+        router.push("/");
+      }
+    };
+    checkAuthorization();
+  }, [router]);
+
+  useEffect(() => {
+    fetchStudents(page);
+  }, [page]);
+
+  useEffect(() => {
+    if (loading || !lastStudentRef.current) return;
 
     observer.current = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          setPage((prev) => prev + 1); // Load next page when scrolling reaches the bottom
+          setPage((prev) => prev + 1);
         }
       },
       { threshold: 1 }
     );
 
-    if (lastStudentRef.current) {
-      observer.current.observe(lastStudentRef.current);
-    }
+    observer.current.observe(lastStudentRef.current);
 
     return () => observer.current?.disconnect();
-  }, [loading]);
+  }, [loading, students]); // Depend on `students` to avoid infinite re-renders
+
+  if (isAuthorized === null) {
+    return <p className="text-center text-gray-600 mt-10">Checking authorization...</p>;
+  }
+
+  if (!isAuthorized) {
+    return null;
+  }
 
   return (
-    <div
-      className="relative min-h-screen bg-gradient-to-br from-indigo-500 to-purple-700"
-      style={{
-        backgroundImage: `url('/images/15.png')`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }}
-    >
+    <div className="relative min-h-screen bg-gradient-to-br from-indigo-500 to-purple-700">
       <SupervisorNavbar />
-
       <div className="flex flex-col items-center p-6">
         <h1 className="text-3xl font-bold text-white mb-6">Student List</h1>
-
-        {/* Card Container */}
         <div className="w-full max-w-5xl bg-white shadow-lg rounded-lg p-6">
           <div className="overflow-y-auto max-h-[70vh] scrollbar-thin scrollbar-thumb-gray-400 scrollbar-track-gray-200">
-            {/* Table */}
             <table className="w-full border-collapse text-left rounded-lg overflow-hidden">
-              {/* Table Head */}
               <thead className="bg-indigo-700 text-white sticky top-0">
                 <tr>
                   <th className="p-3 border border-gray-300">Username</th>
@@ -121,8 +102,6 @@ export default function ViewStudentPage() {
                   <th className="p-3 border border-gray-300">Status</th>
                 </tr>
               </thead>
-
-              {/* Table Body */}
               <tbody>
                 {students.map((student, index) => (
                   <tr
@@ -132,22 +111,14 @@ export default function ViewStudentPage() {
                       index % 2 === 0 ? "bg-gray-100" : "bg-gray-50"
                     } hover:bg-indigo-100 transition`}
                   >
-                    <td className="p-3 border border-gray-300 text-gray-900">
-                      {student.username}
-                    </td>
-                    <td className="p-3 border border-gray-300 text-gray-900">
-                      {student.surname}
-                    </td>
-                    <td className="p-3 border border-gray-300 text-gray-900">
-                      {student.initials}
-                    </td>
+                    <td className="p-3 border border-gray-300 text-gray-900">{student.username}</td>
+                    <td className="p-3 border border-gray-300 text-gray-900">{student.surname}</td>
+                    <td className="p-3 border border-gray-300 text-gray-900">{student.initials}</td>
                     <td className="p-3 border border-gray-300 text-gray-900">
                       {student.clock_in ? student.clock_in : "Not clocked in"}
                     </td>
                     <td className="p-3 border border-gray-300 text-gray-900">
-                      {student.clock_out
-                        ? student.clock_out
-                        : "Not clocked out"}
+                      {student.clock_out ? student.clock_out : "Not clocked out"}
                     </td>
                     <td
                       className={`p-3 border border-gray-300 font-semibold ${
@@ -169,7 +140,6 @@ export default function ViewStudentPage() {
           </div>
         </div>
 
-        {/* Loading Indicator */}
         {loading && (
           <p className="mt-4 text-white text-lg font-semibold animate-pulse">
             Loading more students...
@@ -178,7 +148,4 @@ export default function ViewStudentPage() {
       </div>
     </div>
   );
-}
-function setIsAuthorized(arg0: boolean) {
-  throw new Error("Function not implemented.");
 }
