@@ -11,6 +11,7 @@ export default function DashboardPage() {
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
   const [attendanceTime, setAttendanceTime] = useState<string | null>(null);
   const [endSessionTime, setEndSessionTime] = useState<string | null>(null);
+  const [canEndSession, setCanEndSession] = useState<boolean>(false);
 
   useEffect(() => {
     // Check if the user is authorized
@@ -31,6 +32,25 @@ export default function DashboardPage() {
 
     checkAuthorization();
   }, [router]);
+
+  useEffect(() => {
+    // Check if the user has clocked in today
+    const checkClockInStatus = async () => {
+      try {
+        const response = await axios.post("/api/clocking/supervisor/status");
+        if (response.data === true) {
+          setCanEndSession(true);
+        } else {
+          setCanEndSession(false);
+        }
+      } catch (error) {
+        setCanEndSession(false);
+      }
+    };
+
+    checkClockInStatus();
+  }, []);
+
   if (isAuthorized === null) {
     return (
       <p className="text-center text-gray-600 mt-10">
@@ -54,7 +74,7 @@ export default function DashboardPage() {
         toast.error("Clock-in failed");
       }
     } catch (error) {
-      toast.error("Error while clocking in");
+      toast.error("Already clocked in");
     }
   };
 
@@ -66,12 +86,13 @@ export default function DashboardPage() {
       if (response.data.success) {
         const timestamp = new Date().toLocaleString();
         setEndSessionTime(timestamp);
+        setCanEndSession(false);
         toast.success("Clock-out successful");
       } else {
         toast.error("Clock-out failed");
       }
     } catch (error) {
-      toast.error("Error while clocking out");
+      toast.error("Already clocked out");
     }
   };
 
@@ -108,11 +129,11 @@ export default function DashboardPage() {
           <button
             onClick={handleEndSession}
             className={`w-full max-w-xs p-3 text-lg font-semibold text-white rounded-lg transition-all ${
-              attendanceTime
+              canEndSession
                 ? "bg-red-600 hover:bg-red-800"
                 : "bg-red-400 cursor-not-allowed opacity-50"
             }`}
-            disabled={!attendanceTime}
+            disabled={!canEndSession}
           >
             End Session
           </button>

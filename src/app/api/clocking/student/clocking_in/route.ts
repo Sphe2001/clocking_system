@@ -6,37 +6,47 @@ import { getDataFromToken } from "@/helpers/getDataFromToken";
 connect();
 
 export async function POST(request: NextRequest) {
-    try {
-        // Extract userId from token
-        const userId = await getDataFromToken(request);
+  try {
+    // Extract userId from token
+    const userId = await getDataFromToken(request);
 
-        
-        if (!userId) {
-            return NextResponse.json({ error: "User not found" }, { status: 400 });
-        }
-
-        // Find the user in the database
-        const user = await User.findById(userId);
-
-        if (!user) {
-            return NextResponse.json({ error: "User not found" }, { status: 404 });
-        }
-
-        // Update clock_in field with the current timestamp
-        user.clock_in = new Date(); 
-        await user.save();
-
-        return NextResponse.json({
-            message: "Clock-in successful",
-            success: true,
-        });
-
-    } catch (error: any) {
-        console.error("Error in clock-in:", error);
-        return NextResponse.json(
-            { error: error.message || "Internal Server Error" },
-            { status: 500 }
-        );
+    if (!userId) {
+      return NextResponse.json({ error: "User not found" }, { status: 400 });
     }
 
+    // Find the user in the database
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Convert last clock-in date to only compare dates (ignoring time)
+    if (user.clock_in) {
+      const lastClockInDate = new Date(user.clock_in).toDateString();
+      const todayDate = new Date().toDateString();
+
+      if (lastClockInDate === todayDate) {
+        return NextResponse.json(
+          { error: "You have already clocked in today" },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Update clock_in field with the current date
+    user.clock_in = new Date();
+    await user.save();
+
+    return NextResponse.json({
+      message: "Clock-in successful",
+      success: true,
+    });
+  } catch (error: any) {
+    console.error("Error in clock-in:", error);
+    return NextResponse.json(
+      { error: error.message || "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
