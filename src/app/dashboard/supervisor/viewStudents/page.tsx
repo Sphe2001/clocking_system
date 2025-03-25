@@ -26,7 +26,7 @@ export default function ViewStudentPage() {
     // Check if the user is authorized
     const checkAuthorization = async () => {
       try {
-        const response = await axios.get("/api/auth/student");
+        const response = await axios.get("/api/auth/supervisor");
         if (response.data) {
           setIsAuthorized(true);
         } else {
