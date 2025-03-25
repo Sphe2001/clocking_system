@@ -2,6 +2,7 @@
 import { connect } from "@/dbConfig/dbConfig";
 import Task from "@/models/taskModel";
 import { NextResponse } from "next/server";
+connect();
 
 export async function GET(request: { query: { status: any; }; }) {
   try {
