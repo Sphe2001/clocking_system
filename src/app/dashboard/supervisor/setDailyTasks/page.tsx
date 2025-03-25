@@ -1,36 +1,42 @@
-
 "use client";
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import SupervisorNavbar from "@/app/components/supervisor/Navbar";
 import toast, { Toaster } from "react-hot-toast";
+
 interface Student {
   _id: string;
-  name: string;
+  username: string;
+  email: string;
 }
 
 export default function DashboardPage() {
   const [students, setStudents] = useState<Student[]>([]);
-
   const [selectedStudents, setSelectedStudents] = useState<Array<string>>([]);
   const [task, setTask] = useState("");
 
   useEffect(() => {
     const fetchStudents = async () => {
       try {
-        const response = await axios.get("/api/student");
-        console.log("Fetched students:", response.data.students); // Debugging line
-        setStudents(response.data.students);
+        const response = await axios.get("/api/fetching-data/student"); // Ensure this is the correct route
+        console.log("Fetched students:", response.data); // Debugging log
+  
+        // Validate the API response format
+        if (Array.isArray(response.data.students)) {
+          setStudents(response.data.students);
+        } else {
+          console.error("Invalid data format", response.data);
+          toast.error("Error fetching students: Invalid data format");
+        }
       } catch (error) {
+        console.error("Error fetching students:", error);
         toast.error("Error fetching students");
       }
     };
     fetchStudents();
   }, []);
   
-  
-
   const handleSelectStudent = (studentId: string) => {
     setSelectedStudents((prev: string[]) =>
       prev.includes(studentId)
@@ -95,7 +101,7 @@ export default function DashboardPage() {
                     checked={selectedStudents.includes(student._id)}
                     onChange={() => handleSelectStudent(student._id)}
                   />
-                  {student.name}
+                  {student.username} {/* Display username instead of name */}
                 </li>
               ))}
             </ul>
