@@ -50,10 +50,18 @@ export default function SignUpPage() {
       if (!user.email.endsWith("@tut4life.ac.za")) {
         newErrors.email = "Students must use an @tut4life.ac.za email.";
         valid = false;
+      } else if (!/^\d/.test(user.email)) {
+        // Check if email starts with a number
+        newErrors.email = "Student email must start with a number.";
+        valid = false;
       }
     } else if (user.role === "supervisor") {
       if (!user.email.endsWith("@tut.ac.za")) {
         newErrors.email = "Supervisors must use an @tut.ac.za email.";
+        valid = false;
+      } else if (!/^[A-Za-z]/.test(user.email)) {
+        // Check if email starts with a letter
+        newErrors.email = "Supervisor email must start with a letter.";
         valid = false;
       }
     }
