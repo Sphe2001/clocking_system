@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Navbar from "@/app/components/student/Navbar";
 import toast, { Toaster } from 'react-hot-toast';
+import { UserIcon, UsersIcon,TableCellsIcon } from "@heroicons/react/16/solid";
 import SupervisorNavbar from "@/app/components/supervisor/Navbar";
 
 
@@ -111,7 +112,7 @@ export default function DashboardPage() {
       <div className="flex flex-col items-center justify-center min-h-screen relative text-white px-6 sm:px-8 md:px-12">
         
      
-        <div className="relative z-10 max-w-lg w-full text-center space-y-6 p-8 bg-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg">
+        <div className="relative z-10 max-w-lg w-full text-center space-y-6 p-8 bg-gradient-to-b from-blue-300 to-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-black">Welcome, Student!</h1>
           <p className="text-lg sm:text-xl text-black">Click below to sign your attendance or end the session.</p>
 
@@ -125,10 +126,10 @@ export default function DashboardPage() {
 
           <button
             onClick={handleEndSession}
-            className={`w-full max-w-xs p-3 text-lg font-semibold text-white rounded-lg transition-all ${
+            className={`w-full max-w-xs p-3 text-lg font-bold text-white rounded-lg transition-all ${
               attendanceTime
                 ? "bg-red-600 hover:bg-red-800"
-                : "bg-red-400 cursor-not-allowed opacity-50"
+                : "bg-blue-500 cursor-not-allowed opacity-50"
             }`}
             disabled={!attendanceTime}
           >
@@ -137,7 +138,7 @@ export default function DashboardPage() {
 
           <button
             onClick={handleFetchTodoList}
-            className="w-full max-w-xs p-3 bg-green-600 text-white text-lg font-semibold rounded-lg hover:bg-green-800 transition-all"
+            className="w-full max-w-xs p-3 bg-blue-400 text-white text-lg font-semibold rounded-lg hover:bg-green-800 transition-all"
           >
             {showTodoList ? "Hide To-Do List" : "Show To-Do List"}
           </button>

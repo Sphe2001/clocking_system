@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import SupervisorNavbar from "@/app/components/supervisor/Navbar";
+import { UserIcon, UsersIcon,TableCellsIcon } from "@heroicons/react/16/solid";
 import toast, { Toaster } from 'react-hot-toast';
 
 export default function DashboardPage() {
@@ -108,10 +109,10 @@ export default function DashboardPage() {
       <SupervisorNavbar />
 
 
-      <div className="flex flex-col items-center justify-center min-h-screen relative text-white px-6 sm:px-8 md:px-12">
+      <div className="flex flex-col items-center bg-gradient-to-b from-blue-300  justify-center min-h-screen relative text-white px-6 sm:px-8 md:px-12">
         
         {/* Content */}
-        <div className="relative z-10 max-w-lg w-full text-center space-y-6 p-8 bg-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg">
+        <div className="relative z-10 max-w-lg w-full text-center space-y-6 p-8 bg-gradient-to-b from-blue-400 to-white bg-opacity-10 backdrop-blur-md rounded-lg shadow-lg">
           <h1 className="text-4xl sm:text-5xl font-extrabold text-black">Welcome, Supervisor!</h1>
           <p className="text-lg sm:text-xl text-black">Click below to sign your attendance or end the session.</p>
 
