@@ -31,6 +31,9 @@ export default function SupervisorNavbar() {
             <Link href="/dashboard/supervisor/viewProfile" className="hover:text-indigo-300">
               View Profile
             </Link>
+            <Link href="/dashboard/supervisor/setDailyTasks" className="hover:text-indigo-300">
+               Assign Tasks
+            </Link>
           </div>
           <div className="flex-1 flex justify-end">
             <button
