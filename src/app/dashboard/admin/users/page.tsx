@@ -67,7 +67,7 @@ const UsersPage = () => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-1/4 bg-blue-700 text-white p-5">
+      <aside className="w-1/4 bg-gradient-to-b from-blue-500 to-white text-white p-5">
         <h1 className="text-2xl font-bold mb-8">ADMIN PANEL</h1>
         <nav className="space-y-4">
           <div
@@ -104,7 +104,7 @@ const UsersPage = () => {
       </aside>
 
       {/* Main Content */}
-      <div className="flex-grow p-6 bg-gray-100 overflow-y-auto">
+      <div className="flex-grow p-6 bg-gradient-to-b from-blue-300 to-white overflow-y-auto">
         <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">Users List</h2>
 
         <div className="grid grid-cols-2 gap-4">
