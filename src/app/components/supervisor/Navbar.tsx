@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { UserIcon, UsersIcon,TableCellsIcon, BriefcaseIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 
 
@@ -21,16 +22,22 @@ export default function SupervisorNavbar() {
           <Link href="/dashboard/supervisor">
             <h1 className="text-xl font-bold hover:text-indigo-300">Dashboard</h1>
           </Link>
-
+          
           <div className="flex-1"></div> 
 
-          <div className="flex-1 flex justify-center space-x-6 mr-20">
-            <Link href="/dashboard/supervisor/viewStudents" className="hover:text-indigo-300">
-              View Students
+          <div className="flex-1 flex justify-center space-x-6 mr-10">
+
+          <UsersIcon className="size-10 text-green-500 mr-3" />
+           <Link href="/dashboard/supervisor/viewStudents" className="hover:text-indigo-300">
+             View Students
             </Link>
+
+            <UserIcon className="size-10 text-green-500 mr-3" />
             <Link href="/dashboard/supervisor/viewProfile" className="hover:text-indigo-300">
               View Profile
             </Link>
+            
+            <BriefcaseIcon className="size-10 text-green-500 mr-3" />
             <Link href="/dashboard/supervisor/setDailyTasks" className="hover:text-indigo-300">
                Assign Tasks
             </Link>

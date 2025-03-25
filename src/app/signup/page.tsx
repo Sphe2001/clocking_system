@@ -129,15 +129,15 @@ export default function SignUpPage() {
           {/* Signup Form */}
           <form
             onSubmit={onSignup}
-            className="p-6 bg-white rounded-lg shadow-xl space-y-6"
+            className="p-6 bg-gradient-to-b from-blue-300 to-white rounded-lg shadow-xl space-y-6"
           >
-            <h2 className="text-3xl font-bold text-indigo-600 text-center">
+            <h2 className="text-3xl font-bold text-black text-center">
               Sign Up
             </h2>
 
             {/* Role Selection */}
             <div className="mb-6 text-gray-700 flex justify-center gap-6">
-              <label className="flex items-center gap-2 transition-transform hover:scale-105 text-red-500">
+              <label className="flex items-center gap-2 transition-transform hover:scale-105 text-gray">
                 <input
                   type="radio"
                   name="role"
@@ -149,7 +149,7 @@ export default function SignUpPage() {
                 />
                 Student
               </label>
-              <label className="flex items-center gap-2 transition-transform hover:scale-105 text-red-500">
+              <label className="flex items-center gap-2 transition-transform hover:scale-105 text-gray">
                 <input
                   type="radio"
                   name="role"
@@ -260,7 +260,7 @@ export default function SignUpPage() {
                 className={`w-full py-3 rounded-lg text-white font-semibold ${
                   buttonDisabled || loading
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-indigo-600 hover:bg-indigo-700"
+                    : "bg-blue-600 hover:bg-green-500"
                 }`}
                 disabled={buttonDisabled || loading}
               >
