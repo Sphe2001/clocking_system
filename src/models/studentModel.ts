@@ -25,7 +25,7 @@ const studentSchema = new mongoose.Schema(
     },
     contactNo: {
       type: String,
-      required: [true, "Please provide contact number"],
+      default: null,
     },
     role: {
       type: String,
