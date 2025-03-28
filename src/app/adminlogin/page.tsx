@@ -34,22 +34,30 @@ export default function Home() {
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
+
+    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600"
+      style={{
+        backgroundImage: `url('/images/2.jpg')`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
       {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
+      <div className="flex flex-col  bg-gradient-to-b from-blue-300 items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
+        
         <div className="relative z-10 max-w-lg w-full space-y-8">
-          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
+          <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-black">
             Admin Login
           </h1>
-          <p className="text-lg sm:text-xl mb-8">
+          <p className="text-lg sm:text-xl mb-8 text-black">
             Please enter your credentials to access the admin dashboard.
           </p>
 
           {/* Login Form */}
           <form
             onSubmit={onLogin}
-            className="p-6 bg-white rounded-lg shadow-xl space-y-6"
+            className="p-6 bg-gradient-to-b from-blue-300 to-white rounded-lg shadow-xl space-y-6"
           >
             {/* Email Input */}
             <input
@@ -78,7 +86,7 @@ export default function Home() {
                 className={`w-full py-3 rounded-lg text-white font-semibold ${
                   buttonDisabled || loading
                     ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-indigo-600 hover:bg-indigo-700"
+                    : "bg-blue-600 hover:bg-indigo-700"
                 }`}
                 disabled={buttonDisabled || loading}
               >
@@ -90,9 +98,9 @@ export default function Home() {
               </button>
             </div>
             <div className="mt-4 text-center">
-              <p className="text-black">
+              <p className="text-blue-800">
                 Forgot password?{" "}
-                <Link href="/forgotpassword/admin" className="text-blue-600 hover:underline">
+                <Link href="/forgotpassword/admin" className="text-red-600 hover:underline">
                   Reset here
                 </Link>
               </p>

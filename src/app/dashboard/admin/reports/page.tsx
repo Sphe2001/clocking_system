@@ -1,70 +1,273 @@
-'use client';
+"use client";
 
-import React from 'react';
+import Link from "next/link";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ReportsPage = () => {
+  const router = useRouter();
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [attendance, setAttendance] = useState<any>(null);
+  const [supervisors, setSupervisors] = useState<any>(null);
+  const [currentStudentPage, setCurrentStudentPage] = useState(1);
+  const [currentSupervisorPage, setCurrentSupervisorPage] = useState(1);
+  const recordsPerPage = 20;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [studentsRes, supervisorsRes] = await Promise.all([
+          axios.get("/api/attendance/students"),
+          axios.get("/api/attendance/supervisors"),
+        ]);
+        setAttendance(studentsRes.data);
+        console.log(studentsRes.data);
+        setSupervisors(supervisorsRes.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    const checkAuth = async () => {
+      try {
+        const response = await axios.get("/api/auth/admin");
+        if (response.data) {
+          setIsAuthorized(true);
+          fetchUsers();
+          fetchData();
+        } else {
+          toast.error("Access Denied");
+          router.push("/adminlogin");
+        }
+      } catch (error) {
+        console.error("Authentication check failed:", error);
+        router.push("/adminlogin");
+      }
+    };
+
+    checkAuth();
+
+    fetchData();
+  }, []);
+  // Fetch user data after authentication
+  const fetchUsers = () => {
+    axios
+      .get("/api/admin/users/student")
+      .then((response) => setStudents(response.data))
+      .catch((error) => console.error("Error fetching students:", error));
+
+    axios
+      .get("/api/admin/users/supervisor")
+      .then((response) => setSupervisors(response.data))
+      .catch((error) => console.error("Error fetching supervisors:", error));
+  };
+
+  if (!isAuthorized) {
+    return (
+      <div className="text-center text-gray-700 p-5">
+        Checking Authorization...
+      </div>
+    );
+  }
+
+  const handleLogout = async () => {
+    await axios.get("/api/logout");
+    router.push("/adminlogin");
+  };
+
+  const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+  if (!attendance || !supervisors) {
+    return (
+      <p className="text-center text-gray-600 mt-10">Loading reports...</p>
+    );
+  }
+
+  const users = Object.keys(attendance);
+  const supervisorUsers = Object.keys(supervisors);
+  const totalStudentPages = Math.ceil(users.length / recordsPerPage);
+  const totalSupervisorPages = Math.ceil(
+    supervisorUsers.length / recordsPerPage
+  );
+
+  const studentStartIndex = (currentStudentPage - 1) * recordsPerPage;
+  const selectedUsers = users.slice(
+    studentStartIndex,
+    studentStartIndex + recordsPerPage
+  );
+
+  const supervisorStartIndex = (currentSupervisorPage - 1) * recordsPerPage;
+  const selectedSupervisors = supervisorUsers.slice(
+    supervisorStartIndex,
+    supervisorStartIndex + recordsPerPage
+  );
+
+  const handleNavigation = (path: string) => {
+    router.push(path);
+  };
+
   return (
-    <div className="relative min-h-screen bg-gradient-to-r from-indigo-500 to-purple-600">
-      {/* Hero Section */}
-      <div className="flex flex-col items-center justify-center min-h-screen bg-cover bg-center relative p-4 sm:p-8 md:p-16 text-center text-white bg-opacity-60">
-        <div className="absolute top-0 left-0 w-full h-full bg-black opacity-50"></div>
-        <div className="relative z-10 max-w-lg w-full space-y-8">
-          <h2 className="text-4xl sm:text-5xl font-extrabold leading-tight text-white">
-            Reports
-          </h2>
-          <p className="text-lg sm:text-xl mb-8 text-white">
-            Welcome to the report page! Here you can view and manage the reports.
-          </p>
-
-          {/* Reports Content */}
-          <div className="bg-white p-10 rounded-lg shadow-xl space-y-6">
-            <h3 className="text-xl font-semibold text-gray-700">Report Overview</h3>
-            <p className="text-lg text-gray-700 mb-4">This section contains the latest reports and insights.</p>
-
-            {/* Add Report Table or Content */}
-            <div className="overflow-x-auto">
-            <table className="w-full table-auto text-gray-700">
-              <thead className="bg-gray-200">
-                <tr>
-                  <th className="p-3 text-left">Report ID</th>
-                  <th className="p-3 text-left">Student/supervisor</th>
-                  <th className="p-3 text-left">Date</th>
-                  <th className="p-3 text-left">Clocked In</th>
-                  <th className="p-3 text-left">Clocked Out</th>
-                  <th className="p-3 text-left">Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="p-3">#101</td>
-                  <td className="p-3">Student</td>
-                  <td className="p-3">2025-03-15</td>
-                  <td className="p-3">08:00</td>
-                  <td className="p-3">16:00</td>
-                  <td className="p-3 text-green-600">Completed</td>
-                </tr>
-                <tr>
-                <td className="p-3">#101</td>
-                  <td className="p-3">Student</td>
-                  <td className="p-3">2025-03-15</td>
-                  <td className="p-3">08:00</td>
-                  <td className="p-3">16:00</td>
-                  <td className="p-3 text-red-600">iompleted</td>
-                </tr>
-                {/* More rows can be added here */}
-              </tbody>
-            </table>
-            </div>
-            {/* Buttons for viewing more reports or creating a new report */}
-            <div className="flex justify-center space-x-4">
-              <button className="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">
-                View More Reports
-              </button>
-              <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
-                Create New Report
-              </button>
-            </div>
+    <div className="flex h-screen">
+      {/* Sidebar */}
+      <aside className="w-1/4 bg-blue-700 text-white p-5">
+        <h1 className="text-2xl font-bold mb-8">ADMIN PANEL</h1>
+        <nav className="space-y-4">
+          <div
+            className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+            onClick={() => handleNavigation("/dashboard/admin")}
+          >
+            Dashboard
           </div>
+          <div
+            className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+            onClick={() => handleNavigation("/dashboard/admin/users")}
+          >
+            Users
+          </div>
+          <div
+            className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+            onClick={() => handleNavigation("/dashboard/admin/reports")}
+          >
+            Reports
+          </div>
+          <div
+            className="p-2 cursor-pointer hover:bg-blue-500 rounded"
+            onClick={() => handleNavigation("/dashboard/admin/profile")}
+          >
+            Profile
+          </div>
+          <div
+            className="p-2 cursor-pointer hover:bg-red-500 rounded"
+            onClick={handleLogout}
+          >
+            Logout
+          </div>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-grow p-6 bg-gray-100 overflow-y-auto">
+        <h2 className="text-2xl font-semibold text-gray-800 text-center mb-4">
+          Week Attendance Records
+        </h2>
+
+        {/* Students Table */}
+        <div className="overflow-y-auto max-h-[70vh] border border-gray-300 rounded-lg shadow-md mb-6">
+          <table className="table-auto w-full border-collapse text-sm">
+            <thead className="bg-gray-200 sticky top-0">
+              <tr>
+                <th className="border px-4 py-2 text-left text-black">Name</th>
+                <th className="border px-4 py-2 text-left text-black">Role</th>
+                {weekdays.map((day) => (
+                  <th
+                    key={day}
+                    className="border px-4 py-2 text-center text-black"
+                  >
+                    {day}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y">
+              {selectedUsers.map((email) => {
+                const user = attendance[email];
+                return (
+                  <tr key={email} className="hover:bg-gray-100">
+                    <td className="border px-4 py-2 text-black">{user.name}</td>
+                    <td className="border px-4 py-2 text-black">{user.role}</td>
+                    {Object.values(user.attendance).map(
+                      (record: any, index) => (
+                        <td
+                          key={index}
+                          className="border px-4 py-2 text-center"
+                        >
+                          <span className="text-gray-800">{record.date}</span> -
+                          <span className="text-blue-600 font-semibold">
+                            {" "}
+                            {record.dayOfWeek}
+                          </span>{" "}
+                          -
+                          <span
+                            className={
+                              record.status === "Attended"
+                                ? "text-green-600 font-semibold"
+                                : record.status === "Absent"
+                                ? "text-red-600 font-semibold"
+                                : "text-yellow-600 font-semibold"
+                            }
+                          >
+                            {record.status}
+                          </span>
+                        </td>
+                      )
+                    )}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Supervisors Table */}
+        <div className="overflow-y-auto max-h-[70vh] border border-gray-300 rounded-lg shadow-md">
+          <table className="table-auto w-full border-collapse text-sm">
+            <thead className="bg-gray-200 sticky top-0">
+              <tr>
+                <th className="border px-4 py-2 text-left text-black">Name</th>
+                <th className="border px-4 py-2 text-left text-black">Role</th>
+                {weekdays.map((day) => (
+                  <th
+                    key={day}
+                    className="border px-4 py-2 text-center text-black"
+                  >
+                    {day}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y">
+              {selectedSupervisors.map((email) => {
+                const supervisor = supervisors[email];
+                return (
+                  <tr key={email} className="hover:bg-gray-100">
+                    <td className="border px-4 py-2 text-black">
+                      {supervisor.name}
+                    </td>
+                    <td className="border px-4 py-2 text-black">
+                      {supervisor.role}
+                    </td>
+                    {Object.values(supervisor.attendance ?? {}).map(
+                      (record: any, index) => (
+                        <td
+                          key={index}
+                          className="border px-4 py-2 text-center"
+                        >
+                          <span className="text-gray-800">{record.date}</span> -
+                          <span className="text-blue-600 font-semibold">
+                            {" "}
+                            {record.dayOfWeek}
+                          </span>{" "}
+                          -
+                          <span
+                            className={
+                              record.status === "Attended"
+                                ? "text-green-600 font-semibold"
+                                : record.status === "Absent"
+                                ? "text-red-600 font-semibold"
+                                : "text-yellow-600 font-semibold"
+                            }
+                          >
+                            {record.status}
+                          </span>
+                        </td>
+                      )
+                    )}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -72,3 +275,7 @@ const ReportsPage = () => {
 };
 
 export default ReportsPage;
+function setStudents(data: any): any {
+  throw new Error("Function not implemented.");
+}
+

@@ -5,13 +5,10 @@ import { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
 
-  const isPublicPath = path === '/' || path === '/signup'
+  const isPublicPath = path === '/' || path === '/signup' || path ==='/adminlogin' || path ==='/forgotpassword'
+        || path ==='/resetpassword' || path ==='/verifyresetlink'
 
   const token = request.cookies.get('token')?.value || ''
-
-//   if(isPublicPath && token) {
-//     return NextResponse.redirect(new URL('/dashboard', request.nextUrl))
-//   }
 
   if(!isPublicPath && !token) {
     return NextResponse.redirect(new URL('/', request.nextUrl))
@@ -22,9 +19,22 @@ export function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/',
-    '/dashboard',
-    '/dashboard/admin',
-    '/dashboard/supervisor',
     '/signup',
+    '/adminlogin',
+    '/dashboard/student',
+    '/dashboard/student/viewProfile',
+    '/dashboard/admin',
+    '/dashboard/admin/users',
+    '/dashboard/admin/reports',
+    '/dashboard/admin/profile',
+    '/dashboard/supervisor',
+    '/dashboard/supervisor/viewStudents',
+    '/dashboard/supervisor/viewProfile',
+    '/forgotpassword/admin',
+    '/forgotpassword/student',
+    '/forgotpassword/supervisor',
+    '/resetpassword',
+    '/verifyresetlink',
+    
   ],
 }

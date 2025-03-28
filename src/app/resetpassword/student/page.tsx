@@ -50,8 +50,15 @@ export default function ResetPasswordPage() {
   };
 
   return (
-    <div>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-4">
+    <div
+    style={{
+      backgroundImage: `url('/images/15.png')`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    }}
+    >
+      <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <div className="bg-white shadow-lg rounded-lg p-6 max-w-md w-full text-center">
           <h1 className="text-2xl font-bold text-gray-800 mb-4">
             Reset Password

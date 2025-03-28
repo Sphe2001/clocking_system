@@ -1,5 +1,6 @@
 import { connect } from "@/dbConfig/dbConfig";
 import User from "@/models/supervisorModel";
+import SupervisorAttendance from "@/models/supervisorAttendanceModel";
 import { NextResponse, NextRequest } from "next/server";
 import { getDataFromToken } from "@/helpers/getDataFromToken";
 
@@ -7,7 +8,7 @@ connect();
 
 export async function POST(request: NextRequest) {
     try {
-        // Extract userId from token
+        
         const userId = await getDataFromToken(request);
 
         
@@ -15,19 +16,33 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: "User not found" }, { status: 400 });
         }
 
-        // Find the user in the database
+       
         const user = await User.findById(userId);
 
         if (!user) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
-        // Update clock_in field with the current timestamp
-        user.clock_out = new Date(); 
+        const clockOutTime = new Date();
+
+        user.clock_out = clockOutTime;
         await user.save();
 
+        const attendanceRecord = new SupervisorAttendance({
+            staffNo: user.username,
+            email: user.email,
+            surname: user.surname,
+            initials: user.initials,
+            contactNo: user.contactNo,
+            clock_in: user.clock_in, 
+            clock_out: clockOutTime,
+        });
+
+        
+        await attendanceRecord.save();
+
         return NextResponse.json({
-            message: "Clock-out successful",
+            message: "Clock-out successful & Attendance recorded",
             success: true,
         });
 

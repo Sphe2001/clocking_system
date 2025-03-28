@@ -1,30 +1,46 @@
 import mongoose from "mongoose";
 
-const studentSchema = new mongoose.Schema(
+const studentAttendanceSchema = new mongoose.Schema(
   {
-
-
-    student_id:{
-        type: String,
-        required: [true, "Student Id missing" ],
-        default: null,
+    studentNo: {
+      type: Number,
+      required: [true, "Please provide a student number"],
+      index: true,
+    },
+    email: {
+      type: String,
+      required: [true, "Please provide an email"],
+      trim: true,
+      lowercase: true,
+    },
+    surname: {
+      type: String,
+      required: [true, "Please provide a surname"],
+    },
+    initials: {
+      type: String,
+      required: [true, "Please provide initial(s)"],
+    },
+    contactNo: {
+      type: String,
+      required: [true, "Please provide contact number"],
     },
 
     clock_in: {
       type: Date,
-      default: null,
+      required: [true, "Please provide clock in time"],
     },
     clock_out: {
       type: Date,
-      default: null,
+      required: [true, "Please provide clock out time"],
     },
    
 
   },
-  { timestamps: true }
+  
 );
 
-const Student =
-  mongoose.models.student || mongoose.model("student", studentSchema);
+const StudentAttendance =
+  mongoose.models.studentattendance || mongoose.model("studentattendance", studentAttendanceSchema);
 
-export default Student;
+export default StudentAttendance;
